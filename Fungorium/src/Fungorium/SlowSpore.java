@@ -1,4 +1,4 @@
-package Fungorium;
+package fungorium;
 
 public class SlowSpore {
 
