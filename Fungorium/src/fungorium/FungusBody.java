@@ -27,11 +27,13 @@ public class FungusBody {
             return;
         }
         tecton=t;
+        tecton.GrowFungusBody(this);
         if(f==null){
             System.err.println("Hiba: A megadott gomba nincs inicializálva.");
             return;
         }
         hostFungus=f;
+        f.AddBody(this);
     }
 
     /**
@@ -93,31 +95,46 @@ public class FungusBody {
 
         ArrayList<Tecton> neighbours = new ArrayList<>(); 
         neighbours=tecton.GetNeighbours();
+        System.out.println("GetNeighbour függvény segítségével feltöltjük a neighour listát. ");
         if (neighbours == null) {
+            System.out.print("Eredménye: sikertelen.");
             System.err.println("A gombatest tektonjának nincsenek szomszédjai.");
             return;
         }
+        System.out.println("Eredménye: sikeres.");
 
-        for(int i=0; i<neighbours.size(); ++i) neighbours.get(i).AddSpore();
+        for(int i=0; i<neighbours.size(); ++i) {
+            neighbours.get(i).AddSpore();
+            System.out.println("AddSpore függvényhívás iteratívan a spórák kiszórásához.");
+        }
         if(isDeveloped){
             ArrayList<Tecton> nns = new ArrayList<>();
             for(int i=0; i<neighbours.size();++i){
                 nns=neighbours.get(i).GetNeighbours();
-                for(int j=0; j < nns.size(); ++j) nns.get(j).AddSpore();
+                System.out.println("GetNeighbours függvénnyel iteratívan feltöltjük a szomszédok szomszédjainak (nns) listáját");
+                for(int j=0; j < nns.size(); ++j) {
+                    nns.get(j).AddSpore();
+                    System.out.println("AddSpore függvényhívás iteratívan a spórák kiszórásához.");
             }
+        }
         }
         sporeCount-=4;
         shotsLeft--;
+        System.out.println("sporeCountból levonunk négyet (egy lövés ára) és shotsLeftet csökkentjük egyel.");
+        System.out.println("ShootSpores sikeres végrehajtva!");
     }
 
     /**Gombatest meghalását implementálja*/
     public void Die(){
         tecton.AbsorbHyphas();
+        System.out.println("AbsorbHyphas függvényhívás a fonalak felszívodása miatt");
         isDead=true;
+        System.out.println("isDead érték igazra állítva!");
     }
     /**Spórát termel a gombatestnek*/
     public void ProduceSpore(){
         sporeCount++;
+        System.out.println("sporeCount megnövelve egyel.");
     }
 
 }
