@@ -18,35 +18,35 @@ public class Fungus {
      * Hozzáad egy gombafonalat (Hypha) a mycelium listához.
      * @param h A hozzáadandó gombafonal.
      */
-    public void addHypha(Hypha h) { mycelium.add(h); }
+    public void AddHypha(Hypha h) { mycelium.add(h); }
 
     /**
      * Eltávolít egy gombafonalat (Hypha) a mycelium listából.
      * @param h Az eltávolítandó gombafonal.
      */
-    public void removeHypha(Hypha h) { mycelium.remove(h); }
+    public void RemoveHypha(Hypha h) { mycelium.remove(h); }
 
     /**
      * Hozzáad egy gombatestet (FungusBody) a bodies listához.
      * @param b A hozzáadandó gombatest.
      */
-    public void addBody(FungusBody b) { bodies.add(b); }
+    public void AddBody(FungusBody b) { bodies.add(b); }
 
     /**
      * Eltávolít egy gombatestet (FungusBody) a bodies listából.
      * @param b Az eltávolítandó gombatest.
      */
-    public void removeBody(FungusBody b) { bodies.remove(b); }
+    public void RemoveBody(FungusBody b) { bodies.remove(b); }
 
     /**
      * Visszaadja a gombatestek (FungusBody) listáját.
      * @return A bodies lista referenciája.
      */
-    public List<FungusBody> getBodies() { return bodies; }
+    public List<FungusBody> GetBodies() { return bodies; }
 
     /**
      * Visszaadja a gombafonalak (Hypha) listáját.
      * @return A mycelium lista referenciája.
      */
-    public List<Hypha> getMycelium() { return mycelium; }
+    public List<Hypha> GetMycelium() { return mycelium; }
 }

@@ -33,11 +33,11 @@ public class Hypha {
      * Hozzáad egy szomszédos gombafonalat a neighbours listához, ha még nem szerepel benne.
      * @param h A hozzáadandó szomszédos gombafonal.
      */
-    public void addNeighbour(Hypha h) {
+    public void AddNeighbour(Hypha h) {
         // Ellenőrizzük, hogy nem szerepel-e már a szomszédok között és azonos-e a hostFungus
-        if (!neighbours.contains(h) && h.getHostFungus() == this.getHostFungus()) {
-            Tecton[] otherTectons = h.getTectons();
-            Tecton[] thisTectons = this.getTectons();
+        if (!neighbours.contains(h) && h.GetHostFungus() == this.GetHostFungus()) {
+            Tecton[] otherTectons = h.GetTectons();
+            Tecton[] thisTectons = this.GetTectons();
             
             // Ellenőrizzük a közös tektonokat
             boolean hasCommonTecton = false;
@@ -64,23 +64,23 @@ public class Hypha {
      * Eltávolít egy szomszédos gombafonalat a neighbours listából.
      * @param h Az eltávolítandó szomszédos gombafonal.
      */
-    public void removeNeighbour(Hypha h) { neighbours.remove(h); }
+    public void RemoveNeighbour(Hypha h) { neighbours.remove(h); }
 
     /**
      * Beállítja a gombafonalat birtokló gomba (Fungus) referenciát.
      * @param f A beállítandó gomba referencia.
      */
-    public void setHostFungus(Fungus f) { hostFungus = f; }
+    public void SetHostFungus(Fungus f) { hostFungus = f; }
 
     /**
      * Visszaadja a gombafonalat birtokló gomba (Fungus) referenciát.
      * @return A hostFungus attribútum értéke.
      */
-    public Fungus getHostFungus() { return hostFungus; }
+    public Fungus GetHostFungus() { return hostFungus; }
 
     /**
      * Visszaadja a gombafonalat meghatározó egy vagy két tekton tömbjét.
      * @return A tectons tömb referenciája.
      */
-    public Tecton[] getTectons() { return tectons; }
+    public Tecton[] GetTectons() { return tectons; }
 }
