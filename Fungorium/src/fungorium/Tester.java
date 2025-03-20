@@ -8,32 +8,21 @@ public class Tester {
      * @param shotsLft megmaradt lövés lehetőségek száma. Ha eléri a nullát nem lőhet többet a gombatest
      * @param isDev logikai érték ami megadja, hogy fejlett-e a test.
      * @param isDead logikai érték ami megadja, hogy életben van-e a gombatest.
+     * @param age megadja a gombatest életkorát
      * @return
      */
-    public boolean Test_ShootSpores(int sporeCnt, int shotsLft, boolean isDev, boolean isDead){
+    public boolean Test_ShootSpores(int sporeCnt, int shotsLft, boolean isDev, boolean isDead, int age){
         Fungus f = new Fungus();
-        System.out.println("Fungus konstruktorhívás");
+        System.out.println("[Fungus].Fungus()");
 
         NarrowTecton t = new NarrowTecton();
-        System.out.println("NarrowTecton konstruktohívás");
+        System.out.println("[NarrowTecton].NarrowTecton()");
 
-        FungusBody fb=new FungusBody(t,f);
-        System.out.println("FungusBody konstruktorhívás");
+        FungusBody fb=new FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft);
+        System.out.println("[FungusBody].FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft)");
         
-        fb.SetSporeCount(sporeCnt);
-        System.out.println("SetSporeCount függvényhívás");
-
-        fb.SetShotsLeft(shotsLft);
-        System.out.println("SetShotsLeft függvényhívás");
-
-        fb.SetIsDeveloped(isDev);
-        System.out.println("SetIsFeveloped függvényhívás");
-        System.out.println("SetIsDead függvényhívás");
-        fb.SetIsDead(isDead);
-
-
+        System.out.println("[FugusBody].ShootSpores()"); 
         fb.ShootSpores();
-        System.out.println("ShootSpores függvényhívás"); 
         return true;
     }
 
@@ -43,28 +32,18 @@ public class Tester {
      * @param shotsLft megmaradt lövés lehetőségek száma. Ha eléri a nullát nem lőhet többet a gombatest
      * @param isDev logikai érték ami megadja, hogy fejlett-e a test.
      * @param isDead logikai érték ami megadja, hogy életben van-e a gombatest.
+     * @param age megadja a gombatest életkorát
      * @return
      */
-    public void Test_FungusBodyDie(int sporeCnt, int shotsLft, boolean isDev, boolean isDead){
+    public void Test_FungusBodyDie(int sporeCnt, int shotsLft, boolean isDev, boolean isDead, int age){
         Fungus f = new Fungus();
-        System.out.println("Fungus konstruktorhívás");
+        System.out.println("[Fungus].Fungus()");
 
         NarrowTecton t = new NarrowTecton();
-        System.out.println("NarrowTecton konstruktohívás");
+        System.out.println("[NarrowTecton].NarrowTecton()");
 
-        FungusBody fb=new FungusBody(t,f);
-        System.out.println("FungusBody konstruktorhívás");
-        
-        fb.SetSporeCount(sporeCnt);
-        System.out.println("SetSporeCount függvényhívás");
-
-        fb.SetShotsLeft(shotsLft);
-        System.out.println("SetShotsLeft függvényhívás");
-
-        fb.SetIsDeveloped(isDev);
-        System.out.println("SetIsFeveloped függvényhívás");
-        System.out.println("SetIsDead függvényhívás");
-        fb.SetIsDead(isDead);
+        FungusBody fb=new FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft);
+        System.out.println("[FungusBody].FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft)");
 
         fb.Die();
     }
@@ -75,29 +54,20 @@ public class Tester {
      * @param shotsLft megmaradt lövés lehetőségek száma. Ha eléri a nullát nem lőhet többet a gombatest
      * @param isDev logikai érték ami megadja, hogy fejlett-e a test.
      * @param isDead logikai érték ami megadja, hogy életben van-e a gombatest.
+     * @param age megadja a gombatest életkorát
      * @return
      */
-    public void Test_ProduceSpore(int sporeCnt, int shotsLft, boolean isDev, boolean isDead){
+    public void Test_ProduceSpore(int sporeCnt, int shotsLft, boolean isDev, boolean isDead, int age){
         Fungus f = new Fungus();
-        System.out.println("Fungus konstruktorhívás");
+        System.out.println("[Fungus].Fungus()");
 
         NarrowTecton t = new NarrowTecton();
-        System.out.println("NarrowTecton konstruktohívás");
+        System.out.println("[NarrowTecton].NarrowTecton()");
 
-        FungusBody fb=new FungusBody(t,f);
-        System.out.println("FungusBody konstruktorhívás");
-        
-        fb.SetSporeCount(sporeCnt);
-        System.out.println("SetSporeCount függvényhívás");
+        FungusBody fb=new FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft);
+        System.out.println("[FungusBody].FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft)");
 
-        fb.SetShotsLeft(shotsLft);
-        System.out.println("SetShotsLeft függvényhívás");
-
-        fb.SetIsDeveloped(isDev);
-        System.out.println("SetIsFeveloped függvényhívás");
-        System.out.println("SetIsDead függvényhívás");
-        fb.SetIsDead(isDead);
-
+        System.out.println("[FungusBody].ProduceSpore()");
         fb.ProduceSpore();
     }
 }
