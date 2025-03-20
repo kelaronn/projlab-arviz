@@ -22,6 +22,16 @@ public class FungusBody {
         isDead=false;
         sporeCount=0;
         shotsLeft=4;
+        if(t==null){
+            System.err.println("Hiba: A megadott tekton nincs inicializálva.");
+            return;
+        }
+        tecton=t;
+        if(f==null){
+            System.err.println("Hiba: A megadott gomba nincs inicializálva.");
+            return;
+        }
+        hostFungus=f;
     }
 
     /**
@@ -76,8 +86,17 @@ public class FungusBody {
 
     /**ShootSpores függvény implementálja a gombatest spóralövésének logikáját*/
     public void ShootSpores(){
+        if (tecton == null) {
+            System.err.println("Hiba: A gombatest nem tartózkodik egyetlen tektonon sem.");
+            return;
+        }
+
         ArrayList<Tecton> neighbours = new ArrayList<>(); 
         neighbours=tecton.GetNeighbours();
+        if (neighbours == null) {
+            System.err.println("A gombatest tektonjának nincsenek szomszédjai.");
+            return;
+        }
 
         for(int i=0; i<neighbours.size(); ++i) neighbours.get(i).AddSpore();
         if(isDeveloped){
@@ -93,6 +112,8 @@ public class FungusBody {
 
     /**Gombatest meghalását implementálja*/
     public void Die(){
+        hostFungus.RemoveBody(this);
+        tecton.AbsorbHifas();
         isDead=true;
     }
     /**Spórát termel a gombatestnek*/
