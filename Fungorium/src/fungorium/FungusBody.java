@@ -112,7 +112,7 @@ public class FungusBody {
 
     /**Gombatest meghalását implementálja*/
     public void Die(){
-        tecton.AbsorbHifas();
+        tecton.AbsorbHyphas();
         isDead=true;
     }
     /**Spórát termel a gombatestnek*/
