@@ -18,25 +18,41 @@ public class Fungus {
      * Hozzáad egy gombafonalat (Hypha) a mycelium listához.
      * @param h A hozzáadandó gombafonal.
      */
-    public void AddHypha(Hypha h) { mycelium.add(h); }
+    public void AddHypha(Hypha h) {
+        if(h != null && h.GetHostFungus() == this && !mycelium.contains(h)) {
+            mycelium.add(h);
+        }
+    }
 
     /**
      * Eltávolít egy gombafonalat (Hypha) a mycelium listából.
      * @param h Az eltávolítandó gombafonal.
      */
-    public void RemoveHypha(Hypha h) { mycelium.remove(h); }
+    public void RemoveHypha(Hypha h) {
+        if(h != null && h.GetHostFungus() == this && mycelium.contains(h)) {
+            mycelium.remove(h);
+        }
+    }
 
     /**
      * Hozzáad egy gombatestet (FungusBody) a bodies listához.
      * @param b A hozzáadandó gombatest.
      */
-    public void AddBody(FungusBody b) { bodies.add(b); }
+    public void AddBody(FungusBody b) {
+        if(b != null && b.GetHostFungus() == this && !bodies.contains(b)){
+            bodies.add(b);
+        }
+    }
 
     /**
      * Eltávolít egy gombatestet (FungusBody) a bodies listából.
      * @param b Az eltávolítandó gombatest.
      */
-    public void RemoveBody(FungusBody b) { bodies.remove(b); }
+    public void RemoveBody(FungusBody b) {
+        if(b != null && b.GetHostFungus() == this && bodies.contains(b)){
+            bodies.remove(b);
+        }
+    }
 
     /**
      * Visszaadja a gombatestek (FungusBody) listáját.
