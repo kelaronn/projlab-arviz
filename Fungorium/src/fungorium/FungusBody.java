@@ -27,13 +27,16 @@ public class FungusBody {
             return;
         }
         tecton=t;
-        tecton.GrowFungusBody(this);
-        System.out.println("[Tecton].GrowFungusBody(this)");
+
         if(f==null){
             System.err.println("Hiba: A megadott gomba nincs inicializálva.");
             return;
         }
         hostFungus=f;
+
+        tecton.GrowFungusBody(this.hostFungus); // Ez nem kell ide? Szerintem nem a Gombatest dolga növeszteni magát, főleg nem példányosításkor.
+        System.out.println("[Tecton].GrowFungusBody(this)");
+
         f.AddBody(this);
         System.out.println("[Fungus].AddBody(this)");
     }
@@ -104,7 +107,7 @@ public class FungusBody {
         }
 
         for(int i=0; i<neighbours.size(); ++i) {
-            neighbours.get(i).AddSpore();
+            neighbours.get(i).AddSpore(hostFungus);
             System.out.println("[Tecton].AddSpore().");
         }
         if(isDeveloped){
@@ -113,7 +116,7 @@ public class FungusBody {
                 nns=neighbours.get(i).GetNeighbours();
                 System.out.println("[Tecton].GetNeighbours()");
                 for(int j=0; j < nns.size(); ++j) {
-                    nns.get(j).AddSpore();
+                    nns.get(j).AddSpore(hostFungus);
                     System.out.println("[Tecton].AddSpore()");
             }
         }
@@ -125,7 +128,7 @@ public class FungusBody {
 
     /**Gombatest meghalását implementálja*/
     public void Die(){
-        tecton.AbsorbHyphas();
+        tecton.AbsorbHyphas(); // az absorbHyphas az a BarrenTecton saját függvénye, ha meghal egy tecton nem kell felszívni feltétlen a hifákat
         System.out.println("[Tecton].AbsorbHyphas()");
         isDead=true;
         System.out.println("Die succes");

@@ -1,5 +1,313 @@
 package fungorium;
 
-public class Tecton {
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+public abstract class Tecton {
+    protected Random rand = new Random();
+    protected final int sporeCountToGrowFungus = 3;
+    protected final int defaultFbShotsLeft = 5;
+    protected List<Insect> insects;
+    protected List<Hypha> hyphas;
+    protected List<Spore> spores;
+    protected ArrayList<Tecton> neighbours;
+    protected FungusBody fungusBody;
+
+    public Tecton() {
+        insects = new ArrayList<>();
+        hyphas = new ArrayList<>();
+        spores = new ArrayList<>();
+        neighbours = new ArrayList<>();
+        fungusBody = null;
+    }
+    public Tecton(List<Insect> insects, List<Hypha> hyphas, List<Spore> spores) {
+        this.insects = insects;
+        this.hyphas = hyphas;
+        this.spores = spores;
+        neighbours = new ArrayList<>();
+        fungusBody = null;
+    }
+    public Tecton(List<Insect> insects, List<Hypha> hyphas, List<Spore> spores, ArrayList<Tecton> neighbours) {
+        this.insects = insects;
+        this.hyphas = hyphas;
+        this.spores = spores;
+        this.neighbours = neighbours;
+        fungusBody = null;
+    }
+
+    /**
+     * Véletlenszerűen létrehoz egy Tecton fajtát és visszatér vele.
+     * @return véletlenszerűen generált leszármazott
+     */
+    private Tecton GetRandomChild(){
+        int r = rand.nextInt(0,3);
+        switch(r){
+            case 1: return new WideTecton();
+            case 2: return new WeakTecton();
+            case 3: return new BarrenTecton();
+            default: return new NarrowTecton();
+        }
+    }
+
+    /**
+     * Segédfüggvény a hifák törlésére.
+     * A paraméterben kapott hifát és a szomszédait kitörli a fungusból.
+     * Majd a szomszédos tektonokon is megkeresi és törli ezeket.
+     * @param h
+     */
+    private void RemoveHyphaFromTecton(Hypha h) {
+        h.GetHostFungus().RemoveHypha(h);
+        var hNeighbours = (ArrayList<Hypha>) h.GetNeighbours();
+        // A paraméter hifa szomszédjait is töröljük a fungusból, mert azok mind résen vannak és így már nincs mihez kötődniük.
+        for(Hypha n : hNeighbours){
+            n.GetHostFungus().RemoveHypha(n);
+        }
+        // nem csak a fungusból kell törölni, hanem a szomszédos tectonokon is meg kell keresni és törölni.
+        for( Tecton n : neighbours){
+            RemoveHypha(this,n);
+        }
+        // majd végül a paraméterben kapott hifát is törölni kell
+        RemoveHypha(h);
+    }
+
+    /**
+     * A tekton kettétörik, törli a rajta lévő gombafonalat/kat (hyphas), spórákat
+     * (spores) és gombatestet (fungusBody).
+     * A helyére kettő új tekton kerül. Az insecteket áthelyezi az egyik új tektonra (ha volt rajta).
+     */
+    public void Break(){
+
+        Tecton t1 = GetRandomChild();
+        Tecton t2 = GetRandomChild();
+
+        if( !insects.isEmpty() ){
+            for(Insect i : insects){
+                t2.AddInsect(i);
+                i.setTecton(t2);
+            }
+        }
+
+        for(Tecton n : neighbours){
+            t1.AddNeighbour(n);
+            t2.AddNeighbour(n);
+        }
+        for(Hypha h : hyphas){
+            RemoveHyphaFromTecton(h);
+        }
+        fungusBody.GetHostFungus().RemoveBody(fungusBody);
+        SetFungusBody(null);
+
+        for(Spore s : spores){
+            spores.remove(s);
+        }
+
+    }
+
+    /**
+     * egy gombatestet növeszt az adott tektonon, és a
+     * SetFungusBody setter függvénnyel beállítja a rajta lévő gombatestet. Igaz értékkel tér
+     * vissza.
+     * Override a leszármazottakban!
+     * @param fungus
+     * @return
+     */
+    public boolean GrowFungusBody(Fungus fungus) {
+        if(spores.size() < sporeCountToGrowFungus) // nem elég spóra
+            return false;
+        if( this.GetFungusBody() != null ) // már van fungisbody rajta
+            return false;
+
+        fungusBody = new FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft);
+        fungus.AddBody(fungusBody);
+        return true;
+
+    }
+
+    public boolean AbsorbHyphas(){
+        return false;
+    }
+
+    /**
+     * visszatér a neighbours nevű Tecton lista attribútum
+     * referenciájával.
+     * @return Tecton.neighbours
+     */
+    public ArrayList<Tecton> GetNeighbours() {
+        return neighbours;
+    }
+
+    /**
+     * létrehoz egy véletlenszerű spórát a paraméterként kapott gombához
+     * rendelve, és hozzáadja a saját spores nevű Spore lista attribútumhoz.
+     * @param fungus
+     */
+    public void AddSpore(Fungus fungus) {
+        Spore spore;
+        int type = rand.nextInt(0, 5);
+
+        switch (type) { // 0 is normal spore/default
+        case 1:
+            spore = new StunSpore(3, 1, fungus);
+            break;
+        case 2:
+            spore = new SpeedSpore(2, 2, fungus);
+            break;
+        case 3:
+            spore = new SlowSpore(2, 2, fungus);
+            break;
+        case 4:
+            spore = new DisarmSpore(3, 1, fungus);
+            break;
+        default:
+            spore = new Spore(1, 0, fungus);
+            break;
+        }
+        spores.add(spore);
+    }
+
+    /**
+     * eltávolítja a paraméterként kapott spórát a spores nevű
+     * Spore lista attribútumból.
+     * @param spore spóra
+     */
+    public void RemoveSpore(Spore spore) {
+        if( !spores.remove(spore) )
+            System.out.println("Spore not found");
+    }
+
+    /**
+     * virtuális metódus, a
+     * leszármazottaknak meg kell valósítania, létrehoz egy új hifát (Hypha) a tektonon,
+     * mégegyet a tekton és a paraméterül kapott tekton között, és hozzáadja a hyphas nevű
+     * Hypha lista attribútumhoz.
+     * Override a leszármazottakban!
+     * @param fungus host Fungus
+     * @param t0, szomszédos Tecton
+     * @return true, ha sikeres, false ha nem.
+     */
+    public abstract boolean AddHypha(Fungus fungus, Tecton t0);
+
+    /**
+     * eltávolítja a paraméterként kapott hifát a hyphas nevű
+     * Hypha lista attribútumból és a Fungusból is.
+     * @param h eltávolítandó hifa
+     */
+    public void RemoveHypha(Hypha h) {
+        if( !hyphas.remove(h) )
+            System.out.println("Hypha not found");
+        else
+            h.GetHostFungus().RemoveHypha(h);
+    }
+
+    /**
+     * hozzáadja a paraméterként kapott rovar (Insect) referenciáját
+     * az insects nevű Insect lista attribútumhoz.
+     * @param insect hozzáadandó insect
+     */
+    public void AddInsect(Insect insect) {
+        insects.add(insect);
+    }
+
+    /**
+     * eltávolítja a paraméterként kapott rovar (Insect)
+     * referenciáját az insects nevű Insect lista attribútumból.
+     * @param insect eltávolítandó insect
+     */
+    public void RemoveInsect(Insect insect) {
+        if( !insects.remove(insect) )
+            System.out.println("insect not found");
+    }
+
+    /**
+     * setter függvény, beállítja a fungusBody
+     * attribútum értékét.
+     * @param fb fungusbody paraméter
+     */
+    public void SetFungusBody(FungusBody fb){
+        fungusBody = fb;
+    }
+
+    /**
+     * getter függvény, visszatér a fungusBody attribútum
+     * referenciájával.
+     * @return tecton.fungusBody
+     */
+    public FungusBody GetFungusBody(){
+        return fungusBody;
+    }
+
+    /**
+     * hozzáadja a paraméterül kapott Tecton referenciáját a
+     * neighbours nevű Tecton lista attribúmhoz.
+     * @param neighbour hozzzáadnivaló szomszédos tekton
+     */
+    public void AddNeighbour(Tecton neighbour) {
+        neighbours.add(neighbour);
+    }
+
+    /**
+     * eltávolítja a paraméterül kapott Tecton
+     * referenciáját a neighbours nevű Tecton lista attribútumból.
+     * @param neighbour eltávolítandó szomszédos tekton
+     */
+    public void RemoveNeighbour(Tecton neighbour) {
+        neighbours.remove(neighbour);
+    }
+
+    /**
+     *törli a hyphas nevű listában található hifát (Hypha) és törli a Fungusból is,
+     * ami ez a tekton és a paraméterben kapott szomszédos tekton között helyezkedik el.
+     * @param t1 egyik Tekton
+     * @param t2 másik Tekton
+     */
+    public void RemoveHypha(Tecton t1, Tecton t2) {
+        Hypha h = GetHypha(t1, t2);
+        h.GetHostFungus().RemoveHypha(h);
+        hyphas.remove(h);
+    }
+
+    /**
+     * visszatér a hyphas nevú Hypha lista azon hifájának
+     * referenciájával, amelynek a tectons nevű Tecton tömbjében a függvényt hívó és a
+     * paraméterben lévő tekton referenciája található (tehát a két tekton közötti résen
+     * található fonál), ha van ilyen, egyébként null-al.
+     * @param t
+     * @return
+     */
+//    public Hypha GetHypha(Tecton t){
+//        for(Hypha h : hyphas){
+//            Tecton[] tectons = h.GetTectons();
+//            if( (tectons[0].equals(t) && tectons[1].equals(this) )
+//                    || (tectons[0].equals(this) && tectons[1].equals(t)) ){
+//                return h;
+//            }
+//        }
+//        return null;
+//    }
+
+    /**
+     * visszatér a hyphas nevű Hypha lista azon
+     * hifájának referenciájával, amely hifa tectons nevű Tecton tömjében a két paraméterül
+     * kapott Tecton referenciája található (tehát t1 és t2 tektonok közötti résen található hifa),
+     * ha van ilyen, egyébként null-al.
+     * @param t1 egyik Tecton
+     * @param t2 másik Tecton
+     * @return Hypha h, ha van, egyébként null
+     */
+    public Hypha GetHypha(Tecton t1, Tecton t2){
+        for(Hypha h : hyphas){
+            Tecton[] tectons = h.GetTectons();
+            if( (tectons[0].equals(t1) && tectons[1].equals(t2) )
+                    || (tectons[0].equals(t2) && tectons[1].equals(t1)) ){
+                return h;
+            }
+        }
+        return null;
+    }
+
+
+
 
 }

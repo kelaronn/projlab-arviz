@@ -83,4 +83,9 @@ public class Hypha {
      * @return A tectons tömb referenciája.
      */
     public Tecton[] GetTectons() { return tectons; }
+    /**
+     * Visszaadja a hifa szomszédjainak listáját.
+     * @return A tectons tömb referenciája.
+     */
+    public List<Hypha> GetNeighbours() { return neighbours; }
 }
