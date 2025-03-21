@@ -76,7 +76,7 @@ public class Main {
     private static int getInput(Scanner scanner) {
         try {
             return Integer.parseInt(scanner.nextLine().trim());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return -1;
         }
     }

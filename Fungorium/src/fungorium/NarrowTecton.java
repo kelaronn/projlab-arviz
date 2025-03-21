@@ -1,6 +1,6 @@
 package fungorium;
 
-public class NarrowTecton {
+public class NarrowTecton extends Tecton{
 
     
 }
