@@ -114,6 +114,10 @@ public class FungusBody {
 
     /**ShootSpores függvény implementálja a gombatest spóralövésének logikáját*/
     public void ShootSpores(){
+        if(sporeCount<4){
+            System.err.println("Error: The fungus body has less than 4 spores.");
+            return;
+        }
         if (tecton == null) {
             System.err.println("Error: The fungus body is not located on any tecton.");
             return;
