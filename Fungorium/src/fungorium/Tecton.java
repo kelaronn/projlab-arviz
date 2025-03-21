@@ -41,7 +41,7 @@ public abstract class Tecton {
      * Véletlenszerűen létrehoz egy Tecton fajtát és visszatér vele.
      * @return véletlenszerűen generált leszármazott
      */
-    private Tecton GetRandomChild(){
+    protected Tecton GetRandomChild(){
         int r = rand.nextInt(0,3);
         switch(r){
             case 1: return new WideTecton();
@@ -57,7 +57,7 @@ public abstract class Tecton {
      * Majd a szomszédos tektonokon is megkeresi és törli ezeket.
      * @param h
      */
-    private void RemoveHyphaFromTecton(Hypha h) {
+    protected void RemoveHyphaFromTecton(Hypha h) {
         h.GetHostFungus().RemoveHypha(h);
         var hNeighbours = (ArrayList<Hypha>) h.GetNeighbours();
         // A paraméter hifa szomszédjait is töröljük a fungusból, mert azok mind résen vannak és így már nincs mihez kötődniük.
