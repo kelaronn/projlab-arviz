@@ -1,6 +1,8 @@
 package fungorium;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class WideTecton extends Tecton {
 
@@ -13,8 +15,8 @@ public class WideTecton extends Tecton {
                 return false;
         }
 
-        Hypha hyphaBetweenTectons = new Hypha(new LinkedList<Hypha>(), fungus, new Tecton[]{t0, this});
-        Hypha hyphaOnTecton = new Hypha(new LinkedList<Hypha>(), fungus, new Tecton[]{this});
+        Hypha hyphaBetweenTectons = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0, this)));
+        Hypha hyphaOnTecton = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));
 
         hyphaBetweenTectons.AddNeighbour(hyphaOnTecton);
         hyphaOnTecton.AddNeighbour(hyphaBetweenTectons);

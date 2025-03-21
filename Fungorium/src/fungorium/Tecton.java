@@ -297,16 +297,13 @@ public abstract class Tecton {
      */
     public Hypha GetHypha(Tecton t1, Tecton t2){
         for(Hypha h : hyphas){
-            Tecton[] tectons = h.GetTectons();
-            if( (tectons[0].equals(t1) && tectons[1].equals(t2) )
-                    || (tectons[0].equals(t2) && tectons[1].equals(t1)) ){
+            List<Tecton> tectons = h.GetTectons();
+            if( (tectons.get(0).equals(t1) && tectons.get(1).equals(t2))
+                    || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1)) ){
                 return h;
             }
         }
         return null;
     }
-
-
-
 
 }
