@@ -15,7 +15,7 @@ public class Hypha {
     private Fungus hostFungus;
 
     /** A gombafonalat meghatározó egy vagy két tekton (Tecton) tömbje. */
-    private Tecton[] tectons = new Tecton[2];
+    private List<Tecton> tectons = new ArrayList<>();
 
     /**
      * Konstruktor, amely inicializálja a gombafonal attribútumait.
@@ -23,7 +23,7 @@ public class Hypha {
      * @param h A gombafonalat birtokló gomba (Fungus).
      * @param t A gombafonalat meghatározó egy vagy két tekton tömbje.
      */
-    public Hypha(List<Hypha> n, Fungus h, Tecton[] t) {
+    public Hypha(List<Hypha> n, Fungus h, List<Tecton> t) {
         neighbours = n;
         hostFungus = h;
         tectons = t;
@@ -36,8 +36,8 @@ public class Hypha {
     public void AddNeighbour(Hypha h) {
         // Ellenőrizzük, hogy nem szerepel-e már a szomszédok között és azonos-e a hostFungus
         if (!neighbours.contains(h) && h.GetHostFungus() == this.GetHostFungus()) {
-            Tecton[] otherTectons = h.GetTectons();
-            Tecton[] thisTectons = this.GetTectons();
+            List<Tecton> otherTectons = h.GetTectons();
+            List<Tecton> thisTectons = this.GetTectons();
             
             // Ellenőrizzük a közös tektonokat
             boolean hasCommonTecton = false;
@@ -90,7 +90,7 @@ public class Hypha {
      * Visszaadja a gombafonalat meghatározó egy vagy két tekton tömbjét.
      * @return A tectons tömb referenciája.
      */
-    public Tecton[] GetTectons() { return tectons; }
+    public List<Tecton> GetTectons() { return tectons; }
 
     /**
      * Visszaadja a hifa szomszédjainak listáját.

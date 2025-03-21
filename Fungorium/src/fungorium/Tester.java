@@ -17,8 +17,8 @@ public class Tester {
         t1.AddInsect(i);
         FungusBody fb = new FungusBody(t1,fungus);
         fungus.AddBody(fb);
-        Hypha h1 = new Hypha(new ArrayList<>(),fungus,new Tecton[2]);
-        h1.GetTectons()[0] = t1; // jobb lenne arrayList
+        Hypha h1 = new Hypha(new ArrayList<>(),fungus,new ArrayList<>());
+        h1.GetTectons().add(t1); // jobb lenne arrayList
         t1.hyphas.add(h1);
 
         Tecton t2 = new WeakTecton();
@@ -26,8 +26,8 @@ public class Tester {
         t1.neighbours.add(t2);
 
         Tecton t3 = new BarrenTecton();
-        Hypha h2 = new Hypha(new ArrayList<>(),fungus,new Tecton[2]);
-        h2.GetTectons()[0] = t3; // jobb lenne arrayList
+        Hypha h2 = new Hypha(new ArrayList<>(),fungus,new ArrayList<>());
+        h2.GetTectons().add(t3); // jobb lenne arrayList
         t3.hyphas.add(h2);
         fungus.AddHypha(h2);
         for (int j = 0; j < 3; j++) {
