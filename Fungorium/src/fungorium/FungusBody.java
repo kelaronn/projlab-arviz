@@ -156,6 +156,7 @@ public class FungusBody {
     */
     public Fungus GetHostFungus(){return hostFungus;}
 
+
     /**ShootSpores függvény implementálja a gombatest spóralövésének logikáját*/
     public void ShootSpores(){
         if(isDead){
@@ -210,7 +211,7 @@ public class FungusBody {
     /**Spórát termel a gombatestnek*/
     public void ProduceSpore(){
         sporeCount++;
-        System.out.println("ProduceSpore succes.");
+        System.out.println("ProduceSpore success.");
     }
 
 }

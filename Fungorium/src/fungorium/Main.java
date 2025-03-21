@@ -20,6 +20,7 @@ public class Main {
             System.out.println("8 \t- Insect EatSpore");
             System.out.println("9 \t- ShootSpores");
             System.out.println("10 \t- FungusBody death");
+            System.out.println("11 \t- ProduceSpore");
             System.out.println("0 \t- Exit");
             System.out.print("Select an option: ");
             
@@ -86,6 +87,9 @@ public class Main {
                     break;
                 case 10:
                     tester.Test_FungusBodyDie();
+                    break;
+                case 11:
+                    tester.Test_ProduceSpore();
                     break;
                 default:
                     System.out.println("There is no such option, please try again.");
