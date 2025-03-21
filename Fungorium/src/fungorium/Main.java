@@ -42,6 +42,9 @@ public class Main {
                     System.out.println("Grow FungusBody selected.");
                     break;
                 case 4:
+                    Tester tester4 = new Tester();
+                    tester4.TectonBreakInit();
+                    tester4.GameObjects.forEach( (key,value)->{System.out.println(key+": "+value);} );
                     System.out.println("Full Tecton Breaks selected.");
                     break;
                 case 5:
