@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            
             System.out.println("\n#### Main Menu #####");
             System.out.println("1 \t- Grow Hypha");
             System.out.println("2 \t- Atrophy of Hypha");
@@ -22,6 +23,7 @@ public class Main {
             System.out.print("Select an option: ");
             
             int inp = getInput(scanner);
+
             if (inp == 0) {
                 System.out.println("Exiting...");
                 break;

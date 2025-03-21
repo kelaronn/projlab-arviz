@@ -12,9 +12,37 @@ public class FungusBody {
     Fungus hostFungus; /**Megadja a gombát amelyhez tartozik a gombatest*/
 
     /**
-     * Konstruktor, amely inicializálja a gombatestet
+     * Konstruktor, amely inicializálja a gombatestet (csak gomba és tekton paraméter)
      * @param t a tekton amelyen van a gombatest
      * @param f a gomba amelyhez tartozik a gombatest
+     */
+    public FungusBody(Tecton t, Fungus f){
+        isDeveloped=false;
+        age=0;
+        isDead=false;
+        sporeCount=0;
+        shotsLeft=4;
+        if(t==null){
+            System.err.println("Error: The given tecton is not initialized.");
+            return;
+        }
+        tecton=t;
+        if(f==null){
+            System.err.println("Error: The given fungus is not initialized.");
+            return;
+        }
+        hostFungus=f;
+    }   
+
+    /**
+     * Konstruktor, amely inicializálja a gombatestet (összes paraméter)
+     * @param t a tekton amelyen van a gombatest
+     * @param f a gomba amelyhez tartozik a gombatest
+     * @param isDev a gombatest fejlett-e
+     * @param age a gombatest életkora
+     * @param isDead a gombatest halott-e
+     * @param sporeCnt a gombatest spóráinak száma
+     * @param shotsLft a gombatest lövési lehetőségeinek száma
      **/
     public FungusBody(Tecton t, Fungus f, boolean isDev, int age, boolean isDead, int sporeCnt, int shotsLft){
         isDeveloped=isDev;
@@ -23,19 +51,15 @@ public class FungusBody {
         sporeCount=sporeCnt;
         shotsLeft=shotsLft;
         if(t==null){
-            System.err.println("Hiba: A megadott tekton nincs inicializálva.");
+            System.err.println("Error: The given tecton is not initialized.");
             return;
         }
         tecton=t;
-        tecton.GrowFungusBody(this);
-        System.out.println("[Tecton].GrowFungusBody(this)");
         if(f==null){
-            System.err.println("Hiba: A megadott gomba nincs inicializálva.");
+            System.err.println("Error: The given fungus is not initialized.");
             return;
         }
         hostFungus=f;
-        f.AddBody(this);
-        System.out.println("[Fungus].AddBody(this)");
     }
 
     /**
@@ -91,7 +115,7 @@ public class FungusBody {
     /**ShootSpores függvény implementálja a gombatest spóralövésének logikáját*/
     public void ShootSpores(){
         if (tecton == null) {
-            System.err.println("Hiba: A gombatest nem tartózkodik egyetlen tektonon sem.");
+            System.err.println("Error: The fungus body is not located on any tecton.");
             return;
         }
 
@@ -99,7 +123,7 @@ public class FungusBody {
         neighbours=tecton.GetNeighbours();
         System.out.println("[Tecton].GetNeighbours()");
         if (neighbours == null) {
-            System.err.println("A gombatest tektonjának nincsenek szomszédjai.");
+            System.err.println("Error: The tecton of the fungus body has no neighbours.");
             return;
         }
 
@@ -120,7 +144,7 @@ public class FungusBody {
         }
         sporeCount-=4;
         shotsLeft--;
-        System.out.println("ShootSpores succes");
+        System.out.println("ShootSpores success");
     }
 
     /**Gombatest meghalását implementálja*/
@@ -128,7 +152,7 @@ public class FungusBody {
         tecton.AbsorbHyphas();
         System.out.println("[Tecton].AbsorbHyphas()");
         isDead=true;
-        System.out.println("Die succes");
+        System.out.println("Die success");
     }
     /**Spórát termel a gombatestnek*/
     public void ProduceSpore(){
