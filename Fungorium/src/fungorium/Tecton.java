@@ -7,7 +7,7 @@ import java.util.Random;
 public abstract class Tecton {
     protected Random rand = new Random();
     protected final int sporeCountToGrowFungus = 3;
-    protected final int defaultFbShotsLeft = 5;
+    protected final int defaultFbShotsLeft = 4;
     protected List<Insect> insects;
     protected List<Hypha> hyphas;
     protected List<Spore> spores;
