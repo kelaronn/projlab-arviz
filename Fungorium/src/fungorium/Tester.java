@@ -11,15 +11,15 @@ public class Tester {
      * @param age megadja a gombatest életkorát
      * @return
      */
-    public boolean Test_ShootSpores(int sporeCnt, int shotsLft, boolean isDev, boolean isDead, int age){
+    public boolean Test_ShootSpores(int sporeCnt, int shotsLft, boolean isDead, int age){
         Fungus f = new Fungus();
         System.out.println("[Fungus].Fungus()");
 
         NarrowTecton t = new NarrowTecton();
         System.out.println("[NarrowTecton].NarrowTecton()");
 
-        FungusBody fb=new FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft);
-        System.out.println("[FungusBody].FungusBody(t,f,isDev, age, isDead, sporeCnt, shotsLft)");
+        FungusBody fb=new FungusBody(t,f, age, isDead, sporeCnt, shotsLft);
+        System.out.println("[FungusBody].FungusBody(t,f, age, isDead, sporeCnt, shotsLft)");
         
         System.out.println("[FugusBody].ShootSpores()"); 
         fb.ShootSpores();

@@ -14,9 +14,6 @@ public abstract class Tecton {
     protected ArrayList<Tecton> neighbours;
     protected FungusBody fungusBody;
 
-    /**
-     * Default konstruktor
-     */
     public Tecton() {
         insects = new ArrayList<>();
         hyphas = new ArrayList<>();
@@ -24,12 +21,6 @@ public abstract class Tecton {
         neighbours = new ArrayList<>();
         fungusBody = null;
     }
-    /**
-     * Konstruktor
-     * @param insects rovar lista
-     * @param hyphas hifa lista
-     * @param spores spóra lista
-     */
     public Tecton(List<Insect> insects, List<Hypha> hyphas, List<Spore> spores) {
         this.insects = insects;
         this.hyphas = hyphas;
@@ -37,13 +28,6 @@ public abstract class Tecton {
         neighbours = new ArrayList<>();
         fungusBody = null;
     }
-    /**
-     * Konstruktor
-     * @param insects rovar lista
-     * @param hyphas hifa lista
-     * @param spores spóra lista
-     * @param neighbours szomszédos tekton lista
-     */
     public Tecton(List<Insect> insects, List<Hypha> hyphas, List<Spore> spores, ArrayList<Tecton> neighbours) {
         this.insects = insects;
         this.hyphas = hyphas;

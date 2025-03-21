@@ -6,6 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        Tester tester = new Tester();
         while (true) {
             
             System.out.println("\n#### Main Menu #####");
@@ -55,7 +56,33 @@ public class Main {
                     System.out.println("Insect EatSpore selected.");
                     break;
                 case 9:
-                    System.out.println("ShootSpores selected.");
+                    System.out.println("Enter spores count: ");
+                    int sporesCount = getInput(scanner);
+                    System.out.println("Enter shots left: ");
+                    int shotsLeft = getInput(scanner);
+                    
+                    System.out.println("Is the fungus body dead? (1 - yes / 2 - no): ");
+                    boolean isDead = false;
+                    switch(getInput(scanner)){
+                        case 1:
+                            isDead = true;
+                            break;
+                        case 2:
+                            isDead = false;
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                            break;
+                    }
+                    System.out.println("Enter age (0-5): ");
+                    int tempinp = getInput(scanner);
+                    if(tempinp < 0 || tempinp > 5){ 
+                        System.out.println("There is no such option, please try again.");
+                        break;
+                    }
+                    int age = tempinp;
+
+                    tester.Test_ShootSpores(sporesCount, shotsLeft,  isDead, age);
                     break;
                 case 10:
                     System.out.println("FungusBody death selected.");
