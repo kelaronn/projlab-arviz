@@ -39,19 +39,30 @@ public class Main {
                     System.out.println("Atrophy of Hypha selected.");
                     break;
                 case 3:
-                    System.out.println("Grow FungusBody selected.");
+                    System.out.println("Grow FungusBody selected."); //ez egész jól néz ki
+                    Tester tester3 = new Tester();
+                    tester3.TectonBreakInit();
+                    tester3.Test_GrowFungusBodySuccess();
+                    tester3.Test_GrowFungusBodyOnWeakTecton();
+                    tester3.Test_GrowFungusBodyOnBody();
+                    tester3.Test_GrowFungusBodyNotEnoughSpores();
                     break;
                 case 4:
                     Tester tester4 = new Tester();
-                    tester4.TectonBreakInit();
-                    Tecton t3 = (Tecton)tester4.GameObjects.get("t3"); // így lehet használni más függvényekben
-                    for (Spore s : t3.spores )
-                        System.out.println(s.getNutritionValue());
+//                    tester4.TectonBreakInit();
+//                    Tecton t3 = (Tecton)tester4.GameObjects.get("t3"); // így lehet használni más függvényekben
+//                    for (Spore s : t3.spores )
+//                        System.out.println(s.getNutritionValue()); // példa
 
                     System.out.println("Full Tecton Breaks selected.");
+                    tester4.Test_FullTectonBreaks();
                     break;
                 case 5:
                     System.out.println("Hypha Absorb selected.");
+                    Tester tester5 = new Tester();
+                    tester5.TectonBreakInit();
+                    tester5.Test_HyphaAbsorbSuccessful();
+                    tester5.Test_HyphaAbsorbUnsuccessful();
                     break;
                 case 6:
                     System.out.println("Insect Move selected.");
