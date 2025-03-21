@@ -325,4 +325,7 @@ public abstract class Tecton {
         return null;
     }
 
+    public List<Hypha> GetHyphas(){
+        return hyphas;
+    }
 }

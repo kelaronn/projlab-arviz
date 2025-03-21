@@ -105,7 +105,11 @@ public class FungusBody {
      * Beállítja az életkor értéket
      * @param a életkor érték paraméterként
      */
-    public void SetAge(int a){age=a;}
+    public void SetAge(int a){
+        if(a >= 0){
+            age=a;
+        }
+    }
     /**Lekéri az életkor értéket
      * @return életkor
     */
@@ -123,7 +127,11 @@ public class FungusBody {
      * Beállítja a sporeCount értéket
      * @param i spórák száma
      */
-    public void SetSporeCount(int i){sporeCount=i;}
+    public void SetSporeCount(int i){
+        if(i >= 0){
+            sporeCount=i;
+        }
+    }
     /**Lekéri a spórák számát
      * @return spórák száma
     */
@@ -132,7 +140,11 @@ public class FungusBody {
      * Beállítja a shotsLeft értéket
      * @param i lövési lehetőségek száma
      */
-    public void SetShotsLeft(int i){shotsLeft=i;}
+    public void SetShotsLeft(int i){
+        if(i >= 0){
+            shotsLeft=i;
+        }
+    }
     /**Lekéri a shotsLeft értéket
      * @return lövési lehetőségek száma
     */
@@ -141,7 +153,11 @@ public class FungusBody {
      * Beállítja a tektont, amelyen tartózkodik a gombatest
      * @param t tekton példány
      */
-    public void SetTecton(Tecton t){tecton=t;}
+    public void SetTecton(Tecton t){
+        if(t != null){
+            tecton=t;
+        }
+    }
     /**Lekéri a tektont amelyen tartózkodik a gombatest
      * @return tekton példány
     */
@@ -150,7 +166,11 @@ public class FungusBody {
      * Beállítja a gombát, amelyhez tartozik a gombatest
      * @param f gomba emelyhez tartozik a gombatest
      */
-    public void SetHostFungus(Fungus f){hostFungus=f;}
+    public void SetHostFungus(Fungus f){
+        if(f != null){
+            hostFungus=f;
+        }
+    }
     /**Lekéri a gombát, amelyhez tartozik a gombatest
      * @return gomba példány
     */
@@ -203,9 +223,20 @@ public class FungusBody {
 
     /**Gombatest meghalását implementálja*/
     public void Die(){
-        tecton.AbsorbHyphas();
+        /*tecton.AbsorbHyphas();
         System.out.println("[Tecton].AbsorbHyphas()");
-        isDead=true;
+        isDead=true;*/
+        this.SetIsDead(true);
+        Hypha sameTypeHypha = null;
+        for (Hypha hypha : this.GetTecton().GetHyphas()) {
+            if(hypha.GetHostFungus() == this.GetHostFungus()){
+                sameTypeHypha = hypha;
+                break;
+            }
+        }
+        if(sameTypeHypha != null){
+            sameTypeHypha.Atrophy();
+        }
         System.out.println("Die success");
     }
     /**Spórát termel a gombatestnek*/
