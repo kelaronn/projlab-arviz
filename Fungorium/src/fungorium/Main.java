@@ -85,7 +85,7 @@ public class Main {
                     tester.Test_ShootSpores(sporesCount, shotsLeft,  isDead, age);
                     break;
                 case 10:
-                    System.out.println("FungusBody death selected.");
+                    tester.Test_FungusBodyDie();
                     break;
                 default:
                     System.out.println("There is no such option, please try again.");
