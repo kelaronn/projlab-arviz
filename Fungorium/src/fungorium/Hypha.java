@@ -35,7 +35,7 @@ public class Hypha {
      */
     public void AddNeighbour(Hypha h) {
         // Ellenőrizzük, hogy nem szerepel-e már a szomszédok között és azonos-e a hostFungus
-        if (!neighbours.contains(h) && h.GetHostFungus() == this.GetHostFungus()) {
+        if (!neighbours.contains(h) && h.GetHostFungus().equals(this.GetHostFungus())) {
             List<Tecton> otherTectons = h.GetTectons();
             List<Tecton> thisTectons = this.GetTectons();
             
@@ -44,7 +44,7 @@ public class Hypha {
             for (Tecton t1 : thisTectons) {
                 if (t1 != null) {  // Null check az 1 tektonos eset miatt
                     for (Tecton t2 : otherTectons) {
-                        if (t2 != null && t1 == t2) {  // Null check és egyenlőség ellenőrzés
+                        if (t2 != null && t1.equals(t2)) {  // Null check és egyenlőség ellenőrzés
                             hasCommonTecton = true;
                             break;
                         }
@@ -65,7 +65,7 @@ public class Hypha {
      * @param h Az eltávolítandó szomszédos gombafonal.
      */
     public void RemoveNeighbours(Hypha h) {
-        if(h != null && h.GetHostFungus() == hostFungus && neighbours.contains(h)){
+        if(h != null && h.GetHostFungus().equals(this.GetHostFungus()) && neighbours.contains(h)){
             neighbours.remove(h);
         }
     }
@@ -75,7 +75,7 @@ public class Hypha {
      * @param f A beállítandó gomba referencia.
      */
     public void SetHostFungus(Fungus f) {
-        if(f != null && f != hostFungus){
+        if(f != null && f != this.GetHostFungus()){
             hostFungus = f;
         }
     }
@@ -143,7 +143,7 @@ public class Hypha {
        for (Tecton t : hypha.GetTectons()) {
            if (t != null) {
                FungusBody fb = t.GetFungusBody();
-               if (fb != null && !fb.GetIsDead() && fb.GetHostFungus() == hypha.GetHostFungus()) {
+               if (fb != null && !fb.GetIsDead() && fb.GetHostFungus().equals(hypha.GetHostFungus())) {
                    return true; // Találtunk élő gombatestet
                }
            }

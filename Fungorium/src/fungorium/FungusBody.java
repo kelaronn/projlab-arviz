@@ -229,7 +229,7 @@ public class FungusBody {
         this.SetIsDead(true);
         Hypha sameTypeHypha = null;
         for (Hypha hypha : this.GetTecton().GetHyphas()) {
-            if(hypha.GetHostFungus() == this.GetHostFungus()){
+            if(hypha.GetHostFungus().equals(this.GetHostFungus())){
                 sameTypeHypha = hypha;
                 break;
             }

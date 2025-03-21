@@ -49,6 +49,39 @@ public class Tester {
         GameObjects.put("s",t1.spores.getLast());
     }
 
+    public void GrowHyphaSuccessful(){
+        // Init start ->
+        Fungus pf = new Fungus();
+        Fungus kf = new Fungus();
+        NarrowTecton nt1 = new NarrowTecton();
+        NarrowTecton nt2 = new NarrowTecton();
+        NarrowTecton nt3 = new NarrowTecton();
+        WideTecton wt1 = new WideTecton();
+        nt1.GrowFungusBody(pf);
+        pf.AddBody(nt1.GetFungusBody());
+        nt2.GrowFungusBody(kf);
+        kf.AddBody(nt2.GetFungusBody());
+        Hypha ph1 = new Hypha(new ArrayList<>(), pf, new ArrayList<>(List.of(nt1)));
+        pf.AddHypha(ph1);
+        nt1.GetHyphas().add(ph1);
+        Hypha kh1 = new Hypha(new ArrayList<>(), kf, new ArrayList<>(List.of(nt2)));
+        kf.AddHypha(kh1);
+        nt2.GetHyphas().add(kh1);
+        nt1.AddNeighbour(nt2);
+        nt1.AddNeighbour(nt3);
+        nt1.AddNeighbour(wt1);
+        nt2.AddNeighbour(nt1);
+        nt2.AddNeighbour(wt1);
+        nt3.AddNeighbour(nt1);
+        nt3.AddNeighbour(wt1);
+        wt1.AddNeighbour(nt1);
+        wt1.AddNeighbour(nt2);
+        wt1.AddNeighbour(nt3);
+        // HyphaInit end <-
+        boolean GrowHyphaSuccessful = nt3.AddHypha(pf, nt1);
+        System.out.println(GrowHyphaSuccessful);
+    }
+
     public void Test_GrowFungusBody(){
 
     }

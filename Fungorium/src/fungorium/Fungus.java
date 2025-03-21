@@ -19,7 +19,7 @@ public class Fungus {
      * @param h A hozzáadandó gombafonal.
      */
     public void AddHypha(Hypha h) {
-        if(h != null && h.GetHostFungus() == this && !mycelium.contains(h)) {
+        if(h != null && h.GetHostFungus().equals(this) && !mycelium.contains(h)) {
             mycelium.add(h);
         }
     }
@@ -29,7 +29,7 @@ public class Fungus {
      * @param h Az eltávolítandó gombafonal.
      */
     public void RemoveHypha(Hypha h) {
-        if(h != null && h.GetHostFungus() == this && mycelium.contains(h)) {
+        if(h != null && h.GetHostFungus().equals(this) && mycelium.contains(h)) {
             mycelium.remove(h);
         }
     }
@@ -39,7 +39,7 @@ public class Fungus {
      * @param b A hozzáadandó gombatest.
      */
     public void AddBody(FungusBody b) {
-        if(b != null && b.GetHostFungus() == this && !bodies.contains(b)){
+        if(b != null && b.GetHostFungus().equals(this) && !bodies.contains(b)){
             bodies.add(b);
         }
     }
@@ -49,7 +49,7 @@ public class Fungus {
      * @param b Az eltávolítandó gombatest.
      */
     public void RemoveBody(FungusBody b) {
-        if(b != null && b.GetHostFungus() == this && bodies.contains(b)){
+        if(b != null && b.GetHostFungus().equals(this) && bodies.contains(b)){
             bodies.remove(b);
         }
     }
