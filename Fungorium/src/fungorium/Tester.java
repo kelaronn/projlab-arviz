@@ -1,39 +1,56 @@
 package fungorium;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Tester {
+    HashMap GameObjects = new HashMap<String, Object>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
 
     public void TectonBreakInit(){
         InsectColony ic = new InsectColony();
+        GameObjects.put("ic", ic);
         Fungus fungus = new Fungus();
+        GameObjects.put("fungus", fungus);
 
         
         Tecton t1 = new NarrowTecton();
+        GameObjects.put("t1", t1);
         Insect i = new Insect();
+        GameObjects.put("i", i);
         i.setHostColony(ic);
         i.setTecton(t1);
         t1.AddInsect(i);
         FungusBody fb = new FungusBody(t1,fungus);
+        GameObjects.put("fb", fb);
         fungus.AddBody(fb);
         Hypha h1 = new Hypha(new ArrayList<>(),fungus,new ArrayList<>());
-        h1.GetTectons().add(t1); // jobb lenne arrayList
+        GameObjects.put("h1", h1);
+        h1.GetTectons().add(t1);
         t1.hyphas.add(h1);
 
         Tecton t2 = new WeakTecton();
+        GameObjects.put("t2", t2);
         t2.neighbours.add(t1);
         t1.neighbours.add(t2);
 
         Tecton t3 = new BarrenTecton();
+        GameObjects.put("t3", t3);
         Hypha h2 = new Hypha(new ArrayList<>(),fungus,new ArrayList<>());
-        h2.GetTectons().add(t3); // jobb lenne arrayList
+        GameObjects.put("h2", h2);
+        h2.GetTectons().add(t3);
         t3.hyphas.add(h2);
         fungus.AddHypha(h2);
         for (int j = 0; j < 3; j++) {
             t3.AddSpore(fungus);
+            GameObjects.put("bs"+j, t3.spores.getLast());
         }
         t1.AddSpore(fungus);
+        GameObjects.put("s",t1.spores.getLast());
+    }
+
+    public void Test_GrowFungusBody(){
+
     }
     /**
      * ShootSpores függvény a spórák kilövéséhez. Fejlett állapotban a szomszédok szomszédjára lő

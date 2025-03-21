@@ -44,7 +44,10 @@ public class Main {
                 case 4:
                     Tester tester4 = new Tester();
                     tester4.TectonBreakInit();
-                    tester4.GameObjects.forEach( (key,value)->{System.out.println(key+": "+value);} );
+                    Tecton t3 = (Tecton)tester4.GameObjects.get("t3"); // így lehet használni más függvényekben
+                    for (Spore s : t3.spores )
+                        System.out.println(s.getNutritionValue());
+
                     System.out.println("Full Tecton Breaks selected.");
                     break;
                 case 5:
