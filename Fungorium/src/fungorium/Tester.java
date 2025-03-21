@@ -9,6 +9,7 @@ public class Tester {
         InsectColony ic = new InsectColony();
         Fungus fungus = new Fungus();
 
+        
         Tecton t1 = new NarrowTecton();
         Insect i = new Insect();
         i.setHostColony(ic);
