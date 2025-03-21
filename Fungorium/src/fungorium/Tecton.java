@@ -68,7 +68,7 @@ public abstract class Tecton {
             RemoveHypha(this,n);
         }
         // majd végül a paraméterben kapott hifát is törölni kell
-        RemoveHypha(h);
+        //RemoveHypha(h);
     }
 
     /**
@@ -95,11 +95,12 @@ public abstract class Tecton {
         for(Hypha h : hyphas){
             RemoveHyphaFromTecton(h);
         }
-        fungusBody.GetHostFungus().RemoveBody(fungusBody);
+        if(fungusBody != null)
+            fungusBody.GetHostFungus().RemoveBody(fungusBody);
         SetFungusBody(null);
 
-        for(Spore s : spores){
-            spores.remove(s);
+        for(int i = 0; i < spores.size(); i++){
+            spores.removeLast();
         }
 
     }
@@ -174,6 +175,13 @@ public abstract class Tecton {
     public void RemoveSpore(Spore spore) {
         if( !spores.remove(spore) )
             System.out.println("Spore not found");
+    }
+
+    /**
+     * Visszaadja Spore listáját a tektonnak.
+     */
+    public List<Spore> GetSpores() {
+        return spores;
     }
 
     /**
@@ -263,6 +271,9 @@ public abstract class Tecton {
      */
     public void RemoveHypha(Tecton t1, Tecton t2) {
         Hypha h = GetHypha(t1, t2);
+        if(h == null)
+            return;
+
         h.GetHostFungus().RemoveHypha(h);
         hyphas.remove(h);
     }
@@ -296,10 +307,18 @@ public abstract class Tecton {
      * @return Hypha h, ha van, egyébként null
      */
     public Hypha GetHypha(Tecton t1, Tecton t2){
-        for(Hypha h : hyphas){
+
+        for(Hypha h : t1.hyphas){
             List<Tecton> tectons = h.GetTectons();
-            if( (tectons.get(0).equals(t1) && tectons.get(1).equals(t2))
-                    || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1)) ){
+            if( (tectons.contains(t1) && tectons.contains(t2))
+                   /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1))*/ ){
+                return h;
+            }
+        }
+        for(Hypha h : t2.hyphas){
+            List<Tecton> tectons = h.GetTectons();
+            if( (tectons.contains(t1) && tectons.contains(t2))
+                /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1))*/ ){
                 return h;
             }
         }

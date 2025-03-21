@@ -82,8 +82,80 @@ public class Tester {
         System.out.println(GrowHyphaSuccessful);
     }
 
-    public void Test_GrowFungusBody(){
+    public void Test_GrowFungusBody(){}
+    public void Test_GrowFungusBodyOnWeakTecton(){
+        Tecton t2 = (Tecton)GameObjects.get("t2");
+        Fungus fungus = (Fungus)GameObjects.get("fungus");
 
+        boolean ans = t2.GrowFungusBody(fungus);
+        System.out.println("[t2].GrowFungusBody()");
+        System.out.println(ans ? "true":"false");
+    }
+
+    public void Test_GrowFungusBodyOnBody(){
+        Tecton t1 = (Tecton)GameObjects.get("t1");
+        Fungus fungus = (Fungus)GameObjects.get("fungus");
+
+        boolean ans = t1.GrowFungusBody(fungus);
+        System.out.println("[t1].GrowFungusBody()");
+        System.out.println(ans ? "true":"false");
+    }
+
+    public void Test_GrowFungusBodyNotEnoughSpores(){
+        Tecton t3 = (Tecton)GameObjects.get("t3");
+        Fungus fungus = (Fungus)GameObjects.get("fungus");
+
+        var spores = t3.GetSpores();
+        System.out.println("[t3].GetSpores()");
+        for (Spore s : spores) {
+            t3.RemoveSpore(s);
+            System.out.println("[t3].RemoveSpore(s)");
+        }
+        boolean ans = t3.GrowFungusBody(fungus);
+        System.out.println("[t3].GrowFungusBody()");
+        System.out.println(ans ? "true":"false");
+    }
+
+    public void Test_GrowFungusBodySuccess(){
+        Tecton t3 = (Tecton)GameObjects.get("t3");
+        Fungus fungus = (Fungus)GameObjects.get("fungus");
+
+        boolean ans = t3.GrowFungusBody(fungus);
+        System.out.println("[t3].GrowFungusBody()");
+        FungusBody fb2 = new FungusBody(t3,fungus);
+        System.out.println("    [fb2].FungusBody(t3,fungus)");
+        for(int i = 0; i < t3.sporeCountToGrowFungus; i++){
+            t3.RemoveSpore(t3.spores.getLast());
+            System.out.println("    [t3].RemoveSpore(t3.spores.getLast())");
+        }
+        fungus.AddBody(fb2);
+        System.out.println("    [fungus].AddBody(fb2)");
+        System.out.println(ans ? "true":"false");
+    }
+
+    public void Test_FullTectonBreaks(){
+        Tecton t1 = (Tecton)GameObjects.get("t1");
+        Insect i = (Insect)GameObjects.get("i");
+        Fungus fungus = (Fungus)GameObjects.get("fungus");
+        FungusBody fb = (FungusBody)GameObjects.get("fb");
+
+        t1.Break();
+        System.out.println("[t1].Break()");
+    }
+
+    public void Test_HyphaAbsorbSuccessful(){
+        Tecton t3 = (Tecton)GameObjects.get("t3");
+        Fungus fungus = (Fungus)GameObjects.get("fungus");
+        Hypha h2 = (Hypha)GameObjects.get("h2");
+
+        t3.AbsorbHyphas();
+        System.out.println("[t3].AbsorbHyphas()");
+    }
+
+    public void Test_HyphaAbsorbUnsuccessful(){
+        Tecton t1 = (Tecton)GameObjects.get("t1");
+        t1.AbsorbHyphas();
+        System.out.println("[t1].AbsorbHyphas()");
     }
     /**
      * ShootSpores függvény a spórák kilövéséhez. Fejlett állapotban a szomszédok szomszédjára lő
