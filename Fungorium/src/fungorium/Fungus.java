@@ -19,9 +19,13 @@ public class Fungus {
      * @param h A hozzáadandó gombafonal.
      */
     public void AddHypha(Hypha h) {
+        System.out.println(">[Hypha].GetHostFungus()");
         if(h != null && h.GetHostFungus().equals(this) && !mycelium.contains(h)) {
             mycelium.add(h);
+            System.out.println(">[Fungus].mycelium.add(h)");
         }
+
+
     }
 
     /**
@@ -29,8 +33,10 @@ public class Fungus {
      * @param h Az eltávolítandó gombafonal.
      */
     public void RemoveHypha(Hypha h) {
+        System.out.println(">[Hypha].GetHostFungus()");
         if(h != null && h.GetHostFungus().equals(this) && mycelium.contains(h)) {
             mycelium.remove(h);
+            System.out.println(">[Fungus].mycelium.remove(h)");
         }
     }
 
@@ -39,8 +45,10 @@ public class Fungus {
      * @param b A hozzáadandó gombatest.
      */
     public void AddBody(FungusBody b) {
+        System.out.println(">[FungusBody].GetHostFungus()");
         if(b != null && b.GetHostFungus().equals(this) && !bodies.contains(b)){
             bodies.add(b);
+            System.out.println(">[Fungus].bodies.add(b)");
         }
     }
 
@@ -49,8 +57,10 @@ public class Fungus {
      * @param b Az eltávolítandó gombatest.
      */
     public void RemoveBody(FungusBody b) {
+        System.out.println(">[FungusBody].GetHostFungus()");
         if(b != null && b.GetHostFungus().equals(this) && bodies.contains(b)){
             bodies.remove(b);
+            System.out.println(">[Fungus].bodies.remove(b)");
         }
     }
 

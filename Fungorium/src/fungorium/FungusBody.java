@@ -214,7 +214,7 @@ public class FungusBody {
 
         ArrayList<Tecton> neighbours = new ArrayList<>(); 
         neighbours=tecton.GetNeighbours();
-        System.out.println("[Tecton].GetNeighbours()");
+        System.out.println(">[Tecton].GetNeighbours()");
         if (neighbours == null) {
             System.err.println("Error: The tecton of the fungus body has no neighbours.");
             return;
@@ -222,17 +222,17 @@ public class FungusBody {
 
         for(int i=0; i<neighbours.size(); ++i) {
             neighbours.get(i).AddSpore(hostFungus);
-            System.out.println("[Tecton].AddSpore().");
+            System.out.println(">[Tecton].AddSpore()");
         }
         if(isDeveloped){
             System.out.println("Developed shooting!");
             ArrayList<Tecton> nns = new ArrayList<>();
             for(int i=0; i<neighbours.size();++i){
                 nns=neighbours.get(i).GetNeighbours();
-                System.out.println("[Tecton].GetNeighbours()");
+                System.out.println(">[Tecton].GetNeighbours()");
                 for(int j=0; j < nns.size(); ++j) {
                     nns.get(j).AddSpore(hostFungus);
-                    System.out.println("[Tecton].AddSpore()");
+                    System.out.println(">[Tecton].AddSpore()");
             }
         }
         }
@@ -250,6 +250,9 @@ public class FungusBody {
         isDead=true;*/
         if(!this.GetIsDead()){
             Hypha sameTypeHypha = null;
+            System.out.println(">[FungusBody].GetTecton().GetHyphas()");
+            System.out.println(">[Hypha].GetHostFungus() loop");
+            System.out.println(">[Hypha].GetHostFungus() loop");
             for (Hypha hypha : this.GetTecton().GetHyphas()) {
                 if(hypha.GetHostFungus().equals(this.GetHostFungus())){
                     sameTypeHypha = hypha;
@@ -258,8 +261,10 @@ public class FungusBody {
             }
             if(sameTypeHypha != null){
                 sameTypeHypha.Atrophy();
+                System.out.println(">[Hypha].Atrophy()");
             }
             this.SetIsDead(true);
+            System.out.println(">[FungusBody].SetIsDead(true)");
             System.out.println("Die() success.");
         }
         
@@ -272,6 +277,7 @@ public class FungusBody {
      * Spórát termel a gombatestnek
      */
     public void ProduceSpore(){
+        System.out.println(">[FungusBody].GetIsDead()");
         if(!this.GetIsDead()){
             sporeCount++;
             System.out.println("ProduceSpore success.");

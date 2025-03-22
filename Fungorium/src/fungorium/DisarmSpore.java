@@ -18,7 +18,9 @@ public class DisarmSpore extends Spore {
      */
     @Override public boolean GiveEffect(Insect i){
         i.SetCutAbility(false);
+        System.out.println(">[Insect].SetCutAbility(false)");
         i.SetEffectTimeLeft(2);
+        System.out.println(">[Insect].SetEffectTimeLeft(2)");
         return true;
     }
 }

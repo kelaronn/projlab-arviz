@@ -18,8 +18,11 @@ public class StunSpore extends Spore {
      */
     @Override public boolean GiveEffect(Insect i){
         i.SetSpeed(0);
+        System.out.println(">[Insect].SetSpeed(0)");
         i.SetCutAbility(false);
+        System.out.println(">[Insect].SetCutAbility(false)");
         i.SetEffectTimeLeft(2);
+        System.out.println(">[Insect].SetEffectTimeLeft(2)");
         return true;
     }
 }

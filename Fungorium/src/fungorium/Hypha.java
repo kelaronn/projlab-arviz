@@ -56,6 +56,7 @@ public class Hypha {
             // Csak akkor adjuk hozzá, ha van közös tekton
             if (hasCommonTecton) {
                 neighbours.add(h);
+                System.out.println(">[Hypha].neighbours.add(h)");
             }
         }
     }
@@ -67,7 +68,10 @@ public class Hypha {
     public void RemoveNeighbours(Hypha h) {
         if(h != null && h.GetHostFungus().equals(this.GetHostFungus()) && neighbours.contains(h)){
             neighbours.remove(h);
+
         }
+        System.out.println(">[Hypha].GetHostFungus()");
+        System.out.println(">[Hypha].GetHostFungus()");
     }
 
     /**
@@ -78,6 +82,7 @@ public class Hypha {
         if(f != null && f != this.GetHostFungus()){
             hostFungus = f;
         }
+        System.out.println(">[Hypha].GetHostFungus()");
     }
 
     /**
@@ -112,10 +117,13 @@ public class Hypha {
    
        // Ha nincs élő gombatest, töröljük az összes bejárt Hypha-t
        if (!hasLivingFungusBody) {
+           System.out.println(">[Hypha].GetTectons() loop");
            for (Hypha h : hyphaeToCheck) {
+
                for (Tecton t : h.GetTectons()) {
                    if (t != null) {
                        t.RemoveHypha(h);
+                       System.out.println(">[Tecton].RemoveHypha(h)");
                    }
                }
            }
@@ -140,6 +148,8 @@ public class Hypha {
        hyphaeToCheck.add(hypha); // Hozzáadjuk a potenciálisan törlendőkhöz
    
        // Ellenőrizzük az aktuális Hypha Tecton-jain lévő gombatesteket
+       System.out.println(">[Hypha].GetTectons()");
+       System.out.println(">[Tecton].GetFungusBody() loop");
        for (Tecton t : hypha.GetTectons()) {
            if (t != null) {
                FungusBody fb = t.GetFungusBody();
@@ -148,7 +158,6 @@ public class Hypha {
                }
            }
        }
-   
        // Rekurzívan ellenőrizzük a szomszédos Hypha-kat
        for (Hypha neighbour : hypha.GetNeighbours()) {
            if (neighbour.GetHostFungus() == hypha.GetHostFungus() && !visited.contains(neighbour)) {
@@ -157,7 +166,9 @@ public class Hypha {
                }
            }
        }
-   
+       System.out.println(">[Hypha].GetNeighbours()");
+       System.out.println(">[Hypha].GetHostFungus() loop");
+       System.out.println(">[Hypha].checkNetworkForLivingFungusBody()");
        // Ha nincs több szomszéd, és nem találtunk gombatestet, hamis
        return false;
     }

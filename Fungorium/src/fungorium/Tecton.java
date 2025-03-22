@@ -13,7 +13,9 @@ public abstract class Tecton {
     protected List<Spore> spores;
     protected ArrayList<Tecton> neighbours;
     protected FungusBody fungusBody;
-
+    /**
+     * Default konstruktor a tekton létrehozásához.
+     */
     public Tecton() {
         insects = new ArrayList<>();
         hyphas = new ArrayList<>();
@@ -21,6 +23,12 @@ public abstract class Tecton {
         neighbours = new ArrayList<>();
         fungusBody = null;
     }
+    /**
+     * Konstruktor a tekton létrehozásához.
+     * @param insects
+     * @param hyphas
+     * @param spores
+     */
     public Tecton(List<Insect> insects, List<Hypha> hyphas, List<Spore> spores) {
         this.insects = insects;
         this.hyphas = hyphas;
@@ -28,6 +36,13 @@ public abstract class Tecton {
         neighbours = new ArrayList<>();
         fungusBody = null;
     }
+    /**
+     * Konstruktor a tekton létrehozásához.
+     * @param insects
+     * @param hyphas
+     * @param spores
+     * @param neighbours
+     */
     public Tecton(List<Insect> insects, List<Hypha> hyphas, List<Spore> spores, ArrayList<Tecton> neighbours) {
         this.insects = insects;
         this.hyphas = hyphas;
@@ -58,14 +73,17 @@ public abstract class Tecton {
      */
     protected void RemoveHyphaFromTecton(Hypha h) {
         h.GetHostFungus().RemoveHypha(h);
+        System.out.println(">[Fungus].RemoveHypha(h)");
         var hNeighbours = (ArrayList<Hypha>) h.GetNeighbours();
         // A paraméter hifa szomszédjait is töröljük a fungusból, mert azok mind résen vannak és így már nincs mihez kötődniük.
         for(Hypha n : hNeighbours){
             n.GetHostFungus().RemoveHypha(n);
+            System.out.println(">[Fungus].RemoveHypha(n)");
         }
         // nem csak a fungusból kell törölni, hanem a szomszédos tectonokon is meg kell keresni és törölni.
         for( Tecton n : neighbours){
             RemoveHypha(this,n);
+            System.out.println(">[Tecton].RemoveHypha(this,n)");
         }
         // majd végül a paraméterben kapott hifát is törölni kell
         //RemoveHypha(h);
@@ -79,28 +97,39 @@ public abstract class Tecton {
     public void Break(){
 
         Tecton t1 = GetRandomChild();
+        System.out.println(">[Tecton].GetRandomChild()");
         Tecton t2 = GetRandomChild();
+        System.out.println(">[Tecton].GetRandomChild()");
 
         if( !insects.isEmpty() ){
             for(Insect i : insects){
                 t2.AddInsect(i);
+                System.out.println(">[Tecton].AddInsect(i)");
                 i.SetTecton(t2);
+                System.out.println(">[Insect].SetTecton(t2)");
             }
         }
 
         for(Tecton n : neighbours){
             t1.AddNeighbour(n);
+            System.out.println(">[Tecton].AddNeighbour(n)");
             t2.AddNeighbour(n);
+            System.out.println(">[Tecton].AddNeighbour(n)");
         }
         for(Hypha h : hyphas){
             RemoveHyphaFromTecton(h);
+            System.out.println(">[Tecton].RemoveHyphaFromTecton(h)");
         }
-        if(fungusBody != null)
+        if(fungusBody != null){
             fungusBody.GetHostFungus().RemoveBody(fungusBody);
+            System.out.println(">[Fungus].RemoveBody(fungusBody)");
+        }
         SetFungusBody(null);
+        System.out.println(">[Tecton].SetFungusBody(null)");
 
         for(int i = 0; i < spores.size(); i++){
             spores.removeLast();
+            System.out.println(">[Tecton].spores.removeLast()");
         }
 
     }
@@ -120,11 +149,19 @@ public abstract class Tecton {
             return false;
 
         fungusBody = new FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft);
+        System.out.println(">[FungusBody].FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft)");
         fungus.AddBody(fungusBody);
+        System.out.println(">[Fungus].AddBody(fungusBody)");
+        this.SetFungusBody(fungusBody);
+        System.out.println(">[Tecton].SetFungusBody(fungusBody)");
         return true;
 
     }
 
+    /**
+     * Abszorpciós függvény (hifa felszívódás), hamis értékkel tér vissza alapesetben.
+     * @return false
+     */
     public boolean AbsorbHyphas(){
         return false;
     }
@@ -165,6 +202,7 @@ public abstract class Tecton {
             break;
         }
         spores.add(spore);
+        System.out.println(">[Tecton].spores.add(spore)");
     }
 
     /**
@@ -173,12 +211,16 @@ public abstract class Tecton {
      * @param spore spóra
      */
     public void RemoveSpore(Spore spore) {
-        if( !spores.remove(spore) )
+        if( !spores.remove(spore) ){
             System.out.println("Spore not found");
+            return;
+        }
+        System.out.println(">[Tecton].spores.remove(spore)");
     }
 
     /**
      * Visszaadja Spore listáját a tektonnak.
+     * @return spores
      */
     public List<Spore> GetSpores() {
         return spores;
@@ -206,6 +248,7 @@ public abstract class Tecton {
             System.out.println("Hypha not found");
         else
             h.GetHostFungus().RemoveHypha(h);
+        System.out.println(">[Fungus].RemoveHypha(h)");
     }
 
     /**
@@ -223,8 +266,11 @@ public abstract class Tecton {
      * @param insect eltávolítandó insect
      */
     public void RemoveInsect(Insect insect) {
-        if( !insects.remove(insect) )
+        if( !insects.remove(insect) ){
             System.out.println("insect not found");
+            return;
+        }
+        System.out.println(">[Tecton].insects.remove(insect)");
     }
 
     /**
@@ -252,6 +298,7 @@ public abstract class Tecton {
      */
     public void AddNeighbour(Tecton neighbour) {
         neighbours.add(neighbour);
+        System.out.println(">[Tecton].neighbours.add(neighbour)");
     }
 
     /**
@@ -261,6 +308,7 @@ public abstract class Tecton {
      */
     public void RemoveNeighbour(Tecton neighbour) {
         neighbours.remove(neighbour);
+        System.out.println(">[Tecton].neighbours.remove(neighbour)");
     }
 
     /**
@@ -271,11 +319,14 @@ public abstract class Tecton {
      */
     public void RemoveHypha(Tecton t1, Tecton t2) {
         Hypha h = GetHypha(t1, t2);
+        System.out.println(">[Tecton].RemoveHypha(t1,t2)");
         if(h == null)
             return;
 
         h.GetHostFungus().RemoveHypha(h);
+        System.out.println(">[Fungus].RemoveHypha(h)");
         hyphas.remove(h);
+        System.out.println(">[Tecton].hyphas.remove(h)");
     }
     
     /**
@@ -298,6 +349,7 @@ public abstract class Tecton {
         }
         for(Hypha h : t2.hyphas){
             List<Tecton> tectons = h.GetTectons();
+            System.out.println(">[Hypha].GetTectons()");
             if( (tectons.contains(t1) && tectons.contains(t2))
                 /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1))*/ ){
                 return h;
@@ -305,7 +357,10 @@ public abstract class Tecton {
         }
         return null;
     }
-
+    /**
+     * Visszaadja a tektonon lévő hifák listáját.
+     * @return hyphas
+     */
     public List<Hypha> GetHyphas(){
         return hyphas;
     }

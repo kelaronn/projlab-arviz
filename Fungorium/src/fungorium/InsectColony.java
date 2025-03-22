@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InsectColony {
-    private List<Insect> insects;
-    private int nutrition;
+    private List<Insect> insects; // rovarok listája
+    private int nutrition; // kolónia által gyűjtött tápérték
 
     /**
      * Default konstruktor
@@ -30,10 +30,12 @@ public class InsectColony {
      */
     public Insect createInsect(Tecton t){
        Insect ni = new Insect();
+       System.out.println(">[Insect].Insect()");
 
        insects.add(ni);
+       System.out.println(">[InsectColony].insects.add(ni)");
        //t.getInsects().add(ni); //amikor kész lesz
-       //t.addInsect(ni);        //pick your poison
+       //t.addInsect(ni);        
 
        return ni;
     }
