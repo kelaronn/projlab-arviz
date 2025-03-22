@@ -37,7 +37,7 @@ public class Main {
                     System.out.println("1 - Grow Hypha Successful");
                     System.out.println("2 - Grow Hypha Unsuccessful");
                     System.out.println("3 - Grow Two Differend Hypha On Wide Tecton Successful");
-                    System.out.println("4 - Grow Same Type Hypha On Wide Tecton Successful");
+                    System.out.println("4 - Grow Same Type Hypha On Wide Tecton Unsuccessful");
                     System.out.println("0 - Back to Main Menu");
                     System.out.println("Which test would you like to run? ");
                     int inp2 = getInput(scanner);
