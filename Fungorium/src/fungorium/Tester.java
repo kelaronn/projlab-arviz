@@ -11,7 +11,7 @@ public class Tester {
      * @param age megadja a gombatest életkorát
      * @return
      */
-    public boolean Test_ShootSpores(int sporeCnt, int shotsLft, boolean isDead, int age){
+    public void Test_ShootSpores(int sporeCnt, int shotsLft, boolean isDead, int age){
         Fungus f = new Fungus();
         System.out.println("[Fungus].Fungus()");
 
@@ -23,7 +23,6 @@ public class Tester {
         
         System.out.println("[FugusBody].ShootSpores()"); 
         fb.ShootSpores();
-        return true;
     }
 
     /**
