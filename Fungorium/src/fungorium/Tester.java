@@ -423,6 +423,13 @@ public class Tester {
         }
         System.out.println("Test_BasicShootSporesSuccessful is successful: "+((successful)?"true":"false"));
     }
+    
+    /**
+     * Gombatest sikeres spóra szórása szomszédos tektonok szomszédaira
+     */
+    public void Test_AdvancedShootSporesSuccessful(){
+        //
+    }
 
     /**
      * Gombatest sikeres halála
@@ -514,6 +521,9 @@ public class Tester {
         System.out.println("Test_FungusBodyDieSuccessful is successful: "+((newIsDead != oldIsDead)?"true":"false"));
     }
 
+    /**
+     * Gombatest sikertelen spóra szórása szomszédos tektonokra
+     */
     public void Test_BasicShootSporesUnsuccessful(){
         ShootSporesInitFunction();
         System.out.println("[Fungus].Fungus()");
@@ -543,5 +553,12 @@ public class Tester {
             }
         }
         System.out.println("Test_BasicShootSporesSuccessful is successful: "+((successful)?"true":"false"));
+    }
+    
+    /**
+     * Gombatest sikertelen spóra szórása szomszédos tektonok szomszédaira
+     */
+    public void Test_AdvancedShootSporesUnsuccessful(){
+        //
     }
 }
