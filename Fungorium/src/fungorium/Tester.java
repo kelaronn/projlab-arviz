@@ -412,6 +412,7 @@ public class Tester {
         System.out.println(">[Tecton].GrowFungusBody()");
         System.out.println(ans ? "<true":"<false");
         System.out.println("    [FungusBody].FungusBody(t3,fungus)");
+        
         for(int i = 0; i < t3.sporeCountToGrowFungus; i++){
             t3.RemoveSpore(t3.spores.getLast());
             System.out.println("    >[Tecton].RemoveSpore(t3.spores.getLast())");
