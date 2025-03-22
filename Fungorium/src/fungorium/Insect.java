@@ -28,14 +28,17 @@ public class Insect {
      * Spóra elfogyasztása
      * @param s spóra
      */
-    public void eatSpore(Spore s){
-        /*if(s.getTecton != tecton)
-            throw new IllegalArgumentException("Spore is not on the right tecton")
-        */
+    public void EatSpore(Spore s){
+        if(s.GetTecton() != tecton){
+            //throw new IllegalArgumentException("Spore is not on the right tecton");
+            System.out.println("Spore not on the right Tecton");
+            return;
+        }        
 
-        s.giveEffect(this);
-        hostColony.addNutrition(s.getNutritionValue());
-        //tecton.removeSpore(s);
+        s.GiveEffect(this);
+        hostColony.addNutrition(s.GetNutritionValue());
+        tecton.RemoveSpore(s);
+        System.out.println("Spore eaten.");
 
     }
 
@@ -44,19 +47,16 @@ public class Insect {
      * @param t técton
      * @return sikeres-e a mozgás
      */
-    public boolean move(Tecton t){
-        /*if(getHypha(t, tecton) != null){
-            t.addInsect(this);
-            tecton.removeInsect(this);
-            this.setTecton(t);
+    public boolean Move(Tecton t){
+        if(t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null){
+            t.AddInsect(this);
+            tecton.RemoveInsect(this);
+            this.SetTecton(t);
             return true;
         }
         else{
-            return false
+            return false;
         }
-
-        */
-        return false;
     }
 
     /**
@@ -64,33 +64,42 @@ public class Insect {
      * @param t técton
      * @return sikeres-e a vágás
      */
-    public boolean cut(Tecton t){
-        if(cutAbility == false){return false;}
+    public boolean Cut(Tecton t){
+        if(!cutAbility){return false;}
 
+        Hypha h;
+        Tecton correctTecton;
 
-        /*if(getHypha(t, tecton) != null){
-            Hypha h = getHypha(t, tecton);
-            h.getFungus().removeHypha(h);
-            h.getTecton().removeHypha(h);
-            for(n in h.neighbours){
-                n.removeNeighbour(h);
+        if(t.GetHypha(t, tecton) != null){
+            h = t.GetHypha(t, tecton);
+            correctTecton = t;
+        }
+        else if(tecton.GetHypha(t, tecton) != null){
+            h = tecton.GetHypha(t, tecton);
+            correctTecton = tecton;
+        }
+        else{
+            return false;
+        }
+
+        if(t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null){
+            h.GetHostFungus().RemoveHypha(h);
+            correctTecton.RemoveHypha(h);
+            for(Hypha n : h.GetNeighbours()){
+                n.RemoveNeighbours(h);
             }
             return true;
         }
         else{
-            return false
+            return false;
         }
-
-        */
-
-        return false;
     }
 
     /**
      * Sebesség lekérdezése
      * @return sebesség
      */ 
-    public int getSpeed(){
+    public int GetSpeed(){
         return speed;
     }
 
@@ -98,7 +107,7 @@ public class Insect {
      * Vágási képesség lekérdezése
      * @return vágási képesség
      */ 
-    public boolean getCutAbility(){
+    public boolean GetCutAbility(){
         return cutAbility;
     }
 
@@ -106,7 +115,7 @@ public class Insect {
      * Hatásidő lekérdezése
      * @return hatásidő
      */  
-    public int getEffectTimeLeft(){
+    public int GetEffectTimeLeft(){
         return effectTimeLeft;
     }
 
@@ -114,7 +123,7 @@ public class Insect {
      * Host kolónia lekérdezése
      * @return host kolónia
      */   
-    public InsectColony getHostColony(){
+    public InsectColony GetHostColony(){
         return hostColony;
     }
 
@@ -122,7 +131,7 @@ public class Insect {
      * Técton lekérdezése
      * @return técton
      */         
-    public Tecton getTecton(){
+    public Tecton GetTecton(){
         return tecton;
     }
 
@@ -130,7 +139,7 @@ public class Insect {
      * Sebesség beállítása
      * @param s sebesség
      */
-    public void setSpeed(int s){
+    public void SetSpeed(int s){
         speed = s;
     }
 
@@ -138,7 +147,7 @@ public class Insect {
      * Vágási képesség beállítása
      * @param ca vágási képesség
      */
-    public void setCutAbility(boolean ca){
+    public void SetCutAbility(boolean ca){
         cutAbility = ca;
     }
 
@@ -146,7 +155,7 @@ public class Insect {
      * Hatásidő beállítása
      * @param etf hatásidő
      */
-    public void setEffectTimeLeft(int etf){
+    public void SetEffectTimeLeft(int etf){
         effectTimeLeft = etf;
     }
 
@@ -154,7 +163,7 @@ public class Insect {
      * Host kolónia beállítása
      * @param ic host kolónia
      */
-    public void setHostColony(InsectColony ic){
+    public void SetHostColony(InsectColony ic){
         hostColony = ic;
     }
 
@@ -162,7 +171,7 @@ public class Insect {
      * Técton beállítása
      * @param t técton
      */
-    public void setTecton(Tecton t){
+    public void SetTecton(Tecton t){
         tecton = t;
     }
 

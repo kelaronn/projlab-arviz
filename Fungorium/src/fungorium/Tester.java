@@ -8,6 +8,7 @@ public class Tester {
     private HashMap<String, Object> HyphaInit = new HashMap<>();
     HashMap GameObjects = new HashMap<String, Object>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
     private HashMap<String, Object> ShootSporesInit = new HashMap<>();
+    private HashMap<String, Object> InsectInit = new HashMap<>();
 
     public void TectonBreakInit(){
         InsectColony ic = new InsectColony();
@@ -20,8 +21,8 @@ public class Tester {
         GameObjects.put("t1", t1);
         Insect i = new Insect();
         GameObjects.put("i", i);
-        i.setHostColony(ic);
-        i.setTecton(t1);
+        i.SetHostColony(ic);
+        i.SetTecton(t1);
         t1.AddInsect(i);
         FungusBody fb = new FungusBody(t1,fungus);
         GameObjects.put("fb", fb);
@@ -121,6 +122,132 @@ public class Tester {
         ShootSporesInit.put("fb", fb);
         ShootSporesInit.put("h", h);
         // ShootSporesInit end <-
+    }
+
+    public void InsectInitFunction(){
+        Fungus f = new Fungus();
+        InsectColony ic = new InsectColony();
+        NarrowTecton n1 = new NarrowTecton();
+        NarrowTecton n2 = new NarrowTecton();
+        NarrowTecton n3 = new NarrowTecton();
+        Spore s = new Spore(2, 0, f);
+        SpeedSpore sp = new SpeedSpore(2, 2, f);
+        Insect i1 = new Insect();
+        Insect i2 = new Insect();
+        Hypha h = new Hypha(new ArrayList<>(), f, new ArrayList<>(List.of(n2,n3)));
+
+        i1.SetHostColony(ic);
+        i1.SetTecton(n1);
+        i2.SetHostColony(ic);
+        i2.SetTecton(n2);
+
+        n1.AddNeighbour(n2);
+        n1.AddInsect(i1);
+
+        n2.AddNeighbour(n1);
+        n2.AddNeighbour(n3);
+        n2.AddInsect(i2);
+        n2.GetHyphas().add(h);
+        n2.GetSpores().add(s);
+        n2.GetSpores().add(sp);
+
+        n3.AddNeighbour(n2);
+
+        InsectInit = new HashMap<>();
+        InsectInit.put("f", f);
+        InsectInit.put("n1", n1);
+        InsectInit.put("n2", n2);
+        InsectInit.put("n3", n3);
+        InsectInit.put("i1", i1);
+        InsectInit.put("i2", i2);
+        InsectInit.put("h", h);
+        InsectInit.put("s", s);
+        InsectInit.put("sp", sp);
+    }
+
+    public void Test_EatSporeSuccessful(){
+        InsectInitFunction();
+        Fungus f = (Fungus)InsectInit.get("f");
+        InsectColony ic = (InsectColony)InsectInit.get("ic");
+        NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
+        Insect i2 = (Insect)InsectInit.get("i2");
+        Spore s = (Spore)InsectInit.get("s");
+
+        System.out.println("[i2].EatSpore(s)");
+        i2.EatSpore(s);
+    }
+
+    public void Test_EatSporeUnsuccessful(){
+        InsectInitFunction();
+        Fungus f = (Fungus)InsectInit.get("f");
+        NarrowTecton n1 = (NarrowTecton)InsectInit.get("n1");
+        NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
+        Insect i1 = (Insect)InsectInit.get("i1");
+        Spore s = (Spore)InsectInit.get("s");
+
+        System.out.println("[i1].EatSpore(s)");
+        i1.EatSpore(s);
+    }
+
+    public void Test_CutSuccessful(){
+        InsectInitFunction();
+        Fungus f = (Fungus)InsectInit.get("f");
+        NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
+        NarrowTecton n3 = (NarrowTecton)InsectInit.get("n3");
+        Insect i2 = (Insect)InsectInit.get("i2");
+
+        System.out.println("[i2].Cut(n3)");
+        boolean response = i2.Cut(n3);
+        System.out.println(response ? "true" : "false");
+    }
+
+    public void Test_CutNoBridge(){
+        InsectInitFunction();
+        Fungus f = (Fungus)InsectInit.get("f");
+        NarrowTecton n1 = (NarrowTecton)InsectInit.get("n1");
+        NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
+        Insect i1 = (Insect)InsectInit.get("i1");
+
+        System.out.println("[i1].Cut(n2)");
+        boolean response = i1.Cut(n2);
+        System.out.println(response ? "true" : "false");
+    }
+
+    public void Test_CutNotAble(){
+        InsectInitFunction();
+        Fungus f = (Fungus)InsectInit.get("f");
+        NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
+        NarrowTecton n3 = (NarrowTecton)InsectInit.get("n3");
+        Insect i2 = (Insect)InsectInit.get("i2");
+        i2.SetCutAbility(false);
+
+        System.out.println("[i2].Cut(n3)");
+        boolean response = i2.Cut(n3);
+        System.out.println(response ? "true" : "false");
+    }
+
+    public void Test_MoveSuccessful(){
+        InsectInitFunction();
+        Fungus f = (Fungus)InsectInit.get("f");
+        NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
+        NarrowTecton n3 = (NarrowTecton)InsectInit.get("n3");
+        Insect i2 = (Insect)InsectInit.get("i2");
+
+        System.out.println("[i2].Move(n3)");
+        boolean response = i2.Move(n3);
+        System.out.println(response ? "true" : "false");
+    }
+
+    public void Test_MoveUnsuccessful(){
+        InsectInitFunction();
+        Fungus f = (Fungus)InsectInit.get("f");
+        NarrowTecton n1 = (NarrowTecton)InsectInit.get("n1");
+        NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
+        Insect i1 = (Insect)InsectInit.get("i1");
+
+        System.out.println("[i1].Move(n2)");
+        boolean response = i1.Move(n2);
+        System.out.println(response ? "true" : "false");
     }
 
     public void Test_GrowHyphaSuccessful(){

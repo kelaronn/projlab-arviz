@@ -16,9 +16,9 @@ public class DisarmSpore extends Spore {
      * @param i rovar
      * @return sikeres-e a hatás kifejtése
      */
-    @Override public boolean giveEffect(Insect i){
-        i.setCutAbility(false);
-        i.setEffectTimeLeft(2);
+    @Override public boolean GiveEffect(Insect i){
+        i.SetCutAbility(false);
+        i.SetEffectTimeLeft(2);
         return true;
     }
 }

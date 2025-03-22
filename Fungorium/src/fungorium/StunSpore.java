@@ -16,10 +16,10 @@ public class StunSpore extends Spore {
      * @param i rovar
      * @return sikeres-e a hatás kifejtése
      */
-    @Override public boolean giveEffect(Insect i){
-        i.setSpeed(0);
-        i.setCutAbility(false);
-        i.setEffectTimeLeft(2);
+    @Override public boolean GiveEffect(Insect i){
+        i.SetSpeed(0);
+        i.SetCutAbility(false);
+        i.SetEffectTimeLeft(2);
         return true;
     }
 }
