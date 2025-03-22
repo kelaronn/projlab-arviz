@@ -59,10 +59,12 @@ public class Tester {
         NarrowTecton nt2 = new NarrowTecton();
         NarrowTecton nt3 = new NarrowTecton();
         WideTecton wt1 = new WideTecton();
-        nt1.GrowFungusBody(pf);
-        pf.AddBody(nt1.GetFungusBody());
-        nt2.GrowFungusBody(kf);
-        kf.AddBody(nt2.GetFungusBody());
+        FungusBody pfb = new FungusBody(nt1, pf);
+        pf.AddBody(pfb);
+        nt1.SetFungusBody(pfb);
+        FungusBody kfb = new FungusBody(nt2, kf);
+        kf.AddBody(kfb);
+        nt2.SetFungusBody(kfb);
         Hypha ph1 = new Hypha(new ArrayList<>(), pf, new ArrayList<>(List.of(nt1)));
         pf.AddHypha(ph1);
         nt1.GetHyphas().add(ph1);
@@ -86,6 +88,8 @@ public class Tester {
         HyphaInit.put("nt2", nt2);
         HyphaInit.put("nt3", nt3);
         HyphaInit.put("wt1", wt1);
+        HyphaInit.put("pfb", pfb);
+        HyphaInit.put("kfb", kfb);
         HyphaInit.put("ph1", ph1);
         HyphaInit.put("kh1", kh1);
         // HyphaInit end <-
@@ -98,7 +102,8 @@ public class Tester {
         NarrowTecton t2 = new NarrowTecton();
         NarrowTecton t3 = new NarrowTecton();
         NarrowTecton t4 = new NarrowTecton();
-        t1.GrowFungusBody(f);
+        FungusBody fb = new FungusBody(t1, f);
+        t1.SetFungusBody(fb);
         Hypha h = new Hypha(new ArrayList<>(), f, new ArrayList<>(List.of(t1)));
         t1.GetHyphas().add(h);
         t1.AddNeighbour(t2);
@@ -113,6 +118,7 @@ public class Tester {
         ShootSporesInit.put("t2", t2);
         ShootSporesInit.put("t3", t3);
         ShootSporesInit.put("t4", t4);
+        ShootSporesInit.put("fb", fb);
         ShootSporesInit.put("h", h);
         // ShootSporesInit end <-
     }
@@ -254,8 +260,6 @@ public class Tester {
         System.out.println("[t1].AbsorbHyphas()");
     }
 
-    public void Test_GrowFungusBody(){}
-
     /**
      * ShootSpores függvény a spórák kilövéséhez. Fejlett állapotban a szomszédok szomszédjára lő
      * Normál esetben csak a szomszédos tektonokra lő spórát
@@ -282,13 +286,7 @@ public class Tester {
     }
 
     /**
-     * Gombatest halála
-     * @param sporeCnt rendelkezésre álló spórák száma (egy lövéshez min 4 spórája kell legyen a testnek)
-     * @param shotsLft megmaradt lövés lehetőségek száma. Ha eléri a nullát nem lőhet többet a gombatest
-     * @param isDev logikai érték ami megadja, hogy fejlett-e a test.
-     * @param isDead logikai érték ami megadja, hogy életben van-e a gombatest.
-     * @param age megadja a gombatest életkorát
-     * @return
+     * Gombatest sikeres halála
      */
     public void Test_FungusBodyDie(){
         Fungus f = new Fungus();
@@ -305,13 +303,7 @@ public class Tester {
     }
 
     /**
-     * Gombatest spóratermelése
-     * @param sporeCnt rendelkezésre álló spórák száma (egy lövéshez min 4 spórája kell legyen a testnek)
-     * @param shotsLft megmaradt lövés lehetőségek száma. Ha eléri a nullát nem lőhet többet a gombatest
-     * @param isDev logikai érték ami megadja, hogy fejlett-e a test.
-     * @param isDead logikai érték ami megadja, hogy életben van-e a gombatest.
-     * @param age megadja a gombatest életkorát
-     * @return
+     * Gombatest sikeres spóratermelése
      */
     public void Test_ProduceSpore(){
         ShootSporesInitFunction();
@@ -332,5 +324,17 @@ public class Tester {
         System.out.println("[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
         int newSporeCount = fb.GetSporeCount();
         System.out.println("Test_ProduceSpore is successful: "+((newSporeCount>oldSporeCount)?"true":"false"));
+    }
+
+    public void Test_ProduceSporeUnsuccessful(){
+        //
+    }
+
+    public void Test_FungusBodyDieUnsuccessful(){
+        //
+    }
+
+    public void Test_ShootSporesUnsuccessful(){
+        //
     }
 }
