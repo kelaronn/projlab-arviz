@@ -549,7 +549,7 @@ public class Tester {
             System.out.println("oldNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
         }
         for (int i = 0; i < newNeighboursSporeCount.size(); i++) {
-            System.out.println("oldNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
+            System.out.println("newNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
         }
         System.out.println("Test_AdvancedShootSporesSuccessful is successful: "+((successful)?"true":"false"));
     }
@@ -732,8 +732,8 @@ public class Tester {
             System.out.println("oldNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
         }
         for (int i = 0; i < newNeighboursSporeCount.size(); i++) {
-            System.out.println("oldNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
+            System.out.println("newNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
         }
-        System.out.println("Test_AdvancedShootSporesSuccessful is successful: "+((successful)?"true":"false"));
+        System.out.println("Test_AdvancedShootSporesUnsuccessful is successful: "+((successful)?"true":"false"));
     }
 }
