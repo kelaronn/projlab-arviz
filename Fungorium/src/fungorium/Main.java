@@ -111,6 +111,7 @@ public class Main {
                     int age = tempinp;*/
 
                     tester.Test_BasicShootSporesSuccessful();
+                    tester.Test_AdvancedShootSporesSuccessful();
                     break;
                 case 10:
                     tester.Test_FungusBodyDieSuccessful();

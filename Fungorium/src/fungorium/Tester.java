@@ -414,7 +414,6 @@ public class Tester {
             newNeighboursSporeCount.add(tecton.GetSpores().size());
         }
         boolean successful = true;
-        int j = 0;
         for(int i = 0; i < oldNeighboursSporeCount.size(); i++){
             if (!(newNeighboursSporeCount.get(i).intValue() == (oldNeighboursSporeCount.get(i).intValue()+1))) {
                 successful = false;
@@ -428,7 +427,48 @@ public class Tester {
      * Gombatest sikeres spóra szórása szomszédos tektonok szomszédaira
      */
     public void Test_AdvancedShootSporesSuccessful(){
-        //
+        ShootSporesInitFunction();
+        System.out.println("[Fungus].Fungus()");
+        Fungus f = (Fungus)ShootSporesInit.get("f");
+        System.out.println("[NarrowTecton].NarrowTecton()");
+        NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
+        System.out.println("[FungusBody].FungusBody()");
+        FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("[FungusBody].SetAge(5)");
+        fb.SetAge(5);
+        System.out.println("[FungusBody].SetSporeCount(4)");
+        fb.SetSporeCount(4);
+        int step = 0;
+        List<List<Integer>> oldNeighboursSporeCount = new ArrayList<>();
+        for (Tecton tecton : t1.GetNeighbours()) {
+            for (Tecton tectonn : tecton.GetNeighbours()) {
+                oldNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
+            }
+            step++;
+        }
+        step = 0;
+        System.out.println("[FugusBody].ShootSpores()");
+        fb.ShootSpores();
+        List<List<Integer>> newNeighboursSporeCount = new ArrayList<>();
+        for (Tecton tecton : t1.GetNeighbours()) {
+            for (Tecton tectonn : tecton.GetNeighbours()) {
+                newNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
+            }
+            step++;
+        }
+        boolean successful = true;
+        for(int i = 0; i < oldNeighboursSporeCount.size(); i++){
+            for(int j = 0; j < oldNeighboursSporeCount.get(i).size(); j++){
+                if (!(newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursSporeCount.get(i).get(j).intValue()+1))) {
+                    successful = false;
+                    break;
+                }
+            }
+            if(!successful){
+                break;
+            }
+        }
+        System.out.println("Test_AdvancedShootSporesSuccessful is successful: "+((successful)?"true":"false"));
     }
 
     /**
@@ -545,7 +585,6 @@ public class Tester {
             newNeighboursSporeCount.add(tecton.GetSpores().size());
         }
         boolean successful = true;
-        int j = 0;
         for(int i = 0; i < oldNeighboursSporeCount.size(); i++){
             if ((newNeighboursSporeCount.get(i).intValue() == (oldNeighboursSporeCount.get(i).intValue()+1))) {
                 successful = false;
@@ -559,6 +598,47 @@ public class Tester {
      * Gombatest sikertelen spóra szórása szomszédos tektonok szomszédaira
      */
     public void Test_AdvancedShootSporesUnsuccessful(){
-        //
+        ShootSporesInitFunction();
+        System.out.println("[Fungus].Fungus()");
+        Fungus f = (Fungus)ShootSporesInit.get("f");
+        System.out.println("[NarrowTecton].NarrowTecton()");
+        NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
+        System.out.println("[FungusBody].FungusBody()");
+        FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("[FungusBody].SetAge(4)");
+        fb.SetAge(4);
+        System.out.println("[FungusBody].SetSporeCount(4)");
+        fb.SetSporeCount(4);
+        int step = 0;
+        List<List<Integer>> oldNeighboursSporeCount = new ArrayList<>();
+        for (Tecton tecton : t1.GetNeighbours()) {
+            for (Tecton tectonn : tecton.GetNeighbours()) {
+                oldNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
+            }
+            step++;
+        }
+        step = 0;
+        System.out.println("[FugusBody].ShootSpores()");
+        fb.ShootSpores();
+        List<List<Integer>> newNeighboursSporeCount = new ArrayList<>();
+        for (Tecton tecton : t1.GetNeighbours()) {
+            for (Tecton tectonn : tecton.GetNeighbours()) {
+                newNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
+            }
+            step++;
+        }
+        boolean successful = true;
+        for(int i = 0; i < oldNeighboursSporeCount.size(); i++){
+            for(int j = 0; j < oldNeighboursSporeCount.get(i).size(); j++){
+                if ((newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursSporeCount.get(i).get(j).intValue()+1))) {
+                    successful = false;
+                    break;
+                }
+            }
+            if(!successful){
+                break;
+            }
+        }
+        System.out.println("Test_AdvancedShootSporesUnsuccessful is successful: "+((successful)?"true":"false"));
     }
 }
