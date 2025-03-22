@@ -391,9 +391,9 @@ public class Tester {
 
         var spores = t3.GetSpores();
         System.out.println(">[Tecton].GetSpores()");
-        for (Spore s : spores) {
-            t3.RemoveSpore(s);
-            System.out.println(">[Tecton].RemoveSpore(s)");
+        for(int i = 0; i < t3.sporeCountToGrowFungus; i++){
+            t3.RemoveSpore(t3.spores.getLast());
+            System.out.println("    >[Tecton].RemoveSpore(t3.spores.getLast())");
         }
         boolean ans = t3.GrowFungusBody(fungus);
         System.out.println(">[Tecton].GrowFungusBody()");
