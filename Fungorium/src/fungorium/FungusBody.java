@@ -97,10 +97,12 @@ public class FungusBody {
      * @param b a kívánt logikai érték: fejlett/nem fejlett
      */
     public void SetIsDeveloped(boolean b){isDeveloped=b;}
+
     /**Lekéri az isDeveloped értékét
      * @return fejlett-e a gombatest
     */
     public boolean GetIsDeveloped(){return isDeveloped;}
+
     /**
      * Beállítja az életkor értéket
      * @param a életkor érték paraméterként
@@ -110,19 +112,23 @@ public class FungusBody {
             age=a;
         }
     }
+
     /**Lekéri az életkor értéket
      * @return életkor
     */
     public int GetAge(){return age;}
+
     /**
      * Beállítja az isDead értéket
      * @param b logikai érték: halott/élő
      */
     public void SetIsDead(boolean b){isDead=b;}
+
     /**Lekéri az isDead érttéket
      * @return halott-e a gombatest
     */
     public boolean GetIsDead(){return isDead;}
+
     /**
      * Beállítja a sporeCount értéket
      * @param i spórák száma
@@ -132,10 +138,12 @@ public class FungusBody {
             sporeCount=i;
         }
     }
+
     /**Lekéri a spórák számát
      * @return spórák száma
     */
     public int GetSporeCount(){return sporeCount;}
+
     /**
      * Beállítja a shotsLeft értéket
      * @param i lövési lehetőségek száma
@@ -145,33 +153,39 @@ public class FungusBody {
             shotsLeft=i;
         }
     }
+
     /**Lekéri a shotsLeft értéket
      * @return lövési lehetőségek száma
     */
     public int GetShotsLeft(){return shotsLeft;}
+
     /**
      * Beállítja a tektont, amelyen tartózkodik a gombatest
      * @param t tekton példány
      */
     public void SetTecton(Tecton t){
-        if(t != null){
+        if(t != null && !tecton.equals(t)){
             tecton=t;
         }
     }
+
     /**Lekéri a tektont amelyen tartózkodik a gombatest
      * @return tekton példány
     */
     public Tecton GetTecton(){return tecton;}
+
     /**
      * Beállítja a gombát, amelyhez tartozik a gombatest
      * @param f gomba emelyhez tartozik a gombatest
      */
     public void SetHostFungus(Fungus f){
-        if(f != null){
+        if(f != null && !hostFungus.equals(f)){
             hostFungus=f;
         }
     }
-    /**Lekéri a gombát, amelyhez tartozik a gombatest
+
+    /**
+     * Lekéri a gombát, amelyhez tartozik a gombatest
      * @return gomba példány
     */
     public Fungus GetHostFungus(){return hostFungus;}
@@ -221,28 +235,43 @@ public class FungusBody {
         System.out.println("ShootSpores success");
     }
 
-    /**Gombatest meghalását implementálja*/
+    /**
+     * Gombatest meghalását implementálja
+     */
     public void Die(){
         /*tecton.AbsorbHyphas();
         System.out.println("[Tecton].AbsorbHyphas()");
         isDead=true;*/
-        this.SetIsDead(true);
-        Hypha sameTypeHypha = null;
-        for (Hypha hypha : this.GetTecton().GetHyphas()) {
-            if(hypha.GetHostFungus().equals(this.GetHostFungus())){
-                sameTypeHypha = hypha;
-                break;
+        if(!this.GetIsDead()){
+            this.SetIsDead(true);
+            Hypha sameTypeHypha = null;
+            for (Hypha hypha : this.GetTecton().GetHyphas()) {
+                if(hypha.GetHostFungus().equals(this.GetHostFungus())){
+                    sameTypeHypha = hypha;
+                    break;
+                }
             }
+            if(sameTypeHypha != null){
+                sameTypeHypha.Atrophy();
+            }
+            System.out.println("Die success.");
         }
-        if(sameTypeHypha != null){
-            sameTypeHypha.Atrophy();
+        
+        else{
+            System.out.println("Die unsuccess, because FungusBody is already dead.");
         }
-        System.out.println("Die success");
-    }
-    /**Spórát termel a gombatestnek*/
-    public void ProduceSpore(){
-        sporeCount++;
-        System.out.println("ProduceSpore success.");
     }
 
+    /**
+     * Spórát termel a gombatestnek
+     */
+    public void ProduceSpore(){
+        if(!this.GetIsDead()){
+            sporeCount++;
+            System.out.println("ProduceSpore success.");
+        }
+        else{
+            System.out.println("ProduceSpore unsuccess, because FungusBody is dead.");
+        }   
+    }
 }
