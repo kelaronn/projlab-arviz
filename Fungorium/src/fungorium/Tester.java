@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Tester {
-    HashMap GameObjects = new HashMap<String, Object>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
     private HashMap<String, Object> HyphaInit = new HashMap<>();
+    HashMap GameObjects = new HashMap<String, Object>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
+    private HashMap<String, Object> ShootSporesInit = new HashMap<>();
 
     public void TectonBreakInit(){
         InsectColony ic = new InsectColony();
@@ -87,7 +88,33 @@ public class Tester {
         HyphaInit.put("wt1", wt1);
         HyphaInit.put("ph1", ph1);
         HyphaInit.put("kh1", kh1);
-        //HyphaInit end <-
+        // HyphaInit end <-
+    }
+
+    public void ShootSporesInitFunction(){
+        // ShootSporesInit start ->
+        Fungus f = new Fungus();
+        NarrowTecton t1 = new NarrowTecton();
+        NarrowTecton t2 = new NarrowTecton();
+        NarrowTecton t3 = new NarrowTecton();
+        NarrowTecton t4 = new NarrowTecton();
+        t1.GrowFungusBody(f);
+        Hypha h = new Hypha(new ArrayList<>(), f, new ArrayList<>(List.of(t1)));
+        t1.GetHyphas().add(h);
+        t1.AddNeighbour(t2);
+        t1.AddNeighbour(t3);
+        t2.AddNeighbour(t1);
+        t2.AddNeighbour(t4);
+        t3.AddNeighbour(t1);
+        t4.AddNeighbour(t2);
+        ShootSporesInit = new HashMap<>();
+        ShootSporesInit.put("f", f);
+        ShootSporesInit.put("t1", t1);
+        ShootSporesInit.put("t2", t2);
+        ShootSporesInit.put("t3", t3);
+        ShootSporesInit.put("t4", t4);
+        ShootSporesInit.put("h", h);
+        // ShootSporesInit end <-
     }
 
     public void Test_GrowHyphaSuccessful(){
@@ -287,17 +314,23 @@ public class Tester {
      * @return
      */
     public void Test_ProduceSpore(){
-        Fungus f = new Fungus();
+        ShootSporesInitFunction();
         System.out.println("[Fungus].Fungus()");
-
-        NarrowTecton t = new NarrowTecton();
+        Fungus f = (Fungus)ShootSporesInit.get("f");
         System.out.println("[NarrowTecton].NarrowTecton()");
-
-        FungusBody fb=new FungusBody(t,f,false, 1, false, 0, 5);
-        System.out.println("[FungusBody].FungusBody(t,f,false, 1, false, 0, 5)");
+        NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
+        System.out.println("[FungusBody].FungusBody()");
+        FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("[FungusBody].SetAge(1)");
+        fb.SetAge(1);
+        System.out.println("[FungusBody].SetShotsLeft(5)");
+        fb.SetShotsLeft(5);
         System.out.println("[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
+        int oldSporeCount = fb.GetSporeCount();
         System.out.println("[FungusBody].ProduceSpore()");
         fb.ProduceSpore();
         System.out.println("[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
+        int newSporeCount = fb.GetSporeCount();
+        System.out.println("Test_ProduceSpore is successful: "+((newSporeCount>oldSporeCount)?"true":"false"));
     }
 }
