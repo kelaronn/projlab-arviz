@@ -215,10 +215,10 @@ public class FungusBody {
         ArrayList<Tecton> neighbours = new ArrayList<>(); 
         neighbours=tecton.GetNeighbours();
         System.out.println("[Tecton].GetNeighbours()");
-        /*if (neighbours == null) {
+        if (neighbours == null) {
             System.err.println("Error: The tecton of the fungus body has no neighbours.");
             return;
-        }*/ //TODO: Tesztelés után uncommentelni
+        } //TODO: Tesztelés után uncommentelni
 
         for(int i=0; i<neighbours.size(); ++i) {
             neighbours.get(i).AddSpore(hostFungus);

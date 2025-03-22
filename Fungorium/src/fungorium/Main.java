@@ -84,7 +84,7 @@ public class Main {
                     tester8.Test_EatSporeSuccessful();
                     break;
                 case 9:
-                    System.out.println("Enter spores count: ");
+                    /*System.out.println("Enter spores count: ");
                     int sporesCount = getInput(scanner);
                     System.out.println("Enter shots left: ");
                     int shotsLeft = getInput(scanner);
@@ -108,9 +108,9 @@ public class Main {
                         System.out.println("There is no such option, please try again.");
                         break;
                     }
-                    int age = tempinp;
+                    int age = tempinp;*/
 
-                    tester.Test_ShootSpores(sporesCount, shotsLeft,  isDead, age);
+                    tester.Test_BasicShootSporesSuccessful();
                     break;
                 case 10:
                     tester.Test_FungusBodyDieSuccessful();
