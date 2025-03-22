@@ -298,7 +298,7 @@ public abstract class Tecton {
      */
     public void AddNeighbour(Tecton neighbour) {
         neighbours.add(neighbour);
-        System.out.println(">[Tecton].neighbours.add(neighbour)");
+        //System.out.println(">[Tecton].neighbours.add(neighbour)");
     }
 
     /**

@@ -338,6 +338,7 @@ public class Tester {
      * Teszt: gombatest növesztés sikertelen, mert már van azonos típusú hifa a wide tektonon
      */
     public void Test_GrowSameTypeHyphaOnWideTectonUnsuccessful(){
+        HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
@@ -436,6 +437,7 @@ public class Tester {
      * Teszt: hifa felszódás sikeres
      */
     public void Test_HyphaAbsorbSuccessful(){
+        TectonBreakInit();
         Tecton t3 = (Tecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
         Hypha h2 = (Hypha)GameObjects.get("h2");
@@ -448,6 +450,7 @@ public class Tester {
      * Teszt: hifa felszódás sikertelen
      */
     public void Test_HyphaAbsorbUnsuccessful(){
+        TectonBreakInit();
         Tecton t1 = (Tecton)GameObjects.get("t1");
         boolean ans = t1.AbsorbHyphas();
         System.out.println(">[Tecton].AbsorbHyphas()");
