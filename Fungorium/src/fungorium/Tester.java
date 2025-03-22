@@ -641,7 +641,7 @@ public class Tester {
         System.out.println(">[FungusBody].Die()");
         fb.Die();
         boolean newIsDead = fb.GetIsDead();
-        System.out.println("Test_FungusBodyDieUnsuccessful is successful: "+((newIsDead != oldIsDead)?"<true":"<false"));
+        System.out.println("Test_FungusBodyDieUnsuccessful is successful: "+((newIsDead == oldIsDead)?"<true":"<false"));
     }
 
     /**

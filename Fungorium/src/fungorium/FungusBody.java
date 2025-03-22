@@ -158,7 +158,6 @@ public class FungusBody {
         if(i >= 0){
             shotsLeft=i;
             if (i == 0) {
-                this.SetIsDead(true);
                 this.Die();
             }
         }
