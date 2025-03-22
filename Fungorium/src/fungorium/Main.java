@@ -6,7 +6,6 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Tester tester = new Tester();
         while (true) {
             
             System.out.println("\n#### Main Menu #####");
@@ -33,56 +32,231 @@ public class Main {
             
             switch (inp) {
                 case 1:
-                    System.out.println("Grow Hypha selected.");
+                    Tester tester = new Tester();
+                    
+                    System.out.println("1 - Grow Hypha Successful");
+                    System.out.println("2 - Grow Hypha Unsuccessful");
+                    System.out.println("3 - Grow Two Differend Hypha On Wide Tecton Successful");
+                    System.out.println("4 - Grow Same Type Hypha On Wide Tecton Successful");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp2 = getInput(scanner);
+                    switch (inp2) {
+                        case 1:
+                            tester.Test_GrowHyphaSuccessful();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester.Test_GrowHyphaUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 3:
+                            tester.Test_GrowTwoDifferentHyphaOnWideTectonSuccessful();
+                            waitForEnter();
+                            break;
+                        case 4:
+                            tester.Test_GrowSameTypeHyphaOnWideTectonUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 2:
-                    System.out.println("Atrophy of Hypha selected.");
+                    Tester tester2 = new Tester();
+                    tester2.Test_AtrophyOfHypha();
+                    waitForEnter();
                     break;
                 case 3:
-                    System.out.println("Grow FungusBody selected."); //ez egész jól néz ki
                     Tester tester3 = new Tester();
-                    tester3.TectonBreakInit();
-                    tester3.Test_GrowFungusBodySuccess();
-                    tester3.Test_GrowFungusBodyOnWeakTecton();
-                    tester3.Test_GrowFungusBodyOnBody();
-                    tester3.Test_GrowFungusBodyNotEnoughSpores();
+                    System.out.println("1 - Grow FungusBody On Weak Tecton");
+                    System.out.println("2 - Grow FungusBody On FungusBody");
+                    System.out.println("3 - Grow FungusBody Not Enough Spores");
+                    System.out.println("4 - Grow FungusBody Success");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp3 = getInput(scanner);
+                    switch (inp3) {
+                        case 1:
+                            tester3.Test_GrowFungusBodyOnWeakTecton();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester3.Test_GrowFungusBodyOnBody();
+                            waitForEnter();
+                            break;
+                        case 3:
+                            tester3.Test_GrowFungusBodyNotEnoughSpores();
+                            waitForEnter();
+                            break;
+                        case 4:
+                            tester3.Test_GrowFungusBodySuccess();
+                            waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 4:
                     Tester tester4 = new Tester();
                     tester4.Test_FullTectonBreaks();
+                    waitForEnter();
                     break;
                 case 5:
-                    System.out.println("Hypha Absorb selected.");
                     Tester tester5 = new Tester();
-                    tester5.TectonBreakInit();
-                    tester5.Test_HyphaAbsorbSuccessful();
-                    tester5.Test_HyphaAbsorbUnsuccessful();
+                    System.out.println("1 - Hypha Absorb Successful");
+                    System.out.println("2 - Hypha Absorb Unsuccessful");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp5 = getInput(scanner);
+                    switch (inp5) {
+                        case 1:
+                            tester5.Test_HyphaAbsorbSuccessful();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester5.Test_HyphaAbsorbUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 6:
-                    System.out.println("Insect Move selected.");
                     Tester tester6 = new Tester();
-                    tester6.Test_MoveUnsuccessful();
-                    tester6.Test_MoveSuccessful();
+                    System.out.println("1 - Move Successful");
+                    System.out.println("2 - Move Unsuccessful");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp6 = getInput(scanner);
+                    switch (inp6) {
+                        case 1:
+                            tester6.Test_MoveSuccessful();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester6.Test_MoveUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 7:
                     Tester tester7 = new Tester();
-                    tester7.Test_CutNotAble();
-                    tester7.Test_CutNoBridge();
-                    tester7.Test_CutSuccessful();
+                    System.out.println("1 - Insect Cut Not Able");
+                    System.out.println("2 - Insect Cut No Bridge");
+                    System.out.println("3 - Insect Cut Successful");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp7 = getInput(scanner);
+                    switch (inp7) {
+                        case 1:
+                            tester7.Test_CutNotAble();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester7.Test_CutNoBridge();
+                            waitForEnter();
+                            break;
+                        case 3:
+                            tester7.Test_CutSuccessful();
+                                waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 8:
                     Tester tester8 = new Tester();
-                    tester8.Test_EatSporeUnsuccessful();
-                    tester8.Test_EatSporeSuccessful();
+                    System.out.println("1 - InsectEat Spore Successful");
+                    System.out.println("2 - Insect Eat Spore Unsuccessful");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp8 = getInput(scanner);
+                    switch (inp8) {
+                        case 1:
+                            tester8.Test_EatSporeSuccessful();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester8.Test_EatSporeUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 9:
-                    tester.Test_BasicShootSporesSuccessful();
+                    Tester tester9 = new Tester();
+                    System.out.println("1 - Shoot Spores Successful");
+                    System.out.println("2 - Shoot Spores Unsuccessful");
+                    System.out.println("3 - Advanced Shoot Spores Successful");
+                    System.out.println("4 - Advanced Shoot Spores Unsuccessful");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp9 = getInput(scanner);
+                    switch (inp9) {
+                        case 1:
+                            tester9.Test_BasicShootSporesSuccessful();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester9.Test_BasicShootSporesUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 3:
+                            tester9.Test_AdvancedShootSporesSuccessful();
+                            waitForEnter();
+                            break;
+                        case 4:
+                            tester9.Test_AdvancedShootSporesUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 10:
-                    tester.Test_FungusBodyDieSuccessful();
+                    Tester tester10 = new Tester();
+                    System.out.println("1 - FungusBody Die Successful");
+                    System.out.println("2 - FungusBody Die Unsuccessful");
+                    System.out.println("0 - Back to Main Menu");
+                    System.out.println("Which test would you like to run? ");
+                    int inp10 = getInput(scanner);
+                    switch (inp10) {
+                        case 1:
+                            tester10.Test_FungusBodyDieSuccessful();
+                            waitForEnter();
+                            break;
+                        case 2:
+                            tester10.Test_FungusBodyDieUnsuccessful();
+                            waitForEnter();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("There is no such option, please try again.");
+                    }
                     break;
                 case 11:
-                    tester.Test_ProduceSporeSuccessful();
+                    Tester tester11 = new Tester();
+                    tester11.Test_ProduceSporeSuccessful();
+                    waitForEnter();
                     break;
                 default:
                     System.out.println("There is no such option, please try again.");
@@ -103,5 +277,12 @@ public class Main {
         } catch (NumberFormatException e) {
             return -1;
         }
+    }
+    /**
+     * Várakozás a felhasználó enter lenyomására
+     * (annak érdekében, hogy a kimenet látható maradjon a konzolon)
+     */
+    private static void waitForEnter() {
+        System.console().readLine("Press Enter to continue...");
     }
 }

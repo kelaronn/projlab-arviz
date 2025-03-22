@@ -183,7 +183,7 @@ public class Tester {
         Insect i2 = (Insect)InsectInit.get("i2");
         Spore s = (Spore)InsectInit.get("s");
 
-        System.out.println(">[i2].EatSpore(s)");
+        System.out.println(">[Insect].EatSpore(s)");
         i2.EatSpore(s);
     }
     /**
@@ -197,7 +197,7 @@ public class Tester {
         Insect i1 = (Insect)InsectInit.get("i1");
         Spore s = (Spore)InsectInit.get("s");
 
-        System.out.println(">[i1].EatSpore(s)");
+        System.out.println(">[Insect].EatSpore(s)");
         i1.EatSpore(s);
     }
 
@@ -211,9 +211,9 @@ public class Tester {
         NarrowTecton n3 = (NarrowTecton)InsectInit.get("n3");
         Insect i2 = (Insect)InsectInit.get("i2");
 
-        System.out.println(">[i2].Cut(n3)");
+        System.out.println(">[Insect].Cut(n3)");
         boolean response = i2.Cut(n3);
-        System.out.println(response ? "true" : "false");
+        System.out.println(response ? "<true" : "<false");
     }
 
     /**
@@ -226,9 +226,9 @@ public class Tester {
         NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
         Insect i1 = (Insect)InsectInit.get("i1");
 
-        System.out.println(">[i1].Cut(n2)");
+        System.out.println(">[Insect].Cut(n2)");
         boolean response = i1.Cut(n2);
-        System.out.println(response ? "true" : "false");
+        System.out.println(response ? "<true" : "<false");
     }
 
     /**
@@ -242,9 +242,9 @@ public class Tester {
         Insect i2 = (Insect)InsectInit.get("i2");
         i2.SetCutAbility(false);
 
-        System.out.println(">[i2].Cut(n3)");
+        System.out.println(">[Insect].Cut(n3)");
         boolean response = i2.Cut(n3);
-        System.out.println(response ? "true" : "false");
+        System.out.println(response ? "<true" : "<false");
     }
 
     /**
@@ -257,9 +257,9 @@ public class Tester {
         NarrowTecton n3 = (NarrowTecton)InsectInit.get("n3");
         Insect i2 = (Insect)InsectInit.get("i2");
 
-        System.out.println(">[i2].Move(n3)");
+        System.out.println(">[Insect].Move(n3)");
         boolean response = i2.Move(n3);
-        System.out.println(response ? "true" : "false");
+        System.out.println(response ? "<true" : "<false");
     }
 
     /**
@@ -272,9 +272,9 @@ public class Tester {
         NarrowTecton n2 = (NarrowTecton)InsectInit.get("n2");
         Insect i1 = (Insect)InsectInit.get("i1");
 
-        System.out.println(">[i1].Move(n2)");
+        System.out.println(">[Insect].Move(n2)");
         boolean response = i1.Move(n2);
-        System.out.println(response ? "true" : "false");
+        System.out.println(response ? "<true" : "<false");
     }
 
     /**
@@ -286,9 +286,9 @@ public class Tester {
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
 
-        System.out.println(">[nt3].AddHypha()");
+        System.out.println(">[NarrowTecton].AddHypha()");
         boolean response = nt3.AddHypha(pf, nt1);
-        System.out.println(response ? "true" : "false");
+        System.out.println(response ? "<true" : "<false");
     }
 
     /**
@@ -300,9 +300,9 @@ public class Tester {
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt2 = (NarrowTecton)HyphaInit.get("nt2");
 
-        System.out.println(">[nt2].AddHypha()");
+        System.out.println(">[NarrowTecton].AddHypha()");
         boolean response = nt2.AddHypha(pf, nt1);
-        System.out.println(response ? "true" : "false");
+        System.out.println(response ? "<true" : "<false");
     }
 
     /**
@@ -316,12 +316,12 @@ public class Tester {
         NarrowTecton nt2 = (NarrowTecton)HyphaInit.get("nt2");
         WideTecton wt1 = (WideTecton)HyphaInit.get("wt1");
 
-        System.out.println(">[wt1].AddHypha()");
+        System.out.println(">[WideTecton].AddHypha()");
         boolean response1 = wt1.AddHypha(pf, nt1);
-        System.out.println(response1 ? "true" : "false");
-        System.out.println(">[wt1].AddHypha()");
+        System.out.println(response1 ? "<true" : "<false");
+        System.out.println(">[WideTecton].AddHypha()");
         boolean response2 = wt1.AddHypha(kf, nt2);
-        System.out.println(response2 ? "true" : "false");
+        System.out.println(response2 ? "<true" : "<false");
     }
 
     /**
@@ -330,7 +330,7 @@ public class Tester {
     public void Test_AtrophyOfHypha(){
         Test_GrowHyphaSuccessful();
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
-        System.out.println(">[nt1].GetFungusBody().Die()");
+        System.out.println(">[NarrowTecton].GetFungusBody().Die()");
         nt1.GetFungusBody().Die();
     }
 
@@ -343,13 +343,13 @@ public class Tester {
         NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
         WideTecton wt1 = (WideTecton)HyphaInit.get("wt1");
 
-        System.out.println(">[nt3].AddHypha()");
+        System.out.println(">[NarrowTecton].AddHypha()");
         boolean response1 = nt3.AddHypha(pf, nt1);
         System.out.println(response1 ? "<true" : "<false");
-        System.out.println(">[wt1].AddHypha()");
+        System.out.println(">[WideTecton].AddHypha()");
         boolean response2 = wt1.AddHypha(pf, nt3);
         System.out.println(response2 ? "<true" : "<false");
-        System.out.println(">[wt1].AddHypha()");
+        System.out.println(">[WideTecton].AddHypha()");
         boolean response3 = wt1.AddHypha(pf, nt1);
         System.out.println(response3 ? "<true" : "<false");
     }
@@ -358,11 +358,12 @@ public class Tester {
      * Teszt: gombatest növesztés sikeres, mert nincs gombatest a tektonon
      */
     public void Test_GrowFungusBodyOnWeakTecton(){
+        TectonBreakInit();
         Tecton t2 = (Tecton)GameObjects.get("t2");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         boolean ans = t2.GrowFungusBody(fungus);
-        System.out.println(">[t2].GrowFungusBody()");
+        System.out.println(">[Tecton].GrowFungusBody()");
         System.out.println(ans ? "<true":"<false");
     }
 
@@ -370,11 +371,12 @@ public class Tester {
      * Teszt: gombatest növesztés sikeres
      */
     public void Test_GrowFungusBodyOnBody(){
+        TectonBreakInit();
         Tecton t1 = (Tecton)GameObjects.get("t1");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         boolean ans = t1.GrowFungusBody(fungus);
-        System.out.println(">[t1].GrowFungusBody()");
+        System.out.println(">[Tecton].GrowFungusBody()");
         System.out.println(ans ? "<true":"<false");
     }
 
@@ -382,17 +384,18 @@ public class Tester {
      * Teszt: gombatest növesztés sikertelen, mert nincs elég spóra
      */
     public void Test_GrowFungusBodyNotEnoughSpores(){
+        TectonBreakInit();
         Tecton t3 = (Tecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         var spores = t3.GetSpores();
-        System.out.println(">[t3].GetSpores()");
+        System.out.println(">[Tecton].GetSpores()");
         for (Spore s : spores) {
             t3.RemoveSpore(s);
-            System.out.println(">[t3].RemoveSpore(s)");
+            System.out.println(">[Tecton].RemoveSpore(s)");
         }
         boolean ans = t3.GrowFungusBody(fungus);
-        System.out.println(">[t3].GrowFungusBody()");
+        System.out.println(">[Tecton].GrowFungusBody()");
         System.out.println(ans ? "<true":"<false");
     }
 
@@ -400,32 +403,34 @@ public class Tester {
      * Teszt: gombatest növesztés sikeres
      */
     public void Test_GrowFungusBodySuccess(){
+        TectonBreakInit();
         Tecton t3 = (Tecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         boolean ans = t3.GrowFungusBody(fungus);
-        System.out.println(">[t3].GrowFungusBody()");
+        System.out.println(">[Tecton].GrowFungusBody()");
         System.out.println(ans ? "<true":"<false");
-        System.out.println("    [fb2].FungusBody(t3,fungus)");
+        System.out.println("    [FungusBody].FungusBody(t3,fungus)");
         for(int i = 0; i < t3.sporeCountToGrowFungus; i++){
             t3.RemoveSpore(t3.spores.getLast());
-            System.out.println("    >[t3].RemoveSpore(t3.spores.getLast())");
+            System.out.println("    >[Tecton].RemoveSpore(t3.spores.getLast())");
         }
         fungus.AddBody(t3.GetFungusBody());
-        System.out.println("    >[fungus].AddBody(fb2)");
+        System.out.println("    >[Fungus].AddBody(fb2)");
         System.out.println(ans ? "<true":"<false");
     }
     /**
      * Teszt: tekton törés sikeres
      */
     public void Test_FullTectonBreaks(){
+        TectonBreakInit();
         Tecton t1 = (Tecton)GameObjects.get("t1");
         Insect i = (Insect)GameObjects.get("i");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
         FungusBody fb = (FungusBody)GameObjects.get("fb");
 
         t1.Break();
-        System.out.println(">[t1].Break()");
+        System.out.println(">[Tecton].Break()");
     }
     /**
      * Teszt: hifa felszódás sikeres
@@ -436,7 +441,7 @@ public class Tester {
         Hypha h2 = (Hypha)GameObjects.get("h2");
 
         boolean ans = t3.AbsorbHyphas();
-        System.out.println(">[t3].AbsorbHyphas()");
+        System.out.println(">[Tecton].AbsorbHyphas()");
         System.out.println(ans ? "<true" : "<false");
     }
     /**
@@ -445,7 +450,7 @@ public class Tester {
     public void Test_HyphaAbsorbUnsuccessful(){
         Tecton t1 = (Tecton)GameObjects.get("t1");
         boolean ans = t1.AbsorbHyphas();
-        System.out.println(">[t1].AbsorbHyphas()");
+        System.out.println(">[Tecton].AbsorbHyphas()");
         System.out.println(ans ? "<true" : "<false");
     }
 
@@ -611,7 +616,7 @@ public class Tester {
         fb.ProduceSpore();
         System.out.println(">[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
         int newSporeCount = fb.GetSporeCount();
-        System.out.println("Test_ProduceSporeUnsuccessful is successful: "+((newSporeCount==oldSporeCount)?"true":"false"));
+        System.out.println("Test_ProduceSporeUnsuccessful is successful: "+((newSporeCount==oldSporeCount)?"<true":"<false"));
     }
 
     /**
@@ -633,7 +638,7 @@ public class Tester {
         System.out.println(">[FungusBody].Die()");
         fb.Die();
         boolean newIsDead = fb.GetIsDead();
-        System.out.println("Test_FungusBodyDieUnsuccessful is successful: "+((newIsDead != oldIsDead)?"true":"false"));
+        System.out.println("Test_FungusBodyDieUnsuccessful is successful: "+((newIsDead != oldIsDead)?"<true":"<false"));
     }
 
     /**
