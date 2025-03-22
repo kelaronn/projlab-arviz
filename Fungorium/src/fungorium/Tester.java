@@ -439,27 +439,34 @@ public class Tester {
         System.out.println("[FungusBody].SetSporeCount(4)");
         fb.SetSporeCount(4);
         int step = 0;
-        List<List<Integer>> oldNeighboursSporeCount = new ArrayList<>();
-        for (Tecton tecton : t1.GetNeighbours()) {
-            for (Tecton tectonn : tecton.GetNeighbours()) {
-                oldNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
-            }
-            step++;
+        List<List<Integer>> oldNeighboursNeighboursSporeCount = new ArrayList<>();
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            oldNeighboursNeighboursSporeCount.add(new ArrayList<>());
         }
-        step = 0;
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            for (int j = 0; j < t1.GetNeighbours().get(i).GetNeighbours().size(); j++) {
+                if(!t1.GetNeighbours().get(i).GetNeighbours().get(j).equals(t1)){
+                    oldNeighboursNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
+                }
+            }
+        }
         System.out.println("[FugusBody].ShootSpores()");
         fb.ShootSpores();
         List<List<Integer>> newNeighboursSporeCount = new ArrayList<>();
-        for (Tecton tecton : t1.GetNeighbours()) {
-            for (Tecton tectonn : tecton.GetNeighbours()) {
-                newNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            newNeighboursSporeCount.add(new ArrayList<>());
+        }
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            for (int j = 0; j < t1.GetNeighbours().get(i).GetNeighbours().size(); j++) {
+                if(!t1.GetNeighbours().get(i).GetNeighbours().get(j).equals(t1)){
+                    newNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
+                }
             }
-            step++;
         }
         boolean successful = true;
-        for(int i = 0; i < oldNeighboursSporeCount.size(); i++){
-            for(int j = 0; j < oldNeighboursSporeCount.get(i).size(); j++){
-                if (!(newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursSporeCount.get(i).get(j).intValue()+1))) {
+        for(int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++){
+            for(int j = 0; j < oldNeighboursNeighboursSporeCount.get(i).size(); j++){
+                if (!(newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursNeighboursSporeCount.get(i).get(j).intValue()+1))) {
                     successful = false;
                     break;
                 }
@@ -467,6 +474,12 @@ public class Tester {
             if(!successful){
                 break;
             }
+        }
+        for (int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++) {
+            System.out.println("oldNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
+        }
+        for (int i = 0; i < newNeighboursSporeCount.size(); i++) {
+            System.out.println("oldNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
         }
         System.out.println("Test_AdvancedShootSporesSuccessful is successful: "+((successful)?"true":"false"));
     }
@@ -536,7 +549,7 @@ public class Tester {
         fb.ProduceSpore();
         System.out.println("[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
         int newSporeCount = fb.GetSporeCount();
-        System.out.println("Test_ProduceSpore is successful: "+((newSporeCount==oldSporeCount)?"true":"false"));
+        System.out.println("Test_ProduceSporeUnsuccessful is successful: "+((newSporeCount==oldSporeCount)?"true":"false"));
     }
 
     /**
@@ -558,7 +571,7 @@ public class Tester {
         System.out.println("[FungusBody].Die()");
         fb.Die();
         boolean newIsDead = fb.GetIsDead();
-        System.out.println("Test_FungusBodyDieSuccessful is successful: "+((newIsDead != oldIsDead)?"true":"false"));
+        System.out.println("Test_FungusBodyDieUnsuccessful is successful: "+((newIsDead != oldIsDead)?"true":"false"));
     }
 
     /**
@@ -591,7 +604,7 @@ public class Tester {
                 break;
             }
         }
-        System.out.println("Test_BasicShootSporesSuccessful is successful: "+((successful)?"true":"false"));
+        System.out.println("Test_BasicShootSporesUnsuccessful is successful: "+((successful)?"true":"false"));
     }
     
     /**
@@ -605,32 +618,38 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println("[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
-        System.out.println("[FungusBody].SetAge(4)");
+        System.out.println("[FungusBody].SetAge(5)");
         fb.SetAge(4);
         System.out.println("[FungusBody].SetSporeCount(4)");
         fb.SetSporeCount(4);
-        int step = 0;
-        List<List<Integer>> oldNeighboursSporeCount = new ArrayList<>();
-        for (Tecton tecton : t1.GetNeighbours()) {
-            for (Tecton tectonn : tecton.GetNeighbours()) {
-                oldNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
-            }
-            step++;
+        List<List<Integer>> oldNeighboursNeighboursSporeCount = new ArrayList<>();
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            oldNeighboursNeighboursSporeCount.add(new ArrayList<>());
         }
-        step = 0;
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            for (int j = 0; j < t1.GetNeighbours().get(i).GetNeighbours().size(); j++) {
+                if(!t1.GetNeighbours().get(i).GetNeighbours().get(j).equals(t1)){
+                    oldNeighboursNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
+                }
+            }
+        }
         System.out.println("[FugusBody].ShootSpores()");
         fb.ShootSpores();
         List<List<Integer>> newNeighboursSporeCount = new ArrayList<>();
-        for (Tecton tecton : t1.GetNeighbours()) {
-            for (Tecton tectonn : tecton.GetNeighbours()) {
-                newNeighboursSporeCount.get(step).add(tectonn.GetSpores().size());
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            newNeighboursSporeCount.add(new ArrayList<>());
+        }
+        for (int i = 0; i < t1.GetNeighbours().size(); i++) {
+            for (int j = 0; j < t1.GetNeighbours().get(i).GetNeighbours().size(); j++) {
+                if(!t1.GetNeighbours().get(i).GetNeighbours().get(j).equals(t1)){
+                    newNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
+                }
             }
-            step++;
         }
         boolean successful = true;
-        for(int i = 0; i < oldNeighboursSporeCount.size(); i++){
-            for(int j = 0; j < oldNeighboursSporeCount.get(i).size(); j++){
-                if ((newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursSporeCount.get(i).get(j).intValue()+1))) {
+        for(int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++){
+            for(int j = 0; j < oldNeighboursNeighboursSporeCount.get(i).size(); j++){
+                if ((newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursNeighboursSporeCount.get(i).get(j).intValue()+1))) {
                     successful = false;
                     break;
                 }
@@ -639,6 +658,12 @@ public class Tester {
                 break;
             }
         }
-        System.out.println("Test_AdvancedShootSporesUnsuccessful is successful: "+((successful)?"true":"false"));
+        for (int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++) {
+            System.out.println("oldNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
+        }
+        for (int i = 0; i < newNeighboursSporeCount.size(); i++) {
+            System.out.println("oldNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
+        }
+        System.out.println("Test_AdvancedShootSporesSuccessful is successful: "+((successful)?"true":"false"));
     }
 }
