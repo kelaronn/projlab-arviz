@@ -415,24 +415,27 @@ public class Tester {
     /**
      * Gombatest sikeres halála
      */
-    public void Test_FungusBodyDie(){
-        Fungus f = new Fungus();
+    public void Test_FungusBodyDieSuccessful(){
+        ShootSporesInitFunction();
         System.out.println("[Fungus].Fungus()");
-
-        NarrowTecton t = new NarrowTecton();
+        Fungus f = (Fungus)ShootSporesInit.get("f");
         System.out.println("[NarrowTecton].NarrowTecton()");
-
-        FungusBody fb=new FungusBody(t,f, true, 6, false, 0, 0);
-        System.out.println("[FungusBody].FungusBody(t,f,true, 6, false, 0, 0)");
-
+        NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
+        System.out.println("[FungusBody].FungusBody()");
+        FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("[FungusBody].SetAge(6)");
+        fb.SetAge(6);
+        boolean oldIsDead = fb.GetIsDead();
         System.out.println("[FungusBody].Die()");
         fb.Die();
+        boolean newIsDead = fb.GetIsDead();
+        System.out.println("Test_FungusBodyDieSuccessful is successful: "+((newIsDead != oldIsDead)?"true":"false"));
     }
 
     /**
      * Gombatest sikeres spóratermelése
      */
-    public void Test_ProduceSpore(){
+    public void Test_ProduceSporeSuccessful(){
         ShootSporesInitFunction();
         System.out.println("[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -453,12 +456,50 @@ public class Tester {
         System.out.println("Test_ProduceSpore is successful: "+((newSporeCount>oldSporeCount)?"true":"false"));
     }
 
+    /**
+     * Gombatest sikertelen spóratermelése, mert már halott
+     */
     public void Test_ProduceSporeUnsuccessful(){
-        //
+        ShootSporesInitFunction();
+        System.out.println("[Fungus].Fungus()");
+        Fungus f = (Fungus)ShootSporesInit.get("f");
+        System.out.println("[NarrowTecton].NarrowTecton()");
+        NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
+        System.out.println("[FungusBody].FungusBody()");
+        FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("[FungusBody].SetAge(5)");
+        fb.SetAge(5);
+        System.out.println("[FungusBody].SetShotsLeft(0)");
+        fb.SetShotsLeft(0);
+        System.out.println("[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
+        int oldSporeCount = fb.GetSporeCount();
+        System.out.println("[FungusBody].ProduceSpore()");
+        fb.ProduceSpore();
+        System.out.println("[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
+        int newSporeCount = fb.GetSporeCount();
+        System.out.println("Test_ProduceSpore is successful: "+((newSporeCount==oldSporeCount)?"true":"false"));
     }
 
+    /**
+     * Gombatest sikertelen halála, mert már halott
+     */
     public void Test_FungusBodyDieUnsuccessful(){
-        //
+        ShootSporesInitFunction();
+        System.out.println("[Fungus].Fungus()");
+        Fungus f = (Fungus)ShootSporesInit.get("f");
+        System.out.println("[NarrowTecton].NarrowTecton()");
+        NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
+        System.out.println("[FungusBody].FungusBody()");
+        FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("[FungusBody].SetAge(6)");
+        fb.SetAge(6);
+        System.out.println("[FungusBody].SetShotsLeft(0)");
+        fb.SetShotsLeft(0);
+        boolean oldIsDead = fb.GetIsDead();
+        System.out.println("[FungusBody].Die()");
+        fb.Die();
+        boolean newIsDead = fb.GetIsDead();
+        System.out.println("Test_FungusBodyDieSuccessful is successful: "+((newIsDead != oldIsDead)?"true":"false"));
     }
 
     public void Test_ShootSporesUnsuccessful(){

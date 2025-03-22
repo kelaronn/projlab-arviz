@@ -113,10 +113,10 @@ public class Main {
                     tester.Test_ShootSpores(sporesCount, shotsLeft,  isDead, age);
                     break;
                 case 10:
-                    tester.Test_FungusBodyDie();
+                    tester.Test_FungusBodyDieSuccessful();
                     break;
                 case 11:
-                    tester.Test_ProduceSpore();
+                    tester.Test_ProduceSporeSuccessful();
                     break;
                 default:
                     System.out.println("There is no such option, please try again.");

@@ -110,6 +110,9 @@ public class FungusBody {
     public void SetAge(int a){
         if(a >= 0){
             age=a;
+            if (a >= 5) {
+                this.SetIsDeveloped(true);
+            }
         }
     }
 
@@ -151,6 +154,9 @@ public class FungusBody {
     public void SetShotsLeft(int i){
         if(i >= 0){
             shotsLeft=i;
+            if (i == 0) {
+                this.SetIsDead(true);
+            }
         }
     }
 
@@ -243,7 +249,6 @@ public class FungusBody {
         System.out.println("[Tecton].AbsorbHyphas()");
         isDead=true;*/
         if(!this.GetIsDead()){
-            this.SetIsDead(true);
             Hypha sameTypeHypha = null;
             for (Hypha hypha : this.GetTecton().GetHyphas()) {
                 if(hypha.GetHostFungus().equals(this.GetHostFungus())){
@@ -254,11 +259,12 @@ public class FungusBody {
             if(sameTypeHypha != null){
                 sameTypeHypha.Atrophy();
             }
-            System.out.println("Die success.");
+            this.SetIsDead(true);
+            System.out.println("Die() success.");
         }
         
         else{
-            System.out.println("Die unsuccess, because FungusBody is already dead.");
+            System.out.println("Die() unsuccess, because FungusBody is already dead.");
         }
     }
 
