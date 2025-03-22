@@ -39,22 +39,49 @@ public class Main {
                     System.out.println("Atrophy of Hypha selected.");
                     break;
                 case 3:
-                    System.out.println("Grow FungusBody selected.");
+                    System.out.println("Grow FungusBody selected."); //ez egész jól néz ki
+                    Tester tester3 = new Tester();
+                    tester3.TectonBreakInit();
+                    tester3.Test_GrowFungusBodySuccess();
+                    tester3.Test_GrowFungusBodyOnWeakTecton();
+                    tester3.Test_GrowFungusBodyOnBody();
+                    tester3.Test_GrowFungusBodyNotEnoughSpores();
                     break;
                 case 4:
+                    Tester tester4 = new Tester();
+//                    tester4.TectonBreakInit();
+//                    Tecton t3 = (Tecton)tester4.GameObjects.get("t3"); // így lehet használni más függvényekben
+//                    for (Spore s : t3.spores )
+//                        System.out.println(s.getNutritionValue()); // példa
+
                     System.out.println("Full Tecton Breaks selected.");
+                    tester4.Test_FullTectonBreaks();
                     break;
                 case 5:
                     System.out.println("Hypha Absorb selected.");
+                    Tester tester5 = new Tester();
+                    tester5.TectonBreakInit();
+                    tester5.Test_HyphaAbsorbSuccessful();
+                    tester5.Test_HyphaAbsorbUnsuccessful();
                     break;
                 case 6:
                     System.out.println("Insect Move selected.");
+                    Tester tester6 = new Tester();
+                    tester6.Test_MoveUnsuccessful();
+                    tester6.Test_MoveSuccessful();
                     break;
                 case 7:
                     System.out.println("Insect Cut selected.");
+                    Tester tester7 = new Tester();
+                    tester7.Test_CutNotAble();
+                    tester7.Test_CutNoBridge();
+                    tester7.Test_CutSuccessful();
                     break;
                 case 8:
                     System.out.println("Insect EatSpore selected.");
+                    Tester tester8 = new Tester();
+                    tester8.Test_EatSporeUnsuccessful();
+                    tester8.Test_EatSporeSuccessful();
                     break;
                 case 9:
                     System.out.println("Enter spores count: ");
@@ -86,10 +113,10 @@ public class Main {
                     tester.Test_ShootSpores(sporesCount, shotsLeft,  isDead, age);
                     break;
                 case 10:
-                    tester.Test_FungusBodyDie();
+                    tester.Test_FungusBodyDieSuccessful();
                     break;
                 case 11:
-                    tester.Test_ProduceSpore();
+                    tester.Test_ProduceSporeSuccessful();
                     break;
                 default:
                     System.out.println("There is no such option, please try again.");
