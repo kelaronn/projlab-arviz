@@ -113,6 +113,9 @@ public class FungusBody {
             if (a >= 5) {
                 this.SetIsDeveloped(true);
             }
+            else{
+                this.SetIsDeveloped(false);
+            }
         }
     }
 
@@ -231,10 +234,12 @@ public class FungusBody {
                 nns=neighbours.get(i).GetNeighbours();
                 System.out.println(">[Tecton].GetNeighbours()");
                 for(int j=0; j < nns.size(); ++j) {
-                    nns.get(j).AddSpore(hostFungus);
-                    System.out.println(">[Tecton].AddSpore()");
+                    if(!this.GetTecton().equals(nns.get(j))){
+                        nns.get(j).AddSpore(hostFungus);
+                        System.out.println("[Tecton].AddSpore()");
+                    }
+                }
             }
-        }
         }
         sporeCount-=4;
         shotsLeft--;
