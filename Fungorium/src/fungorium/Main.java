@@ -66,12 +66,22 @@ public class Main {
                     break;
                 case 6:
                     System.out.println("Insect Move selected.");
+                    Tester tester6 = new Tester();
+                    tester6.Test_MoveUnsuccessful();
+                    tester6.Test_MoveSuccessful();
                     break;
                 case 7:
                     System.out.println("Insect Cut selected.");
+                    Tester tester7 = new Tester();
+                    tester7.Test_CutNotAble();
+                    tester7.Test_CutNoBridge();
+                    tester7.Test_CutSuccessful();
                     break;
                 case 8:
                     System.out.println("Insect EatSpore selected.");
+                    Tester tester8 = new Tester();
+                    tester8.Test_EatSporeUnsuccessful();
+                    tester8.Test_EatSporeSuccessful();
                     break;
                 case 9:
                     System.out.println("Enter spores count: ");

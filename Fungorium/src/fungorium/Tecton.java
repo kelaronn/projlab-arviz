@@ -84,7 +84,7 @@ public abstract class Tecton {
         if( !insects.isEmpty() ){
             for(Insect i : insects){
                 t2.AddInsect(i);
-                i.setTecton(t2);
+                i.SetTecton(t2);
             }
         }
 

@@ -2,7 +2,7 @@ package fungorium;
 
 public class Spore {
     private int nutritionValue;
-    private int effectDurr;
+    private int effectDurr = 2;
     private Fungus hostFungus;
     private Tecton tecton;
     
@@ -33,7 +33,7 @@ public class Spore {
      * @param i rovar
      * @return sikeres-e a hatás kifejtése
      */
-    public boolean giveEffect(Insect i){
+    public boolean GiveEffect(Insect i){
         return false;
     }
 
@@ -41,7 +41,7 @@ public class Spore {
      * Tápérték lekérdezése
      * @return tápérték
      */
-    public int getNutritionValue(){
+    public int GetNutritionValue(){
         return nutritionValue;
     }
 
@@ -49,7 +49,7 @@ public class Spore {
      * Hatásidő lekérdezése
      * @return hatásidő
      */
-    public int getEffectDurr(){
+    public int GetEffectDurr(){
         return effectDurr;
     }
 
@@ -57,7 +57,7 @@ public class Spore {
      * Host gombatest lekérdezése
      * @return host gombatest
      */
-    public Fungus getHostFungus(){
+    public Fungus GetHostFungus(){
         return hostFungus;
     }
 
@@ -65,7 +65,7 @@ public class Spore {
      * Técton lekérdezése
      * @return técton
      */
-    public Tecton getTecton(){
+    public Tecton GetTecton(){
         return tecton;
     }
 
@@ -73,7 +73,7 @@ public class Spore {
      * Tápérték beállítása
      * @param nv tápérték
      */
-    public void setNutritionValue(int nv){
+    public void SetNutritionValue(int nv){
         nutritionValue = nv;
     }
 
@@ -81,7 +81,7 @@ public class Spore {
      * Hatásidő beállítása
      * @param ed hatásidő
      */
-    public void setEffectDurr(int ed){
+    public void SetEffectDurr(int ed){
         effectDurr = ed;
     }
 
@@ -89,7 +89,7 @@ public class Spore {
      * Host gombatest beállítása
      * @param f host gombatest
      */
-    public void setHostFungus(Fungus f){
+    public void SetHostFungus(Fungus f){
         hostFungus = f;
     }
 
@@ -97,7 +97,7 @@ public class Spore {
      * Técton beállítása
      * @param t técton
      */
-    public void setTecton(Tecton t){
+    public void SetTecton(Tecton t){
         tecton = t;
     }
 
