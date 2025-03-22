@@ -49,12 +49,6 @@ public class Main {
                     break;
                 case 4:
                     Tester tester4 = new Tester();
-//                    tester4.TectonBreakInit();
-//                    Tecton t3 = (Tecton)tester4.GameObjects.get("t3"); // így lehet használni más függvényekben
-//                    for (Spore s : t3.spores )
-//                        System.out.println(s.getNutritionValue()); // példa
-
-                    System.out.println("Full Tecton Breaks selected.");
                     tester4.Test_FullTectonBreaks();
                     break;
                 case 5:
@@ -71,45 +65,17 @@ public class Main {
                     tester6.Test_MoveSuccessful();
                     break;
                 case 7:
-                    System.out.println("Insect Cut selected.");
                     Tester tester7 = new Tester();
                     tester7.Test_CutNotAble();
                     tester7.Test_CutNoBridge();
                     tester7.Test_CutSuccessful();
                     break;
                 case 8:
-                    System.out.println("Insect EatSpore selected.");
                     Tester tester8 = new Tester();
                     tester8.Test_EatSporeUnsuccessful();
                     tester8.Test_EatSporeSuccessful();
                     break;
                 case 9:
-                    /*System.out.println("Enter spores count: ");
-                    int sporesCount = getInput(scanner);
-                    System.out.println("Enter shots left: ");
-                    int shotsLeft = getInput(scanner);
-                    
-                    System.out.println("Is the fungus body dead? (1 - yes / 2 - no): ");
-                    boolean isDead = false;
-                    switch(getInput(scanner)){
-                        case 1:
-                            isDead = true;
-                            break;
-                        case 2:
-                            isDead = false;
-                            break;
-                        default:
-                            System.out.println("There is no such option, please try again.");
-                            break;
-                    }
-                    System.out.println("Enter age (0-5): ");
-                    int tempinp = getInput(scanner);
-                    if(tempinp < 0 || tempinp > 5){ 
-                        System.out.println("There is no such option, please try again.");
-                        break;
-                    }
-                    int age = tempinp;*/
-
                     tester.Test_BasicShootSporesSuccessful();
                     break;
                 case 10:
