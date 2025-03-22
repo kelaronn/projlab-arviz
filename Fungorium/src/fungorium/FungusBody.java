@@ -221,7 +221,7 @@ public class FungusBody {
         if (neighbours == null) {
             System.err.println("Error: The tecton of the fungus body has no neighbours.");
             return;
-        } //TODO: Tesztelés után uncommentelni
+        } 
 
         for(int i=0; i<neighbours.size(); ++i) {
             neighbours.get(i).AddSpore(hostFungus);

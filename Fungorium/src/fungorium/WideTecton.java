@@ -6,7 +6,12 @@ import java.util.List;
 
 public class WideTecton extends Tecton {
 
-
+    /**
+     * ősosztályban definiált fv. felüldefiniálása
+     * @param fungus a gombafonalhoz tartozó gombafaj
+     * @param t0 a gombafonalhoz tartozó előző tekton 
+     * @return true, ha sikeresen hozzáadható a hifa, egyébként false
+     */
     @Override
     public boolean AddHypha(Fungus fungus, Tecton t0) {
         // lehet rajta más fajú hifa, de ugyanolyan fajú nem.
