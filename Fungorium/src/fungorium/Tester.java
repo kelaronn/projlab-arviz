@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Tester {
     HashMap GameObjects = new HashMap<String, Object>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
+    private HashMap<String, Object> HyphaInit = new HashMap<>();
 
     public void TectonBreakInit(){
         InsectColony ic = new InsectColony();
@@ -49,8 +50,8 @@ public class Tester {
         GameObjects.put("s",t1.spores.getLast());
     }
 
-    public void GrowHyphaSuccessful(){
-        // Init start ->
+    public void HyphaInitFunction(){
+        // HyphaInit start ->
         Fungus pf = new Fungus();
         Fungus kf = new Fungus();
         NarrowTecton nt1 = new NarrowTecton();
@@ -77,12 +78,80 @@ public class Tester {
         wt1.AddNeighbour(nt1);
         wt1.AddNeighbour(nt2);
         wt1.AddNeighbour(nt3);
-        // HyphaInit end <-
-        boolean GrowHyphaSuccessful = nt3.AddHypha(pf, nt1);
-        System.out.println(GrowHyphaSuccessful);
+        HyphaInit = new HashMap<>();
+        HyphaInit.put("pf", pf);
+        HyphaInit.put("kf", kf);
+        HyphaInit.put("nt1", nt1);
+        HyphaInit.put("nt2", nt2);
+        HyphaInit.put("nt3", nt3);
+        HyphaInit.put("wt1", wt1);
+        HyphaInit.put("ph1", ph1);
+        HyphaInit.put("kh1", kh1);
+        //HyphaInit end <-
     }
 
-    public void Test_GrowFungusBody(){}
+    public void Test_GrowHyphaSuccessful(){
+        HyphaInitFunction();
+        Fungus pf = (Fungus)HyphaInit.get("pf");
+        NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
+        NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
+
+        System.out.println("[nt3].AddHypha()");
+        boolean response = nt3.AddHypha(pf, nt1);
+        System.out.println(response ? "true" : "false");
+    }
+
+    public void Test_GrowHyphaUnsuccessful(){
+        HyphaInitFunction();
+        Fungus pf = (Fungus)HyphaInit.get("pf");
+        NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
+        NarrowTecton nt2 = (NarrowTecton)HyphaInit.get("nt2");
+
+        System.out.println("[nt2].AddHypha()");
+        boolean response = nt2.AddHypha(pf, nt1);
+        System.out.println(response ? "true" : "false");
+    }
+
+    public void Test_GrowTwoDifferentHyphaOnWideTectonSuccessful(){
+        HyphaInitFunction();
+        Fungus pf = (Fungus)HyphaInit.get("pf");
+        Fungus kf = (Fungus)HyphaInit.get("kf");
+        NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
+        NarrowTecton nt2 = (NarrowTecton)HyphaInit.get("nt2");
+        WideTecton wt1 = (WideTecton)HyphaInit.get("wt1");
+
+        System.out.println("[wt1].AddHypha()");
+        boolean response1 = wt1.AddHypha(pf, nt1);
+        System.out.println(response1 ? "true" : "false");
+        System.out.println("[wt1].AddHypha()");
+        boolean response2 = wt1.AddHypha(kf, nt2);
+        System.out.println(response2 ? "true" : "false");
+    }
+
+    public void Test_AtrophyOfHypha(){
+        Test_GrowHyphaSuccessful();
+        NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
+        System.out.println("[nt1].GetFungusBody().Die()");
+        nt1.GetFungusBody().Die();
+    }
+
+    public void Test_GrowSameTypeHyphaOnWideTectonUnsuccessful(){
+        Fungus pf = (Fungus)HyphaInit.get("pf");
+        NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
+        NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
+        WideTecton wt1 = (WideTecton)HyphaInit.get("wt1");
+
+        System.out.println("[nt3].AddHypha()");
+        boolean response1 = nt3.AddHypha(pf, nt1);
+        System.out.println(response1 ? "true" : "false");
+        System.out.println("[wt1].AddHypha()");
+        boolean response2 = wt1.AddHypha(pf, nt3);
+        System.out.println(response2 ? "true" : "false");
+        System.out.println("[wt1].AddHypha()");
+        boolean response3 = wt1.AddHypha(pf, nt1);
+        System.out.println(response3 ? "true" : "false");
+    }
+
     public void Test_GrowFungusBodyOnWeakTecton(){
         Tecton t2 = (Tecton)GameObjects.get("t2");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
@@ -157,6 +226,9 @@ public class Tester {
         t1.AbsorbHyphas();
         System.out.println("[t1].AbsorbHyphas()");
     }
+
+    public void Test_GrowFungusBody(){}
+
     /**
      * ShootSpores függvény a spórák kilövéséhez. Fejlett állapotban a szomszédok szomszédjára lő
      * Normál esetben csak a szomszédos tektonokra lő spórát
