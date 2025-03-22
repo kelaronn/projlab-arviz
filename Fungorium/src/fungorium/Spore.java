@@ -62,8 +62,8 @@ public class Spore {
     }
 
     /**
-     * Técton lekérdezése
-     * @return técton
+    * Tekton lekérdezése
+     * @return tekton
      */
     public Tecton GetTecton(){
         return tecton;
@@ -94,8 +94,8 @@ public class Spore {
     }
 
     /**
-     * Técton beállítása
-     * @param t técton
+     * Tekton beállítása
+     * @param t tekton
      */
     public void SetTecton(Tecton t){
         tecton = t;

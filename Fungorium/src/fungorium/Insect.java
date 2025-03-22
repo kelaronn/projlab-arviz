@@ -44,7 +44,7 @@ public class Insect {
 
     /**
      * Mozgás
-     * @param t técton
+     * @param t tekton
      * @return sikeres-e a mozgás
      */
     public boolean Move(Tecton t){
@@ -61,7 +61,7 @@ public class Insect {
 
     /**
      * Vágás
-     * @param t técton
+     * @param t tekton
      * @return sikeres-e a vágás
      */
     public boolean Cut(Tecton t){
@@ -128,8 +128,8 @@ public class Insect {
     }
 
     /**
-     * Técton lekérdezése
-     * @return técton
+     * Tekton lekérdezése
+     * @return tekton
      */         
     public Tecton GetTecton(){
         return tecton;
@@ -168,8 +168,8 @@ public class Insect {
     }
 
     /**
-     * Técton beállítása
-     * @param t técton
+     * Tekton beállítása
+    * @param t tekton
      */
     public void SetTecton(Tecton t){
         tecton = t;
