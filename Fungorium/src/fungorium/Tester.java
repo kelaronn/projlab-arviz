@@ -139,13 +139,14 @@ public class Tester {
         NarrowTecton n2 = new NarrowTecton();
         NarrowTecton n3 = new NarrowTecton();
         Spore s = new Spore(2, 0, f);
+        s.SetTecton(n2);
         SpeedSpore sp = new SpeedSpore(2, 2, f);
         Insect i1 = new Insect();
         Insect i2 = new Insect();
         Hypha h = new Hypha(new ArrayList<>(), f, new ArrayList<>(List.of(n2,n3)));
 
         i1.SetHostColony(ic);
-        i1.SetTecton(n1);
+        i1.SetTecton(n2);
         i2.SetHostColony(ic);
         i2.SetTecton(n2);
 
