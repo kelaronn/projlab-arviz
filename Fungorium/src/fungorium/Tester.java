@@ -9,7 +9,9 @@ public class Tester {
     HashMap GameObjects = new HashMap<String, Object>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
     private HashMap<String, Object> ShootSporesInit = new HashMap<>();
     private HashMap<String, Object> InsectInit = new HashMap<>();
-
+    /**
+     * tekton inicializálás
+     */
     public void TectonBreakInit(){
         InsectColony ic = new InsectColony();
         GameObjects.put("ic", ic);
@@ -51,7 +53,9 @@ public class Tester {
         t1.AddSpore(fungus);
         GameObjects.put("s",t1.spores.getLast());
     }
-
+    /**
+     * gombafonal inicializálás
+     */
     public void HyphaInitFunction(){
         // HyphaInit start ->
         Fungus pf = new Fungus();
@@ -95,7 +99,9 @@ public class Tester {
         HyphaInit.put("kh1", kh1);
         // HyphaInit end <-
     }
-
+    /**
+     * spóra lövéséhez szükséges inicializálás
+     */
     public void ShootSporesInitFunction(){
         // ShootSporesInit start ->
         Fungus f = new Fungus();
@@ -123,7 +129,9 @@ public class Tester {
         ShootSporesInit.put("h", h);
         // ShootSporesInit end <-
     }
-
+    /**
+     * rovar inicializálás
+     */
     public void InsectInitFunction(){
         Fungus f = new Fungus();
         InsectColony ic = new InsectColony();
@@ -164,7 +172,9 @@ public class Tester {
         InsectInit.put("s", s);
         InsectInit.put("sp", sp);
     }
-
+    /**
+     * Teszt: rovar sikeresen megeszi a spórát
+     */
     public void Test_EatSporeSuccessful(){
         InsectInitFunction();
         Fungus f = (Fungus)InsectInit.get("f");
@@ -176,7 +186,9 @@ public class Tester {
         System.out.println("[i2].EatSpore(s)");
         i2.EatSpore(s);
     }
-
+    /**
+     * Teszt: rovar nem tudja megenni a spórát
+     */
     public void Test_EatSporeUnsuccessful(){
         InsectInitFunction();
         Fungus f = (Fungus)InsectInit.get("f");
@@ -189,6 +201,9 @@ public class Tester {
         i1.EatSpore(s);
     }
 
+    /**
+     * Teszt: rovar el tudja vágni a gombafonalat
+     */
     public void Test_CutSuccessful(){
         InsectInitFunction();
         Fungus f = (Fungus)InsectInit.get("f");
@@ -201,6 +216,9 @@ public class Tester {
         System.out.println(response ? "true" : "false");
     }
 
+    /**
+     * Teszt: rovar nem tudja levágni a gombafonalat, mert nincs fonál a résen
+     */
     public void Test_CutNoBridge(){
         InsectInitFunction();
         Fungus f = (Fungus)InsectInit.get("f");
@@ -213,6 +231,9 @@ public class Tester {
         System.out.println(response ? "true" : "false");
     }
 
+    /**
+     * Teszt: rovar nem tudja elvágni a gombafonalat, mert nem képes rá
+     */
     public void Test_CutNotAble(){
         InsectInitFunction();
         Fungus f = (Fungus)InsectInit.get("f");
@@ -226,6 +247,9 @@ public class Tester {
         System.out.println(response ? "true" : "false");
     }
 
+    /**
+     * Teszt: rovar mozgás sikeres
+     */
     public void Test_MoveSuccessful(){
         InsectInitFunction();
         Fungus f = (Fungus)InsectInit.get("f");
@@ -238,6 +262,9 @@ public class Tester {
         System.out.println(response ? "true" : "false");
     }
 
+    /**
+     * Teszt: rovar mozgás sikertelen
+     */
     public void Test_MoveUnsuccessful(){
         InsectInitFunction();
         Fungus f = (Fungus)InsectInit.get("f");
@@ -250,6 +277,9 @@ public class Tester {
         System.out.println(response ? "true" : "false");
     }
 
+    /**
+     * Teszt: gombafonal növesztés sikeres
+     */ 
     public void Test_GrowHyphaSuccessful(){
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
@@ -261,6 +291,9 @@ public class Tester {
         System.out.println(response ? "true" : "false");
     }
 
+    /**
+     * Teszt: gombafonal növesztés sikertelen
+     */ 
     public void Test_GrowHyphaUnsuccessful(){
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
@@ -272,6 +305,9 @@ public class Tester {
         System.out.println(response ? "true" : "false");
     }
 
+    /**
+     * Teszt: két különböző típusú gombafonal növesztés sikeres (wide tektonon)
+     */
     public void Test_GrowTwoDifferentHyphaOnWideTectonSuccessful(){
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
@@ -288,6 +324,9 @@ public class Tester {
         System.out.println(response2 ? "true" : "false");
     }
 
+    /**
+     * Teszt: gombafonal felszívódás sikeres
+     */
     public void Test_AtrophyOfHypha(){
         Test_GrowHyphaSuccessful();
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
@@ -295,6 +334,9 @@ public class Tester {
         nt1.GetFungusBody().Die();
     }
 
+    /**
+     * Teszt: gombatest növesztés sikertelen, mert már van azonos típusú hifa a wide tektonon
+     */
     public void Test_GrowSameTypeHyphaOnWideTectonUnsuccessful(){
         Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
@@ -312,6 +354,9 @@ public class Tester {
         System.out.println(response3 ? "true" : "false");
     }
 
+    /**
+     * Teszt: gombatest növesztés sikeres, mert nincs gombatest a tektonon
+     */
     public void Test_GrowFungusBodyOnWeakTecton(){
         Tecton t2 = (Tecton)GameObjects.get("t2");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
@@ -321,6 +366,9 @@ public class Tester {
         System.out.println(ans ? "true":"false");
     }
 
+    /**
+     * Teszt: gombatest növesztés sikeres
+     */
     public void Test_GrowFungusBodyOnBody(){
         Tecton t1 = (Tecton)GameObjects.get("t1");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
@@ -330,6 +378,9 @@ public class Tester {
         System.out.println(ans ? "true":"false");
     }
 
+    /**
+     * Teszt: gombatest növesztés sikertelen, mert nincs elég spóra
+     */
     public void Test_GrowFungusBodyNotEnoughSpores(){
         Tecton t3 = (Tecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
@@ -345,6 +396,9 @@ public class Tester {
         System.out.println(ans ? "true":"false");
     }
 
+    /**
+     * Teszt: gombatest növesztés sikeres
+     */
     public void Test_GrowFungusBodySuccess(){
         Tecton t3 = (Tecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
@@ -361,7 +415,9 @@ public class Tester {
         System.out.println("    [fungus].AddBody(fb2)");
         System.out.println(ans ? "true":"false");
     }
-
+    /**
+     * Teszt: tekton törés sikeres
+     */
     public void Test_FullTectonBreaks(){
         Tecton t1 = (Tecton)GameObjects.get("t1");
         Insect i = (Insect)GameObjects.get("i");
@@ -371,7 +427,9 @@ public class Tester {
         t1.Break();
         System.out.println("[t1].Break()");
     }
-
+    /**
+     * Teszt: hifa felszódás sikeres
+     */
     public void Test_HyphaAbsorbSuccessful(){
         Tecton t3 = (Tecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
@@ -380,7 +438,9 @@ public class Tester {
         t3.AbsorbHyphas();
         System.out.println("[t3].AbsorbHyphas()");
     }
-
+    /**
+     * Teszt: hifa felszódás sikertelen
+     */
     public void Test_HyphaAbsorbUnsuccessful(){
         Tecton t1 = (Tecton)GameObjects.get("t1");
         t1.AbsorbHyphas();

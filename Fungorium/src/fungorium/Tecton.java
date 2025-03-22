@@ -277,26 +277,7 @@ public abstract class Tecton {
         h.GetHostFungus().RemoveHypha(h);
         hyphas.remove(h);
     }
-
-    /**
-     * visszatér a hyphas nevú Hypha lista azon hifájának
-     * referenciájával, amelynek a tectons nevű Tecton tömbjében a függvényt hívó és a
-     * paraméterben lévő tekton referenciája található (tehát a két tekton közötti résen
-     * található fonál), ha van ilyen, egyébként null-al.
-     * @param t
-     * @return
-     */
-//    public Hypha GetHypha(Tecton t){
-//        for(Hypha h : hyphas){
-//            Tecton[] tectons = h.GetTectons();
-//            if( (tectons[0].equals(t) && tectons[1].equals(this) )
-//                    || (tectons[0].equals(this) && tectons[1].equals(t)) ){
-//                return h;
-//            }
-//        }
-//        return null;
-//    }
-
+    
     /**
      * visszatér a hyphas nevű Hypha lista azon
      * hifájának referenciájával, amely hifa tectons nevű Tecton tömjében a két paraméterül
