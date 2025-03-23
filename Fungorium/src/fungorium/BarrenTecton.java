@@ -22,9 +22,9 @@ public class BarrenTecton extends NarrowTecton{
      */
     @Override
     public boolean AbsorbHyphas(){
-        for(Hypha h : hyphas){
-            RemoveHyphaFromTecton(h);
-            System.out.println(">[BarrenTecton].RemoveHyphaFromTecton(h)");
+        for (int i=0; i<hyphas.size(); i++){
+            System.out.println(">[BarrenTecton].RemoveHypha(h)");
+            RemoveHypha(hyphas.get(i));
         }
         return true;
     }

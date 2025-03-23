@@ -86,7 +86,7 @@ public abstract class Tecton {
             System.out.println(">[Tecton].RemoveHypha(this,n)");
         }
         // majd végül a paraméterben kapott hifát is törölni kell
-        RemoveHypha(h);
+        hyphas.remove(h);
     }
 
     /**
@@ -244,11 +244,12 @@ public abstract class Tecton {
      * @param h eltávolítandó hifa
      */
     public void RemoveHypha(Hypha h) {
-        if( !hyphas.remove(h) )
-            System.out.println("Hypha not found");
+        if(h != null && hyphas.contains(h)) {
+            System.out.println(">[Fungus].RemoveHypha(h)");
+            RemoveHyphaFromTecton(h);
+        }
         else
-            h.GetHostFungus().RemoveHypha(h);
-        System.out.println(">[Fungus].RemoveHypha(h)");
+            System.out.println("Hypha not found");
     }
 
     /**
