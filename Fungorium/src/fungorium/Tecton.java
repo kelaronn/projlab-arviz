@@ -86,7 +86,7 @@ public abstract class Tecton {
             System.out.println(">[Tecton].RemoveHypha(this,n)");
         }
         // majd végül a paraméterben kapott hifát is törölni kell
-        //RemoveHypha(h);
+        RemoveHypha(h);
     }
 
     /**
@@ -116,8 +116,8 @@ public abstract class Tecton {
             t2.AddNeighbour(n);
             System.out.println(">[Tecton].AddNeighbour(n)");
         }
-        for(Hypha h : hyphas){
-            RemoveHyphaFromTecton(h);
+        for (int i=0; i < hyphas.size(); i++){
+            RemoveHyphaFromTecton(hyphas.get(i));
             System.out.println(">[Tecton].RemoveHyphaFromTecton(h)");
         }
         if(fungusBody != null){
