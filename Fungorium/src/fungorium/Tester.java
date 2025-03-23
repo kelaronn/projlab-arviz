@@ -19,7 +19,7 @@ public class Tester {
         GameObjects.put("fungus", fungus);
 
         
-        Tecton t1 = new NarrowTecton();
+        NarrowTecton t1 = new NarrowTecton();
         GameObjects.put("t1", t1);
         Insect i = new Insect();
         GameObjects.put("i", i);
@@ -34,12 +34,12 @@ public class Tester {
         h1.GetTectons().add(t1);
         t1.hyphas.add(h1);
 
-        Tecton t2 = new WeakTecton();
+        WeakTecton t2 = new WeakTecton();
         GameObjects.put("t2", t2);
         t2.neighbours.add(t1);
         t1.neighbours.add(t2);
 
-        Tecton t3 = new BarrenTecton();
+        BarrenTecton t3 = new BarrenTecton();
         GameObjects.put("t3", t3);
         Hypha h2 = new Hypha(new ArrayList<>(),fungus,new ArrayList<>());
         GameObjects.put("h2", h2);
@@ -361,7 +361,7 @@ public class Tester {
      */
     public void Test_GrowFungusBodyOnWeakTecton(){
         TectonBreakInit();
-        Tecton t2 = (Tecton)GameObjects.get("t2");
+        WeakTecton t2 = (WeakTecton)GameObjects.get("t2");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         boolean ans = t2.GrowFungusBody(fungus);
@@ -374,7 +374,7 @@ public class Tester {
      */
     public void Test_GrowFungusBodyOnBody(){
         TectonBreakInit();
-        Tecton t1 = (Tecton)GameObjects.get("t1");
+        NarrowTecton t1 = (NarrowTecton)GameObjects.get("t1");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         boolean ans = t1.GrowFungusBody(fungus);
@@ -387,7 +387,7 @@ public class Tester {
      */
     public void Test_GrowFungusBodyNotEnoughSpores(){
         TectonBreakInit();
-        Tecton t3 = (Tecton)GameObjects.get("t3");
+        BarrenTecton t3 = (BarrenTecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         var spores = t3.GetSpores();
@@ -406,7 +406,7 @@ public class Tester {
      */
     public void Test_GrowFungusBodySuccess(){
         TectonBreakInit();
-        Tecton t3 = (Tecton)GameObjects.get("t3");
+        BarrenTecton t3 = (BarrenTecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
 
         boolean ans = t3.GrowFungusBody(fungus);
@@ -427,7 +427,7 @@ public class Tester {
      */
     public void Test_FullTectonBreaks(){
         TectonBreakInit();
-        Tecton t1 = (Tecton)GameObjects.get("t1");
+        NarrowTecton t1 = (NarrowTecton)GameObjects.get("t1");
         Insect i = (Insect)GameObjects.get("i");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
         FungusBody fb = (FungusBody)GameObjects.get("fb");
@@ -440,7 +440,7 @@ public class Tester {
      */
     public void Test_HyphaAbsorbSuccessful(){
         TectonBreakInit();
-        Tecton t3 = (Tecton)GameObjects.get("t3");
+        BarrenTecton t3 = (BarrenTecton)GameObjects.get("t3");
         Fungus fungus = (Fungus)GameObjects.get("fungus");
         Hypha h2 = (Hypha)GameObjects.get("h2");
 
@@ -453,7 +453,7 @@ public class Tester {
      */
     public void Test_HyphaAbsorbUnsuccessful(){
         TectonBreakInit();
-        Tecton t1 = (Tecton)GameObjects.get("t1");
+        NarrowTecton t1 = (NarrowTecton)GameObjects.get("t1");
         boolean ans = t1.AbsorbHyphas();
         System.out.println(">[Tecton].AbsorbHyphas()");
         System.out.println(ans ? "<true" : "<false");
