@@ -254,6 +254,7 @@ public class FungusBody {
         System.out.println("[Tecton].AbsorbHyphas()");
         isDead=true;*/
         if(!this.GetIsDead()){
+            this.SetIsDead(true);
             Hypha sameTypeHypha = null;
             System.out.println(">[FungusBody].GetTecton().GetHyphas()");
             System.out.println(">[Hypha].GetHostFungus() loop");
@@ -268,7 +269,6 @@ public class FungusBody {
                 sameTypeHypha.Atrophy();
                 System.out.println(">[Hypha].Atrophy()");
             }
-            this.SetIsDead(true);
             System.out.println(">[FungusBody].SetIsDead(true)");
             System.out.println("Die() success.");
         }

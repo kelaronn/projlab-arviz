@@ -74,7 +74,8 @@ public abstract class Tecton {
     protected void RemoveHyphaFromTecton(Hypha h) {
         h.GetHostFungus().RemoveHypha(h);
         System.out.println(">[Fungus].RemoveHypha(h)");
-        var hNeighbours = (ArrayList<Hypha>) h.GetNeighbours();
+        //var hNeighbours = (ArrayList<Hypha>) h.GetNeighbours();
+        List<Hypha> hNeighbours = h.GetNeighbours();
         // A paraméter hifa szomszédjait is töröljük a fungusból, mert azok mind résen vannak és így már nincs mihez kötődniük.
         for(Hypha n : hNeighbours){
             n.GetHostFungus().RemoveHypha(n);
@@ -247,6 +248,7 @@ public abstract class Tecton {
         if(h != null && hyphas.contains(h)) {
             System.out.println(">[Fungus].RemoveHypha(h)");
             RemoveHyphaFromTecton(h);
+            //hyphas.remove(h);
         }
         else
             System.out.println("Hypha not found");

@@ -109,8 +109,9 @@ public class Hypha {
     */
     public void Atrophy() {
        // Halmazok a bejárt Hypha-k és az esetleges törlendők nyilvántartására
-       java.util.Set<Hypha> visited = new java.util.HashSet<>();
-       java.util.Set<Hypha> hyphaeToCheck = new java.util.HashSet<>();
+       List<Hypha> visited = new ArrayList<>();
+       List<Hypha> hyphaeToCheck = new ArrayList<>();
+       //hyphaeToCheck = this.GetNeighbours();
        
        // Ellenőrizzük a hálózatot, és gyűjtjük a potenciálisan törlendő Hypha-kat
        boolean hasLivingFungusBody = checkNetworkForLivingFungusBody(this, visited, hyphaeToCheck);
@@ -139,7 +140,7 @@ public class Hypha {
     * @param hyphaeToCheck Az összes bejárt Hypha, amelyeket törölni kell, ha nincs gombatest
     * @return Igaz, ha van élő gombatest, különben hamis
     */
-    private boolean checkNetworkForLivingFungusBody(Hypha hypha, java.util.Set<Hypha> visited, java.util.Set<Hypha> hyphaeToCheck) {
+    private boolean checkNetworkForLivingFungusBody(Hypha hypha, List<Hypha> visited, List<Hypha> hyphaeToCheck) {
        // Ha már meglátogattuk ezt a Hypha-t, kilépünk
        if (visited.contains(hypha)) {
            return false;

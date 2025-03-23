@@ -326,13 +326,22 @@ public class Tester {
     }
 
     /**
-     * Teszt: gombafonal felszívódás sikeres
+     * Teszt: gombafonal sikeres felszívódás 
      */
     public void Test_AtrophyOfHypha(){
-        Test_GrowHyphaSuccessful();
+        HyphaInitFunction();
+        Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
+        NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
+        /*FungusBody zfb = new FungusBody(nt3, pf);
+        nt3.SetFungusBody(zfb);*/
+
+        System.out.println(">[NarrowTecton].AddHypha()");
+        boolean response = nt3.AddHypha(pf, nt1);
         System.out.println(">[NarrowTecton].GetFungusBody().Die()");
         nt1.GetFungusBody().Die();
+        System.err.println("Jóe: "+nt1.GetHyphas().size());
+        System.err.println("Jóe: "+nt3.GetHyphas().size());
     }
 
     /**
