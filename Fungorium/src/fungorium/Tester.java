@@ -282,73 +282,84 @@ public class Tester {
      * Teszt: gombafonal növesztés sikeres
      */ 
     public void Test_GrowHyphaSuccessful(){
+        System.out.println("Initialization start ->");
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
+        System.out.println("<- Initialization end\n");
 
         System.out.println(">[NarrowTecton].AddHypha()");
         boolean response = nt3.AddHypha(pf, nt1);
         System.out.println(response ? "<true" : "<false");
+        boolean successful = (response)?true:false;
+        System.out.println("Test_GrowHyphaSuccessful is successful: "+((successful)?"true":"false"));
     }
 
     /**
      * Teszt: gombafonal növesztés sikertelen
      */ 
     public void Test_GrowHyphaUnsuccessful(){
+        System.out.println("Initialization start ->");
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt2 = (NarrowTecton)HyphaInit.get("nt2");
+        System.out.println("<- Initialization end\n");
 
         System.out.println(">[NarrowTecton].AddHypha()");
         boolean response = nt2.AddHypha(pf, nt1);
         System.out.println(response ? "<true" : "<false");
+        boolean successful = (!response)?true:false;
+        System.out.println("Test_GrowHyphaUnsuccessful is successful: "+((successful)?"true":"false"));
     }
 
     /**
      * Teszt: két különböző típusú gombafonal növesztés sikeres (wide tektonon)
      */
     public void Test_GrowTwoDifferentHyphaOnWideTectonSuccessful(){
+        System.out.println("Initialization start ->");
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
         Fungus kf = (Fungus)HyphaInit.get("kf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt2 = (NarrowTecton)HyphaInit.get("nt2");
         WideTecton wt1 = (WideTecton)HyphaInit.get("wt1");
+        System.out.println("<- Initialization end\n");
 
         System.out.println(">[WideTecton].AddHypha()");
-        boolean response1 = wt1.AddHypha(pf, nt1);
-        System.out.println(response1 ? "<true" : "<false");
+        boolean response = wt1.AddHypha(pf, nt1);
+        System.out.println(response ? "<true" : "<false");
         System.out.println(">[WideTecton].AddHypha()");
-        boolean response2 = wt1.AddHypha(kf, nt2);
-        System.out.println(response2 ? "<true" : "<false");
+         response = wt1.AddHypha(kf, nt2);
+        System.out.println(response ? "<true" : "<false");
+        boolean successful = (response)?true:false;
+        System.out.println("Test_GrowTwoDifferentHyphaOnWideTectonSuccessful is successful: "+((successful)?"true":"false"));
     }
 
     /**
-     * Teszt: gombafonal sikeres felszívódás 
+     * Teszt: gombafonal sikeres elsorvadása 
      */
     public void Test_AtrophyOfHypha(){
+        System.out.println("Initialization start ->");
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
-        /*FungusBody zfb = new FungusBody(nt3, pf);
-        nt3.SetFungusBody(zfb);*/
+        System.out.println("<- Initialization end\n");
 
         System.out.println(">[NarrowTecton].AddHypha()");
         boolean response = nt3.AddHypha(pf, nt1);
         System.out.println(">[NarrowTecton].GetFungusBody().Die()");
         nt1.GetFungusBody().Die();
-        System.err.println("Jóe: "+nt1.GetHyphas().size());
-        System.err.println("Jóe: "+nt3.GetHyphas().size());
+        System.out.println("Test_AtrophyOfHypha is successful: "+((nt1.GetHyphas().size()+nt3.GetHyphas().size()==0)?"true":"false"));
     }
 
     /**
      * Teszt: gombatest növesztés sikertelen, mert már van azonos típusú hifa a wide tektonon
      */
     public void Test_GrowSameTypeHyphaOnWideTectonUnsuccessful(){
-        System.out.println("Initialization star ->");
+        System.out.println("Initialization start ->");
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
@@ -473,12 +484,10 @@ public class Tester {
     }
 
     /**
-     * ShootSpores függvény a spórák kilövéséhez. Fejlett állapotban a szomszédok szomszédjára lő
-     * Normál esetben csak a szomszédos tektonokra lő spórát
-     * 
      * Gombatest sikeres spóra szórása szomszédos tektonokra
      */
     public void Test_BasicShootSporesSuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -486,6 +495,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println(">[FungusBody].SetSporeCount(4)");
         fb.SetSporeCount(4);
         List<Integer> oldNeighboursSporeCount = new ArrayList<>();
@@ -512,6 +523,7 @@ public class Tester {
      * Gombatest sikeres spóra szórása szomszédos tektonok szomszédaira
      */
     public void Test_AdvancedShootSporesSuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -519,6 +531,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println(">[FungusBody].SetAge(5)");
         fb.SetAge(5);
         System.out.println(">[FungusBody].SetSporeCount(4)");
@@ -573,6 +587,7 @@ public class Tester {
      * Gombatest sikeres halála
      */
     public void Test_FungusBodyDieSuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -580,6 +595,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println(">[FungusBody].SetAge(6)");
         fb.SetAge(6);
         boolean oldIsDead = fb.GetIsDead();
@@ -593,6 +610,7 @@ public class Tester {
      * Gombatest sikeres spóratermelése
      */
     public void Test_ProduceSporeSuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -600,6 +618,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println(">[FungusBody].SetAge(1)");
         fb.SetAge(1);
         System.out.println(">[FungusBody].SetShotsLeft(5)");
@@ -610,13 +630,14 @@ public class Tester {
         fb.ProduceSpore();
         System.out.println(">[FungusBody].GetSporeCnt() -> "+fb.GetSporeCount());
         int newSporeCount = fb.GetSporeCount();
-        System.out.println("Test_ProduceSpore is successful: "+((newSporeCount>oldSporeCount)?"true":"false"));
+        System.out.println("Test_ProduceSporeSuccessful is successful: "+((newSporeCount>oldSporeCount)?"true":"false"));
     }
 
     /**
      * Gombatest sikertelen spóratermelése, mert már halott
      */
     public void Test_ProduceSporeUnsuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -624,6 +645,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println(">[FungusBody].SetAge(5)");
         fb.SetAge(5);
         System.out.println(">[FungusBody].SetShotsLeft(0)");
@@ -641,6 +664,7 @@ public class Tester {
      * Gombatest sikertelen halála, mert már halott
      */
     public void Test_FungusBodyDieUnsuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -648,6 +672,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println(">[FungusBody].SetAge(6)");
         fb.SetAge(6);
         System.out.println(">[FungusBody].SetShotsLeft(0)");
@@ -663,6 +689,7 @@ public class Tester {
      * Gombatest sikertelen spóra szórása szomszédos tektonokra
      */
     public void Test_BasicShootSporesUnsuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -670,6 +697,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println(">[FungusBody].SetSporeCount(3)");
         fb.SetSporeCount(3);
         List<Integer> oldNeighboursSporeCount = new ArrayList<>();
@@ -696,6 +725,7 @@ public class Tester {
      * Gombatest sikertelen spóra szórása szomszédos tektonok szomszédaira
      */
     public void Test_AdvancedShootSporesUnsuccessful(){
+        System.out.println("Initialization start ->");
         ShootSporesInitFunction();
         System.out.println(">[Fungus].Fungus()");
         Fungus f = (Fungus)ShootSporesInit.get("f");
@@ -703,6 +733,8 @@ public class Tester {
         NarrowTecton t1 = (NarrowTecton)ShootSporesInit.get("t1");
         System.out.println(">[FungusBody].FungusBody()");
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
+        System.out.println("<- Initialization end\n");
+
         System.out.println("[FungusBody].SetAge(5)");
         fb.SetAge(4);
         System.out.println(">[FungusBody].SetSporeCount(4)");
