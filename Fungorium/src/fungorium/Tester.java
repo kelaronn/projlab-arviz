@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Tester {
     private HashMap<String, Object> HyphaInit = new HashMap<>();
-    HashMap GameObjects = new HashMap<String, Object>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
+    private HashMap<String, Object> GameObjects = new HashMap<>(); // így minden teszter példány el tudja tárolni a benne létrehozott objecteket és más fv-ek is fel tudják használni pl. Tesztek.
     private HashMap<String, Object> ShootSporesInit = new HashMap<>();
     private HashMap<String, Object> InsectInit = new HashMap<>();
     /**
