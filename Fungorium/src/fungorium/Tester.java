@@ -551,21 +551,21 @@ public class Tester {
         }
         System.out.println("[FugusBody].ShootSpores()");
         fb.ShootSpores();
-        List<List<Integer>> newNeighboursSporeCount = new ArrayList<>();
+        List<List<Integer>> newNeighboursNeighboursSporeCount = new ArrayList<>();
         for (int i = 0; i < t1.GetNeighbours().size(); i++) {
-            newNeighboursSporeCount.add(new ArrayList<>());
+            newNeighboursNeighboursSporeCount.add(new ArrayList<>());
         }
         for (int i = 0; i < t1.GetNeighbours().size(); i++) {
             for (int j = 0; j < t1.GetNeighbours().get(i).GetNeighbours().size(); j++) {
                 if(!t1.GetNeighbours().get(i).GetNeighbours().get(j).equals(t1)){
-                    newNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
+                    newNeighboursNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
                 }
             }
         }
         boolean successful = true;
         for(int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++){
             for(int j = 0; j < oldNeighboursNeighboursSporeCount.get(i).size(); j++){
-                if (!(newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursNeighboursSporeCount.get(i).get(j).intValue()+1))) {
+                if (!(newNeighboursNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursNeighboursSporeCount.get(i).get(j).intValue()+1))) {
                     successful = false;
                     break;
                 }
@@ -575,10 +575,10 @@ public class Tester {
             }
         }
         for (int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++) {
-            System.out.println("oldNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
+            System.out.println("oldNeighboursNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
         }
-        for (int i = 0; i < newNeighboursSporeCount.size(); i++) {
-            System.out.println("newNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
+        for (int i = 0; i < newNeighboursNeighboursSporeCount.size(); i++) {
+            System.out.println("newNeighboursNeighboursSporeCount[" + i + "] = " + newNeighboursNeighboursSporeCount.get(i));
         }
         System.out.println("Test_AdvancedShootSporesSuccessful is successful: "+((successful)?"true":"false"));
     }
@@ -735,7 +735,7 @@ public class Tester {
         FungusBody fb = (FungusBody)ShootSporesInit.get("fb");
         System.out.println("<- Initialization end\n");
 
-        System.out.println("[FungusBody].SetAge(5)");
+        System.out.println("[FungusBody].SetAge(4)");
         fb.SetAge(4);
         System.out.println(">[FungusBody].SetSporeCount(4)");
         fb.SetSporeCount(4);
@@ -752,21 +752,21 @@ public class Tester {
         }
         System.out.println("[FugusBody].ShootSpores()");
         fb.ShootSpores();
-        List<List<Integer>> newNeighboursSporeCount = new ArrayList<>();
+        List<List<Integer>> newNeighboursNeighboursSporeCount = new ArrayList<>();
         for (int i = 0; i < t1.GetNeighbours().size(); i++) {
-            newNeighboursSporeCount.add(new ArrayList<>());
+            newNeighboursNeighboursSporeCount.add(new ArrayList<>());
         }
         for (int i = 0; i < t1.GetNeighbours().size(); i++) {
             for (int j = 0; j < t1.GetNeighbours().get(i).GetNeighbours().size(); j++) {
                 if(!t1.GetNeighbours().get(i).GetNeighbours().get(j).equals(t1)){
-                    newNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
+                    newNeighboursNeighboursSporeCount.get(i).add(t1.GetNeighbours().get(i).GetNeighbours().get(j).GetSpores().size());
                 }
             }
         }
         boolean successful = true;
         for(int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++){
             for(int j = 0; j < oldNeighboursNeighboursSporeCount.get(i).size(); j++){
-                if ((newNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursNeighboursSporeCount.get(i).get(j).intValue()+1))) {
+                if ((newNeighboursNeighboursSporeCount.get(i).get(j).intValue() == (oldNeighboursNeighboursSporeCount.get(i).get(j).intValue()+1))) {
                     successful = false;
                     break;
                 }
@@ -776,10 +776,10 @@ public class Tester {
             }
         }
         for (int i = 0; i < oldNeighboursNeighboursSporeCount.size(); i++) {
-            System.out.println("oldNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
+            System.out.println("oldNeighboursNeighboursSporeCount[" + i + "] = " + oldNeighboursNeighboursSporeCount.get(i));
         }
-        for (int i = 0; i < newNeighboursSporeCount.size(); i++) {
-            System.out.println("newNeighboursSporeCount[" + i + "] = " + newNeighboursSporeCount.get(i));
+        for (int i = 0; i < newNeighboursNeighboursSporeCount.size(); i++) {
+            System.out.println("newNeighboursNeighboursSporeCount[" + i + "] = " + newNeighboursNeighboursSporeCount.get(i));
         }
         System.out.println("Test_AdvancedShootSporesUnsuccessful is successful: "+((successful)?"true":"false"));
     }

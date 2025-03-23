@@ -201,8 +201,8 @@ public class Main {
                     break;
                 case 9:
                     Tester tester9 = new Tester();
-                    System.out.println("1 - Shoot Spores Successful");
-                    System.out.println("2 - Shoot Spores Unsuccessful");
+                    System.out.println("1 - Basic Shoot Spores Successful");
+                    System.out.println("2 - Basic Shoot Spores Unsuccessful");
                     System.out.println("3 - Advanced Shoot Spores Successful");
                     System.out.println("4 - Advanced Shoot Spores Unsuccessful");
                     System.out.println("0 - Back to Main Menu");
