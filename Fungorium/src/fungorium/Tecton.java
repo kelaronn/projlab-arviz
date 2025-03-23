@@ -247,11 +247,6 @@ public abstract class Tecton {
      */
     public void RemoveHypha(Hypha h) {
         if(h != null && hyphas.contains(h)) {
-<<<<<<< Updated upstream
-            System.out.println(">[Fungus].RemoveHypha(h)");
-            RemoveHyphaFromTecton(h);
-            //hyphas.remove(h);
-=======
             if(h.GetTectons().size() == 1) {
                 System.out.println(">[Fungus].RemoveHypha(h)");
                 RemoveHyphaFromTecton(h);
@@ -260,7 +255,6 @@ public abstract class Tecton {
                 hyphas.remove(h);
                 System.out.println(">[Tecton].RemoveHypha(h)");
             }
->>>>>>> Stashed changes
         }
         else
             System.out.println("Hypha not found");
