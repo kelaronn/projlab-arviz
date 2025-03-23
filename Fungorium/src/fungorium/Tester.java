@@ -146,7 +146,7 @@ public class Tester {
         Hypha h = new Hypha(new ArrayList<>(), f, new ArrayList<>(List.of(n2,n3)));
 
         i1.SetHostColony(ic);
-        i1.SetTecton(n2);
+        i1.SetTecton(n1);
         i2.SetHostColony(ic);
         i2.SetTecton(n2);
 
