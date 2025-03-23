@@ -348,21 +348,25 @@ public class Tester {
      * Teszt: gombatest növesztés sikertelen, mert már van azonos típusú hifa a wide tektonon
      */
     public void Test_GrowSameTypeHyphaOnWideTectonUnsuccessful(){
+        System.out.println("Initialization star ->");
         HyphaInitFunction();
         Fungus pf = (Fungus)HyphaInit.get("pf");
         NarrowTecton nt1 = (NarrowTecton)HyphaInit.get("nt1");
         NarrowTecton nt3 = (NarrowTecton)HyphaInit.get("nt3");
         WideTecton wt1 = (WideTecton)HyphaInit.get("wt1");
+        System.out.println("<- Initialization end\n");
 
         System.out.println(">[NarrowTecton].AddHypha()");
-        boolean response1 = nt3.AddHypha(pf, nt1);
-        System.out.println(response1 ? "<true" : "<false");
+        boolean response = nt3.AddHypha(pf, nt1);
+        System.out.println(response ? "<true" : "<false");
         System.out.println(">[WideTecton].AddHypha()");
-        boolean response2 = wt1.AddHypha(pf, nt3);
-        System.out.println(response2 ? "<true" : "<false");
+        response = wt1.AddHypha(pf, nt3);
+        System.out.println(response ? "<true" : "<false");
         System.out.println(">[WideTecton].AddHypha()");
-        boolean response3 = wt1.AddHypha(pf, nt1);
-        System.out.println(response3 ? "<true" : "<false");
+        response = wt1.AddHypha(pf, nt1);
+        System.out.println(response ? "<true" : "<false");
+        boolean successful = (!response)?true:false;
+        System.out.println("Test_GrowSameTypeHyphaOnWideTectonUnsuccessful is successful: "+((successful)?"true":"false"));
     }
 
     /**

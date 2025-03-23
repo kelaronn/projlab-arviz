@@ -123,7 +123,8 @@ public class Hypha {
 
                for (Tecton t : h.GetTectons()) {
                    if (t != null) {
-                       t.RemoveHypha(h);
+                       //t.RemoveHypha(h);
+                       t.GetHyphas().remove(h);
                        System.out.println(">[Tecton].RemoveHypha(h)");
                    }
                }
