@@ -128,8 +128,8 @@ public abstract class Tecton {
         System.out.println(">[Tecton].SetFungusBody(null)");
 
         for(int i = 0; i < spores.size(); i++){
-            spores.removeLast();
-            System.out.println(">[Tecton].spores.removeLast()");
+            spores.remove(spores.get(spores.size()-1));
+            System.out.println(">[Tecton].spores.remove(spores.get(spores.size()-1))");
         }
 
     }

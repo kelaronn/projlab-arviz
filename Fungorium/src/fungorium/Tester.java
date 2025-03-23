@@ -48,10 +48,10 @@ public class Tester {
         fungus.AddHypha(h2);
         for (int j = 0; j < 3; j++) {
             t3.AddSpore(fungus);
-            GameObjects.put("bs"+j, t3.spores.getLast());
+            GameObjects.put("bs"+j, t3.spores.get(t3.spores.size() -1));
         }
         t1.AddSpore(fungus);
-        GameObjects.put("s",t1.spores.getLast());
+        GameObjects.put("s",t1.spores.get(t1.spores.size() -1));
     }
     /**
      * gombafonal inicializálás
@@ -393,8 +393,8 @@ public class Tester {
         var spores = t3.GetSpores();
         System.out.println(">[Tecton].GetSpores()");
         for(int i = 0; i < t3.sporeCountToGrowFungus; i++){
-            t3.RemoveSpore(t3.spores.getLast());
-            System.out.println("    >[Tecton].RemoveSpore(t3.spores.getLast())");
+            t3.RemoveSpore(t3.spores.get(spores.size() -1));
+            System.out.println("    >[Tecton].RemoveSpore(t3.spores.get(t3.spores.size() -1))");
         }
         boolean ans = t3.GrowFungusBody(fungus);
         System.out.println(">[Tecton].GrowFungusBody()");
@@ -415,8 +415,8 @@ public class Tester {
         System.out.println("    [FungusBody].FungusBody(t3,fungus)");
         
         for(int i = 0; i < t3.sporeCountToGrowFungus; i++){
-            t3.RemoveSpore(t3.spores.getLast());
-            System.out.println("    >[Tecton].RemoveSpore(t3.spores.getLast())");
+            t3.RemoveSpore(t3.spores.get(t3.spores.size() -1));
+            System.out.println("    >[Tecton].RemoveSpore(t3.spores.get(t3.spores.size() -1))");
         }
         fungus.AddBody(t3.GetFungusBody());
         System.out.println("    >[Fungus].AddBody(fb2)");
