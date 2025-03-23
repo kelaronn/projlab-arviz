@@ -241,14 +241,20 @@ public abstract class Tecton {
 
     /**
      * eltávolítja a paraméterként kapott hifát a hyphas nevű
-     * Hypha lista attribútumból és a Fungusból is.
+     * Hypha lista attribútumból és a Fungusból is meghívva a RemoveHyphaFromTectont().
+     * Ha rés hifa, csak ezt törli, ha tektonon van, a szomszédait is.
      * @param h eltávolítandó hifa
      */
     public void RemoveHypha(Hypha h) {
         if(h != null && hyphas.contains(h)) {
-            System.out.println(">[Fungus].RemoveHypha(h)");
-            RemoveHyphaFromTecton(h);
-            //hyphas.remove(h);
+            if(h.GetTectons().size() == 1) {
+                System.out.println(">[Fungus].RemoveHypha(h)");
+                RemoveHyphaFromTecton(h);
+            }
+            else{
+                hyphas.remove(h);
+                System.out.println(">[Tecton].RemoveHypha(h)");
+            }
         }
         else
             System.out.println("Hypha not found");
