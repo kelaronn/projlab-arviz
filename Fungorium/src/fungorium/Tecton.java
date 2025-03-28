@@ -134,7 +134,40 @@ public abstract class Tecton {
         }
 
     }
+    /**
+     * egy gombatestet növeszt egy halott insectből az adott tektonon, és a
+     * SetFungusBody setter függvénnyel beállítja a rajta lévő gombatestet. Igaz értékkel tér
+     * vissza.
+     * Override a leszármazottakban!
+     * @param fungus
+     * @return
+     */
+    public boolean GrowFungusBodyFromInsect(Fungus fungus) {
+        if( this.GetFungusBody() != null ) // már van fungisbody rajta
+            return false;
+        if(this.insects.isEmpty() ) // nincs rajta insect
+            return false;
 
+        Insect insectToRemove = null;
+        for(Insect i : insects){
+            if(i.IsDead() && i.GetEatenBy().equals(fungus)) {
+                insectToRemove = i;
+                break;
+            }
+        }
+
+        insectToRemove.GetHostColony().RemoveInsect(insectToRemove);
+        RemoveInsect(insectToRemove);
+
+        fungusBody = new FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft);
+        System.out.println(">[FungusBody].FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft)");
+        fungus.AddBody(fungusBody);
+        System.out.println(">[Fungus].AddBody(fungusBody)");
+        this.SetFungusBody(fungusBody);
+        System.out.println(">[Tecton].SetFungusBody(fungusBody)");
+        return true;
+
+    }
     /**
      * egy gombatestet növeszt az adott tektonon, és a
      * SetFungusBody setter függvénnyel beállítja a rajta lévő gombatestet. Igaz értékkel tér

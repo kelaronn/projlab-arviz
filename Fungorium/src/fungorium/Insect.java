@@ -6,6 +6,8 @@ public class Insect {
     private int effectTimeLeft = 0; // hatásidő
     private InsectColony hostColony; // a rovarhoz tartozó kolónia
     private Tecton tecton; // a rovarhoz tartozó tekton
+    private boolean dead = false;
+    private Fungus eatenBy = null;
 
     /**
      * Default konstruktor
@@ -185,5 +187,17 @@ public class Insect {
     public void SetTecton(Tecton t){
         tecton = t;
     }
+
+    /**
+     * Lekéri a rovar dead státuszát
+     * @return meghalt-e a rovar
+     */
+    public boolean IsDead(){ return dead; }
+
+    /**
+     * Lekéri melyik Fungus ette meg a rovart.
+     * @return Melyik Fungus ette meg a rovart.
+     */
+    public Fungus GetEatenBy(){ return eatenBy; }
 
 }

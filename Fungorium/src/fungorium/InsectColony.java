@@ -72,4 +72,19 @@ public class InsectColony {
         nutrition = nu;
     }
 
+    /**
+     * Kiveszi a megadott roart az insects listájából.
+     * @param insectToRemove
+     */
+    public void RemoveInsect(Insect insectToRemove) {
+        insects.remove(insectToRemove);
+    }
+
+    /**
+     * Hozzáadja a megadott rovart az insects listájához.
+     * @param insectToAdd
+     */
+    public void AddInsect(Insect insectToAdd) {
+        insects.add(insectToAdd);
+    }
 }
