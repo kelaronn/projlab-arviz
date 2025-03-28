@@ -406,4 +406,12 @@ public abstract class Tecton {
     public List<Hypha> GetHyphas(){
         return hyphas;
     }
+
+    /**
+     * Megadja, hogy az adott Tekton el tudja-e látni a hifákat, mint egy Gombatest.
+     * @return
+     */
+    public boolean SupplyHyphas(){
+        return false;
+    }
 }
