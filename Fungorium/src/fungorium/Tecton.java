@@ -150,7 +150,7 @@ public abstract class Tecton {
 
         Insect insectToRemove = null;
         for(Insect i : insects){
-            if(i.IsDead() && i.GetEatenBy().equals(fungus)) {
+            if(i.GetEatenBy().equals(fungus)) {
                 insectToRemove = i;
                 break;
             }
