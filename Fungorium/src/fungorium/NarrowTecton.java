@@ -16,6 +16,8 @@ public class NarrowTecton extends Tecton {
 
         if (!hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
             return false;
+        if(!neighbours.contains(t0)) // nincs a két tekton egymás mellett
+            return false;
 
         Hypha hyphaBetweenTectons = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0, this)));
         Hypha hyphaOnTecton = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));

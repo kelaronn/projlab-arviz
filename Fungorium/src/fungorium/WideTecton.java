@@ -14,6 +14,10 @@ public class WideTecton extends Tecton {
      */
     @Override
     public boolean AddHypha(Fungus fungus, Tecton t0) {
+        if(!neighbours.contains(t0)){ // nincs a két tecton egymás mellett
+            return false;
+        }
+
         // lehet rajta más fajú hifa, de ugyanolyan fajú nem.
         for(Hypha h : hyphas){
             if(h.GetHostFungus().equals(fungus))
