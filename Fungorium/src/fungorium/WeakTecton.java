@@ -10,4 +10,6 @@ public class WeakTecton extends NarrowTecton{
     public boolean GrowFungusBody(Fungus fungus) {
         return false; // nem tud növeszteni
     }
+    @Override
+    public boolean GrowFungusBodyFromInsect(Fungus fungus){ return false;} // nem tud növeszteni
 }
