@@ -27,6 +27,19 @@ public class Spore {
         effectDurr = ed;
         hostFungus = hf;
     }
+    /**
+     * Konstruktor
+     * @param nv tápérték
+     * @param ed hatásidő
+     * @param hf host gombatest
+     * @param t tekton amelyen a spóra elhelyeszkedik
+     */
+    public Spore(int nv, int ed, Fungus hf, Tecton t){
+        nutritionValue = nv;
+        effectDurr = ed;
+        hostFungus = hf;
+        tecton = t;
+    }
 
     /**
      * Hatás kifejtése (sima spóra esetén nem történik semmi)

@@ -26,6 +26,20 @@ public class Insect {
     }
 
     /**
+     * Konstruktor
+     * @param s sebesség
+     * @param ca vágási képesség
+     * @param etl hatásidő
+     * @param t tekton amelyen elhelyeszkedik a rovar
+     */
+    public Insect(int s, boolean ca, int etl, Tecton t){
+        speed = s;
+        cutAbility = ca;
+        effectTimeLeft = etl;
+        tecton = t;
+    }
+
+    /**
      * Spóra elfogyasztása
      * @param s spóra
      */

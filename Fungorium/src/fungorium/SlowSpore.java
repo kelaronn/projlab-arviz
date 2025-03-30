@@ -19,7 +19,7 @@ public class SlowSpore extends Spore{
     @Override public boolean GiveEffect(Insect i){
         i.SetSpeed(0);
         System.out.println(">[Insect].SetSpeed(0)");
-        i.SetEffectTimeLeft(2);
+        i.SetEffectTimeLeft(this.GetEffectDurr());
         System.out.println(">[Insect].SetEffectTimeLeft(2)");
         return true;
     }

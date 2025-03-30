@@ -21,7 +21,7 @@ public class StunSpore extends Spore {
         System.out.println(">[Insect].SetSpeed(0)");
         i.SetCutAbility(false);
         System.out.println(">[Insect].SetCutAbility(false)");
-        i.SetEffectTimeLeft(2);
+        i.SetEffectTimeLeft(this.GetEffectDurr());
         System.out.println(">[Insect].SetEffectTimeLeft(2)");
         return true;
     }
