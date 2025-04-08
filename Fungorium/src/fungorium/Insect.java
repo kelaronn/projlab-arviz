@@ -208,4 +208,9 @@ public class Insect {
      */
     public Fungus GetEatenBy(){ return eatenBy; }
 
+    /**
+     * Gombafaj beállítása, amelyik megette a rovar.
+     * @param fungus gombafaj
+     */
+    public void SetEatenBy(Fungus fungus){ eatenBy = fungus; }
 }

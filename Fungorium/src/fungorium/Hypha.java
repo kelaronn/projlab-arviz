@@ -174,4 +174,15 @@ public class Hypha {
        // Ha nincs több szomszéd, és nem találtunk gombatestet, hamis
        return false;
     }
+
+    /**
+     * Elkábult rovar megevése, ha a rovar a tektonon van, él és el van kábulva.
+     * Ellenkező esetben nem történik semmi.
+     * @param insect
+     */
+    public void EatStunnedInsect(Insect insect){
+        if (this.GetTectons().size()==1 && insect.GetTecton().equals(this.GetTectons().get(0)) && insect.GetEatenBy()==null && insect.GetSpeed() == 0 && insect.GetEffectTimeLeft() > 0) {
+            insect.SetEatenBy(this.GetHostFungus());
+        }
+    }
 }
