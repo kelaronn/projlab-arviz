@@ -190,9 +190,20 @@ public class Hypha {
                         insect.SetCutAbility(false);
                         insect.SetSpeed(0);
                     }
+                    else{
+                        System.out.println("#The selected insect is not stunned!");
+                    }
+                }
+                else{
+                    System.out.println("#The selected insect is not alive (because it has already been killed/eaten by another species of fungus)!");
                 }
             }
-            
+            else{
+                System.out.println("#The selected insect is not on the hypha's tecton!");
+            }
+        }
+        else{
+            System.out.println("#Hypha is not just on one tecton, it is between two tectons!");
         }
     }
 }
