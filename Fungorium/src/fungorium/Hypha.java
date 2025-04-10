@@ -181,8 +181,18 @@ public class Hypha {
      * @param insect
      */
     public void EatStunnedInsect(Insect insect){
-        if (this.GetTectons().size()==1 && insect.GetTecton().equals(this.GetTectons().get(0)) && insect.GetEatenBy()==null && insect.GetSpeed() == 0 && insect.GetEffectTimeLeft() > 0) {
-            insect.SetEatenBy(this.GetHostFungus());
+        if (this.GetTectons().size()==1) {
+            if(insect.GetTecton().equals(this.GetTectons().get(0))){
+                if (insect.GetEatenBy()==null) {
+                    if (insect.GetSpeed() == 0 && insect.GetEffectTimeLeft() > 0) {
+                        insect.SetEatenBy(this.GetHostFungus());
+                        insect.SetEffectTimeLeft(0);
+                        insect.SetCutAbility(false);
+                        insect.SetSpeed(0);
+                    }
+                }
+            }
+            
         }
     }
 }
