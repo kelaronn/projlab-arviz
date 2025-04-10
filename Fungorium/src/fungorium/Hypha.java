@@ -155,7 +155,7 @@ public class Hypha {
        for (Tecton t : hypha.GetTectons()) {
            if (t != null) {
                FungusBody fb = t.GetFungusBody();
-               if (fb != null && !fb.GetIsDead() && fb.GetHostFungus().equals(hypha.GetHostFungus())) {
+               if ((fb != null && !fb.GetIsDead() && fb.GetHostFungus().equals(hypha.GetHostFungus())) || t.SupplyHyphas()) {
                    return true; // Találtunk élő gombatestet
                }
            }
