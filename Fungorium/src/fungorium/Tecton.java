@@ -151,7 +151,15 @@ public abstract class Tecton {
             System.out.println(">[Tecton].spores.remove(spores.get(spores.size()-1))");
         }
 
-        return this.CreateCopy();
+        Tecton nt = this.CreateCopy();
+
+        this.AddNeighbour(nt);
+        nt.AddNeighbour(this);
+        for(Tecton n : this.neighbours ){
+            n.AddNeighbour(nt);
+        }
+
+        return nt;
     }
     /**
      * egy gombatestet növeszt egy halott insectből az adott tektonon, és a
