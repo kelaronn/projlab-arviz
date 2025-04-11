@@ -153,11 +153,11 @@ public abstract class Tecton {
 
         Tecton nt = this.CreateCopy();
 
-        this.AddNeighbour(nt);
-        nt.AddNeighbour(this);
         for(Tecton n : this.neighbours ){
             n.AddNeighbour(nt);
         }
+        this.AddNeighbour(nt);
+        nt.AddNeighbour(this);
 
         return nt;
     }
@@ -182,6 +182,8 @@ public abstract class Tecton {
                 break;
             }
         }
+        if(insectToRemove == null)
+            return false;
 
         insectToRemove.GetHostColony().RemoveInsect(insectToRemove);
         RemoveInsect(insectToRemove);
@@ -215,6 +217,10 @@ public abstract class Tecton {
         System.out.println(">[Fungus].AddBody(fungusBody)");
         this.SetFungusBody(fungusBody);
         System.out.println(">[Tecton].SetFungusBody(fungusBody)");
+
+        for(int i = 0; i < spores.size(); i++){
+            spores.remove(spores.get(spores.size()-1));
+        }
         return true;
 
     }
