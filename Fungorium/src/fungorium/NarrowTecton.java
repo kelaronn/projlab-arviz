@@ -37,6 +37,14 @@ public class NarrowTecton extends Tecton {
 
         if (!hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
             return false;
+
+        // ha nincs megadva szomszédos tekton, csak lerak egy hifát
+        if(t0 == null){
+            Hypha hypha = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));
+            fungus.AddHypha(hypha);
+            hyphas.add(hypha);
+            return true;
+        }
         if(!neighbours.contains(t0)) // nincs a két tekton egymás mellett
             return false;
 
