@@ -1,6 +1,27 @@
 package fungorium;
 
 public class WeakTecton extends NarrowTecton{
+   public WeakTecton() {
+       super();
+   }
+    /**
+     * Létrehoz egy új Weak tektont, amibe átmásolja az eredeti tekton szomszédjait, minden más default.
+     * @param t másolni kívánt Weak tekton
+     */
+    public WeakTecton(WeakTecton t) {
+        super(t);
+    }
+
+    /**
+     * Meghívja a saját másoló konstruktorját.
+     * @return új Weak Tekton
+     */
+    @Override
+    public Tecton CreateCopy() {
+        return new WeakTecton(this);
+    }
+
+
     /**
      * ősosztályban definiált fv. felüldefiniálása
      * @param fungus

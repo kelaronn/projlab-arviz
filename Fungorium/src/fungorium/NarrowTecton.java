@@ -5,6 +5,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class NarrowTecton extends Tecton {
+
+    public NarrowTecton() {
+        super();
+    }
+    /**
+     * Létrehoz egy új Narrow tektont, amibe átmásolja az eredeti tekton szomszédjait, minden más default.
+     * @param t másolni kívánt Narrow tekton
+     */
+    public NarrowTecton(NarrowTecton t) {
+        super(t);
+    }
+
+    /**
+     * Meghívja a saját másoló konstruktorját.
+     * @return új Narrow Tekton
+     */
+    @Override
+    public Tecton CreateCopy() {
+        return new NarrowTecton(this);
+    }
+
     /**
      * A hifák hozzáadását implementáló függvény (felülírja a Tecton osztályban lévőt).
      * @param fungus a hozzáadandó hifa hostja
@@ -49,4 +70,5 @@ public class NarrowTecton extends Tecton {
         System.out.println(">[Fungus].AddHypha(hyphaBetweenTectons)");
         return true;
     }
+
 }

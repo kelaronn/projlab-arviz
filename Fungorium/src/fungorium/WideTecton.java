@@ -6,6 +6,29 @@ import java.util.List;
 
 public class WideTecton extends Tecton {
 
+    public WideTecton() {
+        super();
+    }
+    /**
+     * Létrehoz egy új Wide tektont, amibe átmásolja az eredeti tekton szomszédjait, minden más default.
+     * @param t másolni kívánt Wide tekton
+     */
+    public WideTecton(WideTecton t) {
+        super(t);
+    }
+
+    /**
+     * Meghívja a saját másoló konstruktorját.
+     * @return új Wide Tekton
+     */
+    @Override
+    public Tecton CreateCopy() {
+        return new WideTecton(this);
+    }
+
+
+
+
     /**
      * ősosztályban definiált fv. felüldefiniálása
      * @param fungus a gombafonalhoz tartozó gombafaj

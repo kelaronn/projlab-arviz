@@ -23,6 +23,18 @@ public abstract class Tecton {
         neighbours = new ArrayList<>();
         fungusBody = null;
     }
+
+    /**
+     * Létrehoz egy új tektont, amibe átmásolja az eredeti tekton szomszédjait, minden más default.
+     * @param t másolni kívánt tekton
+     */
+    public Tecton(Tecton t ) {
+        insects = new ArrayList<>();
+        hyphas = new ArrayList<>();
+        spores = new ArrayList<>();
+        neighbours = new ArrayList<>(t.neighbours);
+        fungusBody = null;
+    }
     /**
      * Konstruktor a tekton létrehozásához.
      * @param insects
@@ -52,18 +64,24 @@ public abstract class Tecton {
     }
 
     /**
+     * Egy absztrakt függvény ami létrehoz és visszaad egy saját magával megegyező típusú tektont.
+     * @return egy saját magával megyezeő típusú tekton
+     */
+    public abstract Tecton CreateCopy();
+
+    /**
      * Véletlenszerűen létrehoz egy Tecton fajtát és visszatér vele.
      * @return véletlenszerűen generált leszármazott
      */
-    protected Tecton GetRandomChild(){
-        int r = rand.nextInt(0,3);
-        switch(r){
-            case 1: return new WideTecton();
-            case 2: return new WeakTecton();
-            case 3: return new BarrenTecton();
-            default: return new NarrowTecton();
-        }
-    }
+//    protected Tecton GetRandomChild(){
+//        int r = rand.nextInt(0,3);
+//        switch(r){
+//            case 1: return new WideTecton();
+//            case 2: return new WeakTecton();
+//            case 3: return new BarrenTecton();
+//            default: return new NarrowTecton();
+//        }
+//    }
 
     /**
      * Segédfüggvény a hifák törlésére.
@@ -93,30 +111,30 @@ public abstract class Tecton {
     /**
      * A tekton kettétörik, törli a rajta lévő gombafonalat/kat (hyphas), spórákat
      * (spores) és gombatestet (fungusBody).
-     * A helyére kettő új tekton kerül. Az insecteket áthelyezi az egyik új tektonra (ha volt rajta).
+     * Létrehoz egy új, eredetivel megegyező típusú tektont. Az insecteket (ha vannak) maradnak az eredeti tektonon.
      */
-    public void Break(){
+    public Tecton Break(){
 
-        Tecton t1 = GetRandomChild();
-        System.out.println(">[Tecton].GetRandomChild()");
-        Tecton t2 = GetRandomChild();
-        System.out.println(">[Tecton].GetRandomChild()");
+//        Tecton t1 = GetRandomChild();
+//        System.out.println(">[Tecton].GetRandomChild()");
+//        Tecton t2 = GetRandomChild();
+//        System.out.println(">[Tecton].GetRandomChild()");
 
-        if( !insects.isEmpty() ){
-            for(Insect i : insects){
-                t2.AddInsect(i);
-                System.out.println(">[Tecton].AddInsect(i)");
-                i.SetTecton(t2);
-                System.out.println(">[Insect].SetTecton(t2)");
-            }
-        }
+//        if( !insects.isEmpty() ){
+//            for(Insect i : insects){
+//                t2.AddInsect(i);
+//                System.out.println(">[Tecton].AddInsect(i)");
+//                i.SetTecton(t2);
+//                System.out.println(">[Insect].SetTecton(t2)");
+//            }
+//        }
 
-        for(Tecton n : neighbours){
-            t1.AddNeighbour(n);
-            System.out.println(">[Tecton].AddNeighbour(n)");
-            t2.AddNeighbour(n);
-            System.out.println(">[Tecton].AddNeighbour(n)");
-        }
+//        for(Tecton n : neighbours){
+//            t1.AddNeighbour(n);
+//            System.out.println(">[Tecton].AddNeighbour(n)");
+//            t2.AddNeighbour(n);
+//            System.out.println(">[Tecton].AddNeighbour(n)");
+//        }
         for (int i=0; i < hyphas.size(); i++){
             RemoveHyphaFromTecton(hyphas.get(i));
             System.out.println(">[Tecton].RemoveHyphaFromTecton(h)");
@@ -133,6 +151,7 @@ public abstract class Tecton {
             System.out.println(">[Tecton].spores.remove(spores.get(spores.size()-1))");
         }
 
+        return this.CreateCopy();
     }
     /**
      * egy gombatestet növeszt egy halott insectből az adott tektonon, és a

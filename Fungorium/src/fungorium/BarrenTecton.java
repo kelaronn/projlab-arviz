@@ -1,20 +1,41 @@
 package fungorium;
 
 public class BarrenTecton extends NarrowTecton{
-    protected int absorbtionTime;
+    protected int absorptionTime = 3;
+
+    public BarrenTecton() {
+        super();
+    }
+    /**
+     * Létrehoz egy új Barren tektont, amibe átmásolja az eredeti tekton szomszédjait, minden más default.
+     * @param t másolni kívánt Barren tekton
+     */
+    public BarrenTecton(BarrenTecton t) {
+        super(t);
+        absorptionTime = t.absorptionTime;
+    }
+
+    /**
+     * Meghívja a saját másoló konstruktorját.
+     * @return új Barren Tekton
+     */
+    @Override
+    public Tecton CreateCopy() {
+        return new BarrenTecton(this);
+    }
     /**
      * Getter a tekton abszorpciós idejének lekérdezésére
      * @return a tekton abszorpciós ideje
      */
     public int GetAbsorbtionTime() {
-        return absorbtionTime;
+        return absorptionTime;
     }
     /**
      * Setter a tekton abszorpciós idejének beállítására
      * @param absorbtionTime a tekton abszorpciós ideje
      */
     public void SetAbsorbtionTime(int absorbtionTime) {
-        this.absorbtionTime = absorbtionTime;
+        this.absorptionTime = absorbtionTime;
     }
     /**
      * A tekton abszorpcióját implementálásaa
