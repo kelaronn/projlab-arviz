@@ -2,12 +2,12 @@ package fungorium;
 
 import java.util.Scanner;
 
-public class Main {
+public class View {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            
+
             System.out.println("\n#### Main Menu #####");
             System.out.println("1 \t- Grow Hypha");
             System.out.println("2 \t- Atrophy of Hypha");
@@ -15,25 +15,25 @@ public class Main {
             System.out.println("4 \t- Full Tecton Breaks");
             System.out.println("5 \t- Hypha Absorb");
             System.out.println("6 \t- Insect Move");
-            System.out.println("7 \t- Insect Cut");
+            System.out.println("7 \t- Insect Cut");0
             System.out.println("8 \t- Insect EatSpore");
             System.out.println("9 \t- ShootSpores");
             System.out.println("10 \t- FungusBody death");
             System.out.println("11 \t- ProduceSpore");
             System.out.println("0 \t- Exit");
             System.out.print("Select an option: ");
-            
+
             int inp = getInput(scanner);
 
             if (inp == 0) {
                 System.out.println("Exiting...");
                 break;
             }
-            
+
             switch (inp) {
                 case 1:
                     Tester tester = new Tester();
-                    
+
                     System.out.println("1 - Grow Hypha Successful");
                     System.out.println("2 - Grow Hypha Unsuccessful");
                     System.out.println("3 - Grow Two Differend Hypha On Wide Tecton Successful");
@@ -169,7 +169,7 @@ public class Main {
                             break;
                         case 3:
                             tester7.Test_CutSuccessful();
-                                waitForEnter();
+                            waitForEnter();
                             break;
                         case 0:
                             break;
@@ -267,9 +267,11 @@ public class Main {
 
     /**
      * Beolvassa és ellenőrzi a felhasználó által küldött bemenetet.
+     * 
      * @param scanner Scanner objektum a felhasználói bemenet olvasásához
-     * @return a kiválasztott menüopció sorszáma egész számként (parseInt segítségével az összes létező karaktert egész számmá castoljuk)
-     * Ha a bemenet nem érvényes szám, akkor a függvény -1-el tér vissza.
+     * @return a kiválasztott menüopció sorszáma egész számként (parseInt
+     *         segítségével az összes létező karaktert egész számmá castoljuk)
+     *         Ha a bemenet nem érvényes szám, akkor a függvény -1-el tér vissza.
      */
     private static int getInput(Scanner scanner) {
         try {
@@ -278,6 +280,7 @@ public class Main {
             return -1;
         }
     }
+
     /**
      * Várakozás a felhasználó enter lenyomására
      * (annak érdekében, hogy a kimenet látható maradjon a konzolon)
