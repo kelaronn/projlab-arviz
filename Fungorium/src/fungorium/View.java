@@ -1,8 +1,18 @@
 package fungorium;
 
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
-public class View {
+public class View implements IView {
+    HashMap<String, Object> planet = new HashMap<>();
+    GameController controller = new GameController();
+    int icCtr = 0;
+    int fCtr = 0;
+    int hCtr = 0;
+    int tCtr = 0;
+    int iCtr = 0;
+    int sCtr = 0;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -287,5 +297,68 @@ public class View {
      */
     private static void waitForEnter() {
         System.console().readLine("Press Enter to continue...");
+    }
+
+    /**
+     * Getter metódus a planet attribútumhoz.
+     * 
+     * @return planet
+     */
+    public Map<String, Object> getPlanet() {
+        return planet;
+    }
+
+    /**
+     * Getter metódus az icCtr attribútumhoz.
+     * 
+     * @return icCtr
+     */
+    public int getIcCtr() {
+        return icCtr;
+    }
+
+    /**
+     * Getter metódus az fCtr attribútumhoz.
+     * 
+     * @return fCtr
+     */
+    public int getfCtr() {
+        return fCtr;
+    }
+
+    /**
+     * Getter metódus a hCtr attribútumhoz.
+     * 
+     * @return hCtr
+     */
+    public int gethCtr() {
+        return hCtr;
+    }
+
+    /**
+     * Getter metódus a tCtr attribútumhoz.
+     * 
+     * @return tCtr
+     */
+    public int gettCtr() {
+        return tCtr;
+    }
+
+    /**
+     * Getter metódus az iCtr attribútumhoz.
+     * 
+     * @return iCtr
+     */
+    public int getiCtr() {
+        return iCtr;
+    }
+
+    /**
+     * Getter metódus az sCtr attribútumhoz.
+     * 
+     * @return sCtr
+     */
+    public int getsCtr() {
+        return sCtr;
     }
 }
