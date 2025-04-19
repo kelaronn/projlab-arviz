@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * A Hypha osztály egy gombafonalat (hifát) reprezentál, amely a gombatestből nő ki, és terjed a tektonokon.
- * Felelőssége a gombák terjedésének és a rovarok mozgásának elősegítése, valamint támpont nyújtása.
+ * Felelőssége a gombák terjedésének és a rovarok mozgásának elősegítése, valamint támpont nyújtása a gombahálózatban.
  */
-public class Hypha {
+public class Hypha implements IHyphaView, IHyphaController {
     /** A szomszédos gombafonalak listája. */
     private List<Hypha> neighbours = new ArrayList<>();
 
@@ -30,10 +30,13 @@ public class Hypha {
     }
 
     /**
-     * Hozzáad egy szomszédos gombafonalat a neighbours listához, ha még nem szerepel benne.
+     * Hozzáad egy szomszédos gombafonalat a szomszédok listájához, ha még nem szerepel benne,
+     * ugyanahhoz a gombához tartozik, és van közös tektonjuk. A hozzáadás kölcsönös.
+     * 
      * @param h A hozzáadandó szomszédos gombafonal.
+     * @return Igaz, ha a szomszéd hozzáadása sikeres, különben hamis.
      */
-    public void AddNeighbour(Hypha h) {
+    public boolean AddNeighbour(Hypha h) {
         // Ellenőrizzük, hogy nem szerepel-e már a szomszédok között és azonos-e a hostFungus
         if (!neighbours.contains(h) && h.GetHostFungus().equals(this.GetHostFungus())) {
             List<Tecton> otherTectons = h.GetTectons();
@@ -56,33 +59,42 @@ public class Hypha {
             // Csak akkor adjuk hozzá, ha van közös tekton
             if (hasCommonTecton) {
                 neighbours.add(h);
-                System.out.println(">[Hypha].neighbours.add(h)");
+                h.AddNeighbour(this);
+                return true;
             }
         }
+        return false;
     }
 
     /**
-     * Eltávolít egy szomszédos gombafonalat a neighbours listából.
+     * Eltávolít egy szomszédos gombafonalat a szomszédok listájából, ha ugyanahhoz a gombához tartozik
+     * és szerepel a listában. Az eltávolítás kölcsönös.
+     * 
      * @param h Az eltávolítandó szomszédos gombafonal.
+     * @return Igaz, ha a szomszéd eltávolítása sikeres, különben hamis.
      */
-    public void RemoveNeighbours(Hypha h) {
+    public boolean RemoveNeighbours(Hypha h) {
         if(h != null && h.GetHostFungus().equals(this.GetHostFungus()) && neighbours.contains(h)){
             neighbours.remove(h);
-
+            h.RemoveNeighbours(this);
+            return true;
         }
-        System.out.println(">[Hypha].GetHostFungus()");
-        System.out.println(">[Hypha].GetHostFungus()");
+        return false;
     }
 
     /**
-     * Beállítja a gombafonalat birtokló gomba (Fungus) referenciát.
+     * Beállítja a gombafonalat birtokló gomba referenciát, ha az új gomba nem null és különbözik
+     * a jelenlegitől.
+     * 
      * @param f A beállítandó gomba referencia.
+     * @return Igaz, ha a beállítás sikeres, különben hamis.
      */
-    public void SetHostFungus(Fungus f) {
+    public boolean SetHostFungus(Fungus f) {
         if(f != null && f != this.GetHostFungus()){
             hostFungus = f;
+            return true;
         }
-        System.out.println(">[Hypha].GetHostFungus()");
+        return false;
     }
 
     /**
@@ -93,53 +105,53 @@ public class Hypha {
 
     /**
      * Visszaadja a gombafonalat meghatározó egy vagy két tekton tömbjét.
-     * @return A tectons tömb referenciája.
+     * @return A tectons lista referenciája.
      */
     public List<Tecton> GetTectons() { return tectons; }
 
     /**
      * Visszaadja a hifa szomszédjainak listáját.
-     * @return A tectons tömb referenciája.
+     * @return A tectons lista referenciája.
      */
     public List<Hypha> GetNeighbours() { return neighbours; }
     
     /**
-    * Megnézi, hogy van-e élő gombatest az azonos fajhoz tartozó, szomszédos gombafonalak hálózatában,
-    * és ha nincs, akkor az összes bejárt gombafonal elhal.
-    */
-    public void Atrophy() {
+     * Megvizsgálja, hogy van-e élő gombatest az azonos fajhoz tartozó szomszédos gombafonalak hálózatában.
+     * Ha nincs, akkor az összes bejárt gombafonal elhal, és eltávolításra kerül a tektonokról.
+     * 
+     * @return Igaz, ha a hálózat elhalt (nincs élő gombatest vagy étető tekton), különben hamis.
+     */
+    public boolean Atrophy() {
        // Halmazok a bejárt Hypha-k és az esetleges törlendők nyilvántartására
        List<Hypha> visited = new ArrayList<>();
        List<Hypha> hyphaeToCheck = new ArrayList<>();
        //hyphaeToCheck = this.GetNeighbours();
-       
        // Ellenőrizzük a hálózatot, és gyűjtjük a potenciálisan törlendő Hypha-kat
        boolean hasLivingFungusBody = checkNetworkForLivingFungusBody(this, visited, hyphaeToCheck);
-   
        // Ha nincs élő gombatest, töröljük az összes bejárt Hypha-t
        if (!hasLivingFungusBody) {
-           System.out.println(">[Hypha].GetTectons() loop");
            for (Hypha h : hyphaeToCheck) {
-
                for (Tecton t : h.GetTectons()) {
                    if (t != null) {
                        //t.RemoveHypha(h);
                        t.GetHyphas().remove(h);
-                       System.out.println(">[Tecton].RemoveHypha(h)");
                    }
                }
            }
+           return true;
        }
        // Ha van élő gombatest, nem csinálunk semmit
+       return false;
    }
    
    /**
-    * Rekurzívan ellenőrzi a szomszédos, azonos fajhoz tartozó Hypha-k hálózatát,
-    * hogy van-e élő gombatest.
-    * @param hypha Az aktuális gombafonal, ahonnan indulunk
-    * @param visited A már meglátogatott Hypha-k halmaza
-    * @param hyphaeToCheck Az összes bejárt Hypha, amelyeket törölni kell, ha nincs gombatest
-    * @return Igaz, ha van élő gombatest, különben hamis
+    * Rekurzívan ellenőrzi a szomszédos, azonos fajhoz tartozó gombafonalak hálózatát,
+    * hogy van-e élő gombatest vagy tápanyagot biztosító tekton.
+    * 
+    * @param hypha Az aktuális gombafonal, ahonnan az ellenőrzés indul.
+    * @param visited A már meglátogatott gombafonalak listája.
+    * @param hyphaeToCheck Az összes bejárt gombafonal listája, amelyeket törölni kell, ha nincs élő gombatest.
+    * @return Igaz, ha van élő gombatest vagy tápanyagot biztosító tekton, különben hamis.
     */
     private boolean checkNetworkForLivingFungusBody(Hypha hypha, List<Hypha> visited, List<Hypha> hyphaeToCheck) {
        // Ha már meglátogattuk ezt a Hypha-t, kilépünk
@@ -148,10 +160,7 @@ public class Hypha {
        }
        visited.add(hypha);
        hyphaeToCheck.add(hypha); // Hozzáadjuk a potenciálisan törlendőkhöz
-   
        // Ellenőrizzük az aktuális Hypha Tecton-jain lévő gombatesteket
-       System.out.println(">[Hypha].GetTectons()");
-       System.out.println(">[Tecton].GetFungusBody() loop");
        for (Tecton t : hypha.GetTectons()) {
            if (t != null) {
                FungusBody fb = t.GetFungusBody();
@@ -168,42 +177,25 @@ public class Hypha {
                }
            }
        }
-       System.out.println(">[Hypha].GetNeighbours()");
-       System.out.println(">[Hypha].GetHostFungus() loop");
-       System.out.println(">[Hypha].checkNetworkForLivingFungusBody()");
        // Ha nincs több szomszéd, és nem találtunk gombatestet, hamis
        return false;
     }
 
     /**
-     * Elkábult rovar megevése, ha a rovar a tektonon van, él és el van kábulva.
-     * Ellenkező esetben nem történik semmi.
-     * @param insect
+     * Elkábult rovar megevése, ha a rovar a gombafonal egyetlen tektonján van, él, el van kábulva,
+     * és még nem ette meg más gomba. A rovar sebessége és hatása nullázódik, és a gomba megeszi.
+     * 
+     * @param insect A megevendő rovar.
+     * @return Igaz, ha a rovar megevése sikeres, különben hamis.
      */
-    public void EatStunnedInsect(Insect insect){
-        if (this.GetTectons().size()==1) {
-            if(insect.GetTecton().equals(this.GetTectons().get(0))){
-                if (insect.GetEatenBy()==null) {
-                    if (insect.GetSpeed() == 0 && insect.GetEffectTimeLeft() > 0) {
-                        insect.SetEatenBy(this.GetHostFungus());
-                        insect.SetEffectTimeLeft(0);
-                        insect.SetCutAbility(false);
-                        insect.SetSpeed(0);
-                    }
-                    else{
-                        System.out.println("#The selected insect is not stunned!");
-                    }
-                }
-                else{
-                    System.out.println("#The selected insect is not alive (because it has already been killed/eaten by another species of fungus)!");
-                }
-            }
-            else{
-                System.out.println("#The selected insect is not on the hypha's tecton!");
-            }
+    public boolean EatStunnedInsect(Insect insect){
+        if (this.GetTectons().size()==1 && insect.GetTecton().equals(this.GetTectons().get(0)) && insect.GetEatenBy()==null && insect.GetSpeed() == 0 && insect.GetEffectTimeLeft() > 0) {
+            insect.SetEatenBy(this.GetHostFungus());
+            insect.SetEffectTimeLeft(0);
+            insect.SetCutAbility(false);
+            insect.SetSpeed(0);
+            return true;
         }
-        else{
-            System.out.println("#Hypha is not just on one tecton, it is between two tectons!");
-        }
+        return false;
     }
 }
