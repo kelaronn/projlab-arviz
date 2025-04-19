@@ -1,6 +1,6 @@
 package fungorium;
 
-public class Insect {
+public class Insect implements IInsectController, IInsectView {
     private int speed = 1; // itt annyi hogy ez az  hogy hányszor tud egy körben mozogni az lenne a legszebb a speedre és ha -1 akkor meg nem csak mozogni nem tudsz hanem enni sem meg vágni sem és akkor az lenne a stun spore
     private boolean cutAbility = true; // vágási képesség
     private int effectTimeLeft = 0; // hatásidő
@@ -43,6 +43,7 @@ public class Insect {
      * Spóra elfogyasztása
      * @param s spóra
      */
+    @Override
     public void EatSpore(Spore s){
         if(s.GetTecton() != tecton){
             //throw new IllegalArgumentException("Spore is not on the right tecton");
@@ -65,6 +66,7 @@ public class Insect {
      * @param t tekton
      * @return sikeres-e a mozgás
      */
+    @Override
     public boolean Move(Tecton t){
         if(t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null){
             t.AddInsect(this);
@@ -85,6 +87,7 @@ public class Insect {
      * @param t tekton
      * @return sikeres-e a vágás
      */
+    @Override
     public boolean Cut(Tecton t){
         if(!cutAbility){return false;}
 
@@ -124,7 +127,8 @@ public class Insect {
     /**
      * Sebesség lekérdezése
      * @return sebesség
-     */ 
+     */
+    @Override
     public int GetSpeed(){
         return speed;
     }
@@ -132,7 +136,8 @@ public class Insect {
     /**
      * Vágási képesség lekérdezése
      * @return vágási képesség
-     */ 
+     */
+    @Override
     public boolean GetCutAbility(){
         return cutAbility;
     }
@@ -140,7 +145,8 @@ public class Insect {
     /**
      * Hatásidő lekérdezése
      * @return hatásidő
-     */  
+     */
+    @Override
     public int GetEffectTimeLeft(){
         return effectTimeLeft;
     }
@@ -148,7 +154,8 @@ public class Insect {
     /**
      * Host kolónia lekérdezése
      * @return host kolónia
-     */   
+     */
+    @Override
     public InsectColony GetHostColony(){
         return hostColony;
     }
@@ -156,7 +163,8 @@ public class Insect {
     /**
      * Tekton lekérdezése
      * @return tekton
-     */         
+     */
+    @Override
     public Tecton GetTecton(){
         return tecton;
     }
@@ -206,6 +214,7 @@ public class Insect {
      * Ha null akkor nem ette meg egyik Fungus Sem.
      * @return Melyik Fungus ette meg a rovart. Fungus.
      */
+    @Override
     public Fungus GetEatenBy(){ return eatenBy; }
 
     /**

@@ -1,6 +1,6 @@
 package fungorium;
 
-public class Spore {
+public class Spore implements ISporeView {
     private int nutritionValue;
     private int effectDurr = 2;
     private Fungus hostFungus;
@@ -54,6 +54,7 @@ public class Spore {
      * Tápérték lekérdezése
      * @return tápérték
      */
+    @Override
     public int GetNutritionValue(){
         return nutritionValue;
     }
@@ -62,6 +63,7 @@ public class Spore {
      * Hatásidő lekérdezése
      * @return hatásidő
      */
+    @Override
     public int GetEffectDurr(){
         return effectDurr;
     }
@@ -70,6 +72,7 @@ public class Spore {
      * Host gombatest lekérdezése
      * @return host gombatest
      */
+    @Override
     public Fungus GetHostFungus(){
         return hostFungus;
     }
@@ -78,6 +81,7 @@ public class Spore {
     * Tekton lekérdezése
      * @return tekton
      */
+    @Override
     public Tecton GetTecton(){
         return tecton;
     }

@@ -2,7 +2,7 @@ package fungorium;
 
 import java.util.ArrayList;
 
-public class FungusBody {
+public class FungusBody implements IFungusBodyController, IFungusBodyView {
     boolean isDeveloped; /**A gombatest fejlettségét kifejező logikai érték. Igaz ha a gombatest fejelett*/
     int age; /**A gombatest életkora*/
     boolean isDead; /**A gomba halott, ha az isDead logikai érték igaz*/
@@ -101,6 +101,7 @@ public class FungusBody {
     /**Lekéri az isDeveloped értékét
      * @return fejlett-e a gombatest
     */
+    @Override
     public boolean GetIsDeveloped(){return isDeveloped;}
 
     /**
@@ -122,6 +123,7 @@ public class FungusBody {
     /**Lekéri az életkor értéket
      * @return életkor
     */
+    @Override
     public int GetAge(){return age;}
 
     /**
@@ -133,6 +135,7 @@ public class FungusBody {
     /**Lekéri az isDead érttéket
      * @return halott-e a gombatest
     */
+    @Override
     public boolean GetIsDead(){return isDead;}
 
     /**
@@ -148,6 +151,7 @@ public class FungusBody {
     /**Lekéri a spórák számát
      * @return spórák száma
     */
+    @Override
     public int GetSporeCount(){return sporeCount;}
 
     /**
@@ -166,6 +170,7 @@ public class FungusBody {
     /**Lekéri a shotsLeft értéket
      * @return lövési lehetőségek száma
     */
+    @Override
     public int GetShotsLeft(){return shotsLeft;}
 
     /**
@@ -181,6 +186,7 @@ public class FungusBody {
     /**Lekéri a tektont amelyen tartózkodik a gombatest
      * @return tekton példány
     */
+    @Override
     public Tecton GetTecton(){return tecton;}
 
     /**
@@ -197,10 +203,12 @@ public class FungusBody {
      * Lekéri a gombát, amelyhez tartozik a gombatest
      * @return gomba példány
     */
+    @Override
     public Fungus GetHostFungus(){return hostFungus;}
 
 
     /**ShootSpores függvény implementálja a gombatest spóralövésének logikáját*/
+    @Override
     public void ShootSpores(){
         if(isDead){
             System.err.println("Error: The fungus body is dead and cannot shoot spores.");
@@ -249,6 +257,7 @@ public class FungusBody {
     /**
      * Gombatest meghalását implementálja
      */
+    @Override
     public void Die(){
         /*tecton.AbsorbHyphas();
         System.out.println("[Tecton].AbsorbHyphas()");
@@ -281,6 +290,7 @@ public class FungusBody {
     /**
      * Spórát termel a gombatestnek
      */
+    @Override
     public void ProduceSpore(){
         System.out.println(">[FungusBody].GetIsDead()");
         if(!this.GetIsDead()){

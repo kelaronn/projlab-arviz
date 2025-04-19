@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Tecton {
+public abstract class Tecton implements ITectonController, ITectonView {
     protected Random rand = new Random();
     protected final int sporeCountToGrowFungus = 3;
     protected final int defaultFbShotsLeft = 4;
@@ -113,6 +113,7 @@ public abstract class Tecton {
      * (spores) és gombatestet (fungusBody).
      * Létrehoz egy új, eredetivel megegyező típusú tektont. Az insecteket (ha vannak) maradnak az eredeti tektonon.
      */
+    @Override
     public Tecton Break(){
 
 //        Tecton t1 = GetRandomChild();
@@ -169,6 +170,7 @@ public abstract class Tecton {
      * @param fungus
      * @return
      */
+    @Override
     public boolean GrowFungusBodyFromInsect(Fungus fungus) {
         if( this.GetFungusBody() != null ) // már van fungisbody rajta
             return false;
@@ -205,6 +207,7 @@ public abstract class Tecton {
      * @param fungus
      * @return
      */
+    @Override
     public boolean GrowFungusBody(Fungus fungus) {
         if(spores.size() < sporeCountToGrowFungus) // nem elég spóra
             return false;
@@ -229,6 +232,7 @@ public abstract class Tecton {
      * Abszorpciós függvény (hifa felszívódás), hamis értékkel tér vissza alapesetben.
      * @return false
      */
+    @Override
     public boolean AbsorbHyphas(){
         return false;
     }
@@ -238,6 +242,7 @@ public abstract class Tecton {
      * referenciájával.
      * @return Tecton.neighbours
      */
+    @Override
     public ArrayList<Tecton> GetNeighbours() {
         return neighbours;
     }
@@ -247,6 +252,7 @@ public abstract class Tecton {
      * rendelve, és hozzáadja a saját spores nevű Spore lista attribútumhoz.
      * @param fungus
      */
+    @Override
     public void AddSpore(Fungus fungus) {
         Spore spore;
         int type = rand.nextInt(0, 5);
@@ -289,21 +295,10 @@ public abstract class Tecton {
      * Visszaadja Spore listáját a tektonnak.
      * @return spores
      */
+    @Override
     public List<Spore> GetSpores() {
         return spores;
     }
-
-    /**
-     * virtuális metódus, a
-     * leszármazottaknak meg kell valósítania, létrehoz egy új hifát (Hypha) a tektonon,
-     * mégegyet a tekton és a paraméterül kapott tekton között, és hozzáadja a hyphas nevű
-     * Hypha lista attribútumhoz.
-     * Override a leszármazottakban!
-     * @param fungus host Fungus
-     * @param t0, szomszédos Tecton
-     * @return true, ha sikeres, false ha nem.
-     */
-    public abstract boolean AddHypha(Fungus fungus, Tecton t0);
 
     /**
      * eltávolítja a paraméterként kapott hifát a hyphas nevű
@@ -331,6 +326,7 @@ public abstract class Tecton {
      * az insects nevű Insect lista attribútumhoz.
      * @param insect hozzáadandó insect
      */
+    @Override
     public void AddInsect(Insect insect) {
         insects.add(insect);
     }
@@ -353,6 +349,7 @@ public abstract class Tecton {
      * attribútum értékét.
      * @param fb fungusbody paraméter
      */
+    @Override
     public void SetFungusBody(FungusBody fb){
         fungusBody = fb;
     }
@@ -362,6 +359,7 @@ public abstract class Tecton {
      * referenciájával.
      * @return tecton.fungusBody
      */
+    @Override
     public FungusBody GetFungusBody(){
         return fungusBody;
     }
@@ -371,6 +369,7 @@ public abstract class Tecton {
      * neighbours nevű Tecton lista attribúmhoz.
      * @param neighbour hozzzáadnivaló szomszédos tekton
      */
+    @Override
     public void AddNeighbour(Tecton neighbour) {
         neighbours.add(neighbour);
         //System.out.println(">[Tecton].neighbours.add(neighbour)");
@@ -436,6 +435,7 @@ public abstract class Tecton {
      * Visszaadja a tektonon lévő hifák listáját.
      * @return hyphas
      */
+    @Override
     public List<Hypha> GetHyphas(){
         return hyphas;
     }
