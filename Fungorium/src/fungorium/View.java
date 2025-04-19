@@ -15,7 +15,7 @@ public class View {
             System.out.println("4 \t- Full Tecton Breaks");
             System.out.println("5 \t- Hypha Absorb");
             System.out.println("6 \t- Insect Move");
-            System.out.println("7 \t- Insect Cut");0
+            System.out.println("7 \t- Insect Cut");
             System.out.println("8 \t- Insect EatSpore");
             System.out.println("9 \t- ShootSpores");
             System.out.println("10 \t- FungusBody death");
