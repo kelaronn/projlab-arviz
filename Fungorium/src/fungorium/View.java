@@ -17,7 +17,7 @@ public class View implements IView {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-
+            help();
             System.out.println("\n#### Main Menu #####");
             System.out.println("1 \t- Grow Hypha");
             System.out.println("2 \t- Atrophy of Hypha");
@@ -360,5 +360,94 @@ public class View implements IView {
      */
     public int getsCtr() {
         return sCtr;
+    }
+
+    public static void help() {
+        System.out.println("Rendszer parancsok:");
+
+        // Listázás a parancsok és leírásaik szerint
+        System.out.println("/help: Leírás: Rendszer parancsok listázása.");
+        System.out.println("/exec: Leírás: Szkript futtatása\nOpciók: [Path]: Szkript elérési útja (relatív).");
+        System.out.println(
+                "/rand: Leírás: Random generálás engedélyezése / letiltása (paraméter megadása nélkül az aktuális állapot negáltja lesz érvényes).\n"
+                        +
+                        "Opciók: e, enable: Random generálás engedélyezése (opcionális).\n" +
+                        "d, disable: Random generálás tiltása (opcionális).");
+        System.out.println(
+                "/turns: Leírás: Kör rendszer engedélyezése / letiltása (paraméter megadása nélkül az aktuális állapot negáltja lesz érvényes).\n"
+                        +
+                        "Opciók: e, enable: Kör rendszer engedélyezése (opcionális).\n" +
+                        "d, disable: Kör rendszer letiltása (opcionális).");
+        System.out.println(
+                "/trigg: Leírás: Esemény manuális kiváltása.\nOpciók: nr: Következő kör\nnp: Következő játékos");
+        System.out.println(
+                "/addf: Leírás: Gombafaj (Fungus) hozzáadása a játékhoz.\nOpciók: -n [Name]: A gombafaj neve.");
+        System.out.println("/addt: Leírás: Tekton (Tecton) hozzáadása a játékhoz.\nOpciók: -n [Name]: Tekton neve.\n" +
+                "-t [Type]: Tekton típusa.\n" +
+                "n: Szűk tekton (NarrowTecton).\n" +
+                "wi: Széles tekton (WideTecton).\n" +
+                "v: Életadó tekton (VitalTecton).\n" +
+                "we: Gyenge tekton (WeakTecton).\n" +
+                "b: Sivár tekton (BarrenTecton).");
+        System.out.println("/addfb: Leírás: Gombatest (FungusBody) hozzáadása a játékhoz.\nOpciók: " +
+                "-n [Name]: Gombatest neve.\n" +
+                "-f [Name]: Gombafaj neve.\n" +
+                "-t [Name]: Tekton neve.\n" +
+                "-d [y/n]: Gombatest halott-e.\n" +
+                "-a [Value]: Gombatest életkora (min. 0).\n" +
+                "-dv [y/n]: A gombatest teljes kifejlettség beállítása.\n" +
+                "-sc [Value]: Tárolt gombaspóra mennyisége (min. 0).\n" +
+                "-sl [Value]: Lövési lehetőség száma (min. 0).");
+        System.out.println("/addh: Leírás: Gombafonal (Hypha) hozzáadása a játékhoz.\nOpciók: " +
+                "-n [Name]: Gombafonal neve.\n" +
+                "-f [Name]: Gombafaj neve.\n" +
+                "-ts [Name]: Tekton neve, ahol van vagy ahol kezdődik.\n" +
+                "-tn [Name]: Tekton neve, ahol végződik.");
+        System.out.println("/adds: Leírás: Gomba spóra (Spore) hozzáadása a játékhoz.\nOpciók: " +
+                "-n [Name]: Gomba spóra neve.\n" +
+                "-tn [Name]: Tekton neve.\n" +
+                "-t [Type]: Gomba spóra típusa.\nsd: Gyorsító spóra (SpeedSpore).\n" +
+                "st: Hasító spóra (SplitSpore).\nsw: Lassító spóra (SlowSpore).\n" +
+                "dm: Lefegyverző spóra (DisarmSpore).\nsn: Kábító spóra (StunSpore).\n" +
+                "-nv [Value]: Tápanyag értéke (min. 0).\n-ed [Value]: Effekt hatásának ideje, ha van (min. 0).");
+        System.out.println("/addic: Leírás: Rovar kolónia (InsectColony) hozzáadása a játékhoz.\nOpciók: " +
+                "-n [Name]: Rovar kolónia neve.\n-nv [Value]: Eddig összegyűjtött tápanyag mennyisége (min. 0).");
+        System.out.println("/addi: Leírás: Rovar (Insect) hozzáadása a játékhoz.\nOpciók: " +
+                "-n [Name]: Rovar neve.\n-ic [Name]: Rovar kolónia neve.\n-t [Name]: Tekton neve.\n" +
+                "-sd [Value]: Rovar sebessége/lépésszáma (min. 0).\n-ca [y/n]: Vágási képesség megléte.\n" +
+                "-et [Value]: Effekt hatásának hátralévő ideje (min. 0).\n-eb [Name]: Gombafaj neve, amelyiknek gombafonala megette.");
+        System.out.println("/altt: Leírás: Tekton (Tecton) tulajdonságainak módosítása.\nOpciók: " +
+                "-n [Name]: Tekton neve.\n-nh [Name]: Tekton neve, akivel a szomszédságot kialakítjuk.");
+        System.out.println("/alth: Leírás: Gombafonal (Hypha) tulajdonságainak módosítása.\nOpciók: " +
+                "-n [Name]: Gombafonal neve.\n-nh [Name]: Azonos fajú szomszédos gombafonal neve, akivel létrejön a szomszédság.");
+        System.out.println("/lstf: Leírás: Gombafajok és paramétereik listázása.");
+        System.out.println("/lstt: Leírás: Tektonok és paramétereik listázása.");
+        System.out.println("/lstfb: Leírás: Gombatestek és paramétereik listázása.");
+        System.out.println("/lsth: Leírás: Hifák és paramétereik listázása.");
+        System.out.println("/lstic: Leírás: Rovar kolóniák és paramétereik listázása.");
+        System.out.println("/lsti: Leírás: Rovarok és paramétereik listázása.");
+        System.out.println("/save: Leírás: Játék aktuális állapotának mentése.\nOpciók: [Name]: Kimeneti fájl neve.");
+        System.out.println(
+                "/load: Leírás: Játék visszatöltése mentett állapotból.\nOpciók: [Path]: Mentett fájl elérési útja (relatív).");
+        System.out.println("/rst: Leírás: Játék kezdeti beolvasás és végrehajtás nélküli módba állítása.");
+        System.out.println("breaktecton: Leírás: Tekton kettétörése.\nOpciók: -t [Name]: Tekton neve.");
+        System.out.println(
+                "growfungusbody: Leírás: Gombatest növesztése a tektonon.\nOpciók: -f [Name]: Gombafaj neve.\n-t [Name]: Tekton neve.");
+        System.out.println("absorbhypha: Leírás: Gombafonál felszívódása a tektonon.\nOpciók: -t [Name]: Tekton neve.");
+        System.out.println("producespore: Leírás: Gombatest spóra termelése.\nOpciók: -fb [Name]: Gombatest neve.");
+        System.out.println("shootspores: Leírás: Gombatest spóra lövése.\nOpciók: -fb [Name]: Gombatest neve.");
+        System.out.println("diefungusbody: Leírás: Gombatest megölése.\nOpciók: -fb [Name]: Gombatest neve.");
+        System.out.println(
+                "growhypha: Leírás: Gombafonal növesztése.\nOpciók: -f [Name]: Gombafaj neve.\n-ts [Name]: Tekton neve, amelyről növesztjük.\n-tn [Name]: Tekton neve, amelyre növesztünk.");
+        System.out.println(
+                "atrophyofhypha: Leírás: Gombafonalak elsorvasztása.\nOpciók: -h [Name]: Gombafonal neve (a hálózat egy tagja).");
+        System.out.println(
+                "eatstunnedinsect: Leírás: Kábult rovar megevése.\nOpciók: -h [Name]: Gombafonal neve.\n-i [Name]: Rovar neve.");
+        System.out
+                .println("eatspore: Leírás: Gombaspóra evése.\nOpciók: -i [Name]: Rovar neve.\n-s [Name]: Spóra neve.");
+        System.out.println(
+                "moveinsect: Leírás: Rovar mozgatása.\nOpciók: -i [Name]: Rovar neve.\n-t [Name]: Tekton neve.");
+        System.out.println(
+                "cuthypha: Leírás: Gombafonal elvágása.\nOpciók: -i [Name]: Rovar neve.\n-h [Name]: Gombafonal neve.");
     }
 }
