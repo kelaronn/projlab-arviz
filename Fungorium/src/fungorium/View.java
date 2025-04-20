@@ -501,7 +501,6 @@ public class View implements IView {
         Spore S2 = new Spore(5, 0, F1, T1);
         Insect I1 = new Insect(2,true,0,T1);
         I1.SetHostColony(IC1);
-        I1.SetEatenBy(F1);
         Insect I2 = new Insect(2,true,0,T1);
         I2.SetHostColony(IC1);
         I2.SetEatenBy(F1);
@@ -920,9 +919,11 @@ public class View implements IView {
                     Object obj2 = entry2.getValue();
                     try {
                         IFungusView fungusView = (IFungusView) obj2;
-                        if (((IFungusView)insectView.GetEatenBy()).equals(fungusView)) {
-                            tectonName=entry2.getKey();
-                            break;
+                        if (((IFungusView)insectView.GetEatenBy())!=null) {
+                            if (((IFungusView)insectView.GetEatenBy()).equals(fungusView)) {
+                                fungusName=entry2.getKey();
+                                break;
+                            }
                         }
                     } catch (ClassCastException ccex) {
                         // Wrong element, we do nothing and move on.
