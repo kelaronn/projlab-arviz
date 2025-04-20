@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ public class View implements IView {
     GameController controller = new GameController();
     int icCtr = 0;
     int fCtr = 0;
+    int fbCtr = 0;
     int hCtr = 0;
     int tCtr = 0;
     int iCtr = 0;
@@ -23,22 +25,9 @@ public class View implements IView {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            help();
+            // help();
+            load("test0_in.txt");
             save("test0_out.txt");
-            System.out.println("\n#### Main Menu #####");
-            System.out.println("1 \t- Grow Hypha");
-            System.out.println("2 \t- Atrophy of Hypha");
-            System.out.println("3 \t- Grow FungusBody");
-            System.out.println("4 \t- Full Tecton Breaks");
-            System.out.println("5 \t- Hypha Absorb");
-            System.out.println("6 \t- Insect Move");
-            System.out.println("7 \t- Insect Cut");
-            System.out.println("8 \t- Insect EatSpore");
-            System.out.println("9 \t- ShootSpores");
-            System.out.println("10 \t- FungusBody death");
-            System.out.println("11 \t- ProduceSpore");
-            System.out.println("0 \t- Exit");
-            System.out.print("Select an option: ");
 
             int inp = getInput(scanner);
 
@@ -334,6 +323,15 @@ public class View implements IView {
     }
 
     /**
+     * Getter metódus a fbCtr attribútumhoz.
+     * 
+     * @return fbCtr
+     */
+    public int getfbCtr() {
+        return fbCtr;
+    }
+
+    /**
      * Getter metódus a hCtr attribútumhoz.
      * 
      * @return hCtr
@@ -369,34 +367,37 @@ public class View implements IView {
         return sCtr;
     }
 
+    /**
+     * /help parancs függvénye, listázza a parancsokat
+     */
     public static void help() {
-        System.out.println("Rendszer parancsok:");
+        System.out.println("\nRendszer parancsok:");
 
-        // Listázás a parancsok és leírásaik szerint
-        System.out.println("/help: Leírás: Rendszer parancsok listázása.");
-        System.out.println("/exec: Leírás: Szkript futtatása\nOpciók: [Path]: Szkript elérési útja (relatív).");
+        System.out.println("\n/help: Leírás: Rendszer parancsok listázása.");
+        System.out.println("\n/exec: Leírás: Szkript futtatása\nOpciók:\n[Path]: Szkript elérési útja (relatív).");
         System.out.println(
-                "/rand: Leírás: Random generálás engedélyezése / letiltása (paraméter megadása nélkül az aktuális állapot negáltja lesz érvényes).\n"
+                "\n/rand: Leírás: Random generálás engedélyezése / letiltása (paraméter megadása nélkül az aktuális állapot negáltja lesz érvényes).\n"
                         +
-                        "Opciók: e, enable: Random generálás engedélyezése (opcionális).\n" +
+                        "Opciók:\ne, enable: Random generálás engedélyezése (opcionális).\n" +
                         "d, disable: Random generálás tiltása (opcionális).");
         System.out.println(
-                "/turns: Leírás: Kör rendszer engedélyezése / letiltása (paraméter megadása nélkül az aktuális állapot negáltja lesz érvényes).\n"
+                "\n/turns: Leírás: Kör rendszer engedélyezése / letiltása (paraméter megadása nélkül az aktuális állapot negáltja lesz érvényes).\n"
                         +
-                        "Opciók: e, enable: Kör rendszer engedélyezése (opcionális).\n" +
+                        "Opciók:\ne, enable: Kör rendszer engedélyezése (opcionális).\n" +
                         "d, disable: Kör rendszer letiltása (opcionális).");
         System.out.println(
-                "/trigg: Leírás: Esemény manuális kiváltása.\nOpciók: nr: Következő kör\nnp: Következő játékos");
+                "\n/trigg: Leírás: Esemény manuális kiváltása.\nOpciók:\nnr: Következő kör\nnp: Következő játékos");
         System.out.println(
-                "/addf: Leírás: Gombafaj (Fungus) hozzáadása a játékhoz.\nOpciók: -n [Name]: A gombafaj neve.");
-        System.out.println("/addt: Leírás: Tekton (Tecton) hozzáadása a játékhoz.\nOpciók: -n [Name]: Tekton neve.\n" +
-                "-t [Type]: Tekton típusa.\n" +
-                "n: Szűk tekton (NarrowTecton).\n" +
-                "wi: Széles tekton (WideTecton).\n" +
-                "v: Életadó tekton (VitalTecton).\n" +
-                "we: Gyenge tekton (WeakTecton).\n" +
-                "b: Sivár tekton (BarrenTecton).");
-        System.out.println("/addfb: Leírás: Gombatest (FungusBody) hozzáadása a játékhoz.\nOpciók: " +
+                "\n/addf: Leírás: Gombafaj (Fungus) hozzáadása a játékhoz.\nOpciók:\n-n [Name]: A gombafaj neve.");
+        System.out
+                .println("\n/addt: Leírás: Tekton (Tecton) hozzáadása a játékhoz.\nOpciók:\n-n [Name]: Tekton neve.\n" +
+                        "-t [Type]: Tekton típusa.\n" +
+                        "n: Szűk tekton (NarrowTecton).\n" +
+                        "wi: Széles tekton (WideTecton).\n" +
+                        "v: Életadó tekton (VitalTecton).\n" +
+                        "we: Gyenge tekton (WeakTecton).\n" +
+                        "b: Sivár tekton (BarrenTecton).");
+        System.out.println("\n/addfb: Leírás: Gombatest (FungusBody) hozzáadása a játékhoz.\nOpciók:\n" +
                 "-n [Name]: Gombatest neve.\n" +
                 "-f [Name]: Gombafaj neve.\n" +
                 "-t [Name]: Tekton neve.\n" +
@@ -405,536 +406,768 @@ public class View implements IView {
                 "-dv [y/n]: A gombatest teljes kifejlettség beállítása.\n" +
                 "-sc [Value]: Tárolt gombaspóra mennyisége (min. 0).\n" +
                 "-sl [Value]: Lövési lehetőség száma (min. 0).");
-        System.out.println("/addh: Leírás: Gombafonal (Hypha) hozzáadása a játékhoz.\nOpciók: " +
+        System.out.println("\n/addh: Leírás: Gombafonal (Hypha) hozzáadása a játékhoz.\nOpciók:\n" +
                 "-n [Name]: Gombafonal neve.\n" +
                 "-f [Name]: Gombafaj neve.\n" +
                 "-ts [Name]: Tekton neve, ahol van vagy ahol kezdődik.\n" +
                 "-tn [Name]: Tekton neve, ahol végződik.");
-        System.out.println("/adds: Leírás: Gomba spóra (Spore) hozzáadása a játékhoz.\nOpciók: " +
+        System.out.println("\n/adds: Leírás: Gomba spóra (Spore) hozzáadása a játékhoz.\nOpciók:\n" +
                 "-n [Name]: Gomba spóra neve.\n" +
                 "-tn [Name]: Tekton neve.\n" +
                 "-t [Type]: Gomba spóra típusa.\nsd: Gyorsító spóra (SpeedSpore).\n" +
                 "st: Hasító spóra (SplitSpore).\nsw: Lassító spóra (SlowSpore).\n" +
                 "dm: Lefegyverző spóra (DisarmSpore).\nsn: Kábító spóra (StunSpore).\n" +
                 "-nv [Value]: Tápanyag értéke (min. 0).\n-ed [Value]: Effekt hatásának ideje, ha van (min. 0).");
-        System.out.println("/addic: Leírás: Rovar kolónia (InsectColony) hozzáadása a játékhoz.\nOpciók: " +
+        System.out.println("\n/addic: Leírás: Rovar kolónia (InsectColony) hozzáadása a játékhoz.\nOpciók:\n " +
                 "-n [Name]: Rovar kolónia neve.\n-nv [Value]: Eddig összegyűjtött tápanyag mennyisége (min. 0).");
-        System.out.println("/addi: Leírás: Rovar (Insect) hozzáadása a játékhoz.\nOpciók: " +
+        System.out.println("\n/addi: Leírás: Rovar (Insect) hozzáadása a játékhoz.\nOpciók:\n" +
                 "-n [Name]: Rovar neve.\n-ic [Name]: Rovar kolónia neve.\n-t [Name]: Tekton neve.\n" +
                 "-sd [Value]: Rovar sebessége/lépésszáma (min. 0).\n-ca [y/n]: Vágási képesség megléte.\n" +
                 "-et [Value]: Effekt hatásának hátralévő ideje (min. 0).\n-eb [Name]: Gombafaj neve, amelyiknek gombafonala megette.");
-        System.out.println("/altt: Leírás: Tekton (Tecton) tulajdonságainak módosítása.\nOpciók: " +
+        System.out.println("\n/altt: Leírás: Tekton (Tecton) tulajdonságainak módosítása.\nOpciók:\n" +
                 "-n [Name]: Tekton neve.\n-nh [Name]: Tekton neve, akivel a szomszédságot kialakítjuk.");
-        System.out.println("/alth: Leírás: Gombafonal (Hypha) tulajdonságainak módosítása.\nOpciók: " +
+        System.out.println("\n/alth: Leírás: Gombafonal (Hypha) tulajdonságainak módosítása.\nOpciók:\n" +
                 "-n [Name]: Gombafonal neve.\n-nh [Name]: Azonos fajú szomszédos gombafonal neve, akivel létrejön a szomszédság.");
-        System.out.println("/lstf: Leírás: Gombafajok és paramétereik listázása.");
-        System.out.println("/lstt: Leírás: Tektonok és paramétereik listázása.");
-        System.out.println("/lstfb: Leírás: Gombatestek és paramétereik listázása.");
-        System.out.println("/lsth: Leírás: Hifák és paramétereik listázása.");
-        System.out.println("/lstic: Leírás: Rovar kolóniák és paramétereik listázása.");
-        System.out.println("/lsti: Leírás: Rovarok és paramétereik listázása.");
-        System.out.println("/save: Leírás: Játék aktuális állapotának mentése.\nOpciók: [Name]: Kimeneti fájl neve.");
-        System.out.println(
-                "/load: Leírás: Játék visszatöltése mentett állapotból.\nOpciók: [Path]: Mentett fájl elérési útja (relatív).");
-        System.out.println("/rst: Leírás: Játék kezdeti beolvasás és végrehajtás nélküli módba állítása.");
-        System.out.println("breaktecton: Leírás: Tekton kettétörése.\nOpciók: -t [Name]: Tekton neve.");
-        System.out.println(
-                "growfungusbody: Leírás: Gombatest növesztése a tektonon.\nOpciók: -f [Name]: Gombafaj neve.\n-t [Name]: Tekton neve.");
-        System.out.println("absorbhypha: Leírás: Gombafonál felszívódása a tektonon.\nOpciók: -t [Name]: Tekton neve.");
-        System.out.println("producespore: Leírás: Gombatest spóra termelése.\nOpciók: -fb [Name]: Gombatest neve.");
-        System.out.println("shootspores: Leírás: Gombatest spóra lövése.\nOpciók: -fb [Name]: Gombatest neve.");
-        System.out.println("diefungusbody: Leírás: Gombatest megölése.\nOpciók: -fb [Name]: Gombatest neve.");
-        System.out.println(
-                "growhypha: Leírás: Gombafonal növesztése.\nOpciók: -f [Name]: Gombafaj neve.\n-ts [Name]: Tekton neve, amelyről növesztjük.\n-tn [Name]: Tekton neve, amelyre növesztünk.");
-        System.out.println(
-                "atrophyofhypha: Leírás: Gombafonalak elsorvasztása.\nOpciók: -h [Name]: Gombafonal neve (a hálózat egy tagja).");
-        System.out.println(
-                "eatstunnedinsect: Leírás: Kábult rovar megevése.\nOpciók: -h [Name]: Gombafonal neve.\n-i [Name]: Rovar neve.");
+        System.out.println("\n/lstf: Leírás: Gombafajok és paramétereik listázása.");
+        System.out.println("\n/lstt: Leírás: Tektonok és paramétereik listázása.");
+        System.out.println("\n/lstfb: Leírás: Gombatestek és paramétereik listázása.");
+        System.out.println("\n/lsth: Leírás: Hifák és paramétereik listázása.");
+        System.out.println("\n/lstic: Leírás: Rovar kolóniák és paramétereik listázása.");
+        System.out.println("\n/lsti: Leírás: Rovarok és paramétereik listázása.");
         System.out
-                .println("eatspore: Leírás: Gombaspóra evése.\nOpciók: -i [Name]: Rovar neve.\n-s [Name]: Spóra neve.");
+                .println("\n/save: Leírás: Játék aktuális állapotának mentése.\nOpciók:\n [Name]: Kimeneti fájl neve.");
         System.out.println(
-                "moveinsect: Leírás: Rovar mozgatása.\nOpciók: -i [Name]: Rovar neve.\n-t [Name]: Tekton neve.");
+                "\n/load: Leírás: Játék visszatöltése mentett állapotból.\nOpciók:\n[Path]: Mentett fájl elérési útja (relatív).");
+        System.out.println("\n/rst: Leírás: Játék kezdeti beolvasás és végrehajtás nélküli módba állítása.");
+        System.out.println("\nbreaktecton: Leírás: Tekton kettétörése.\nOpciók:\n-t [Name]: Tekton neve.");
         System.out.println(
-                "cuthypha: Leírás: Gombafonal elvágása.\nOpciók: -i [Name]: Rovar neve.\n-h [Name]: Gombafonal neve.");
+                "\ngrowfungusbody: Leírás: Gombatest növesztése a tektonon.\nOpciók:\n-f [Name]: Gombafaj neve.\n-t [Name]: Tekton neve.");
+        System.out
+                .println(
+                        "\nabsorbhypha: Leírás: Gombafonál felszívódása a tektonon.\nOpciók:\n-t [Name]: Tekton neve.");
+        System.out.println("\nproducespore: Leírás: Gombatest spóra termelése.\nOpciók:\n-fb [Name]: Gombatest neve.");
+        System.out.println("\nshootspores: Leírás: Gombatest spóra lövése.\nOpciók:\n-fb [Name]: Gombatest neve.");
+        System.out.println("\ndiefungusbody: Leírás: Gombatest megölése.\nOpciók:\n-fb [Name]: Gombatest neve.");
+        System.out.println(
+                "\ngrowhypha: Leírás: Gombafonal növesztése.\nOpciók:\n-f [Name]: Gombafaj neve.\n-ts [Name]: Tekton neve, amelyről növesztjük.\n-tn [Name]: Tekton neve, amelyre növesztünk.");
+        System.out.println(
+                "\natrophyofhypha: Leírás: Gombafonalak elsorvasztása.\nOpciók:\n-h [Name]: Gombafonal neve (a hálózat egy tagja).");
+        System.out.println(
+                "\neatstunnedinsect: Leírás: Kábult rovar megevése.\nOpciók:\n-h [Name]: Gombafonal neve.\n-i [Name]: Rovar neve.");
+        System.out
+                .println(
+                        "\neatspore: Leírás: Gombaspóra evése.\nOpciók:\n-i [Name]: Rovar neve.\n-s [Name]: Spóra neve.");
+        System.out.println(
+                "\nmoveinsect: Leírás: Rovar mozgatása.\nOpciók:\n-i [Name]: Rovar neve.\n-t [Name]: Tekton neve.");
+        System.out.println(
+                "\ncuthypha: Leírás: Gombafonal elvágása.\nOpciók:\n-i [Name]: Rovar neve.\n-h [Name]: Gombafonal neve.");
     }
 
-    public static void save(String filePath){
+    /**
+     * Beolvassa a fájlt és inicializálja a játék állapotát.
+     * 
+     * @param filePath
+     */
+    public static void load(String filePath) {
+        Map<String, Tecton> tectonMap = new LinkedHashMap<>();
+        Map<String, Fungus> fungusMap = new LinkedHashMap<>();
+        Map<String, FungusBody> fungusBodyMap = new LinkedHashMap<>();
+        Map<String, InsectColony> insectColonyMap = new LinkedHashMap<>();
+        Map<String, Insect> insectMap = new LinkedHashMap<>();
+        Map<String, Hypha> hyphaMap = new LinkedHashMap<>();
+        Map<String, Spore> sporeMap = new LinkedHashMap<>();
+        Map<String, String[]> tectonNeighbors = new LinkedHashMap<>();
+        Map<String, String[]> hyphaNeighbors = new LinkedHashMap<>();
+
+        try (Scanner scanner = new Scanner(new File(filePath))) {
+            planet.clear();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                List<String> partsList = new ArrayList<>();
+                StringBuilder currentPart = new StringBuilder();
+                boolean insideBrackets = false;
+
+                for (char c : line.toCharArray()) {
+                    if (c == '[') {
+                        insideBrackets = true;
+                    } else if (c == ']') {
+                        insideBrackets = false;
+                    } else if (c == ',' && !insideBrackets) {
+                        partsList.add(currentPart.toString());
+                        currentPart.setLength(0);
+                        continue;
+                    }
+                    currentPart.append(c);
+                }
+                partsList.add(currentPart.toString());
+                String[] parts = partsList.toArray(new String[0]);
+                String type = parts[0];
+                String name = parts[1];
+
+                switch (type) {
+                    case "NarrowTecton" -> {
+                        tectonMap.put(name, new NarrowTecton());
+                        tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                    }
+                    case "WideTecton" -> {
+                        tectonMap.put(name, new WideTecton());
+                        tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                    }
+                    case "WeakTecton" -> {
+                        tectonMap.put(name, new WeakTecton());
+                        tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                    }
+                    case "BarrenTecton" -> {
+                        tectonMap.put(name, new BarrenTecton());
+                        tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                    }
+                    case "Fungus" -> fungusMap.put(name, new Fungus());
+                    case "FungusBody" -> {
+                        fungusBodyMap.put(name, new FungusBody(
+                                tectonMap.get(parts[7]),
+                                fungusMap.get(parts[8]),
+                                Boolean.parseBoolean(parts[2]),
+                                Integer.parseInt(parts[3]),
+                                Boolean.parseBoolean(parts[4]),
+                                Integer.parseInt(parts[5]),
+                                Integer.parseInt(parts[6])));
+                        fungusMap.get(parts[8]).AddBody(fungusBodyMap.get(name));
+                        tectonMap.get(parts[7]).SetFungusBody(fungusBodyMap.get(name));
+                    }
+                    case "InsectColony" -> {
+                        InsectColony colony = new InsectColony();
+                        colony.setNutrition(Integer.parseInt(parts[3]));
+                        insectColonyMap.put(name, colony);
+                    }
+                    case "Insect" -> {
+                        insectMap.put(name, new Insect(
+                                Integer.parseInt(parts[2]),
+                                Boolean.parseBoolean(parts[3]),
+                                Integer.parseInt(parts[4]),
+                                insectColonyMap.get(parts[5]),
+                                tectonMap.get(parts[6]),
+                                fungusMap.get(parts[7])));
+                        insectColonyMap.get(parts[5]).AddInsect(insectMap.get(name));
+                    }
+                    case "Hypha" -> {
+                        List<Tecton> tectons = new ArrayList<>();
+                        String[] tectonNames = parts[4].replace("[", "").replace("]", "").split(",");
+                        for (String tectonName : tectonNames) {
+                            tectons.add(tectonMap.get(tectonName));
+                        }
+                        hyphaMap.put(name, new Hypha(
+                                new ArrayList<>(),
+                                fungusMap.get(parts[3]),
+                                tectons));
+                        hyphaNeighbors.put(name, parts[2].replace("[", "").replace("]", "").split(","));
+                        fungusMap.get(parts[3]).AddHypha(hyphaMap.get(name));
+                    }
+                    case "Spore" -> sporeMap.put(name, new Spore(
+                            Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3]),
+                            fungusMap.get(parts[4]),
+                            tectonMap.get(parts[5])));
+                    default -> System.err.println("Ismeretlen tipus: " + type);
+                }
+
+            }
+
+            for (Map.Entry<String, Hypha> entry : hyphaMap.entrySet()) {
+                Hypha currentHypha = entry.getValue();
+                List<Tecton> hyphaTectons = currentHypha.GetTectons();
+
+                // Ensure the Hypha is only added to the second Tecton (if it exists)
+                if (hyphaTectons.size() > 1) {
+                    Tecton secondTecton = hyphaTectons.get(1);
+                    secondTecton.GetHyphas().add(currentHypha);
+                } else if (hyphaTectons.size() == 1) {
+                    Tecton firstTecton = hyphaTectons.get(0);
+                    firstTecton.GetHyphas().add(currentHypha);
+                }
+            }
+
+            for (Map.Entry<String, Spore> entry : sporeMap.entrySet()) {
+                for (Map.Entry<String, Tecton> tectonEntry : tectonMap.entrySet()) {
+                    if (entry.getValue().GetTecton().equals(tectonEntry.getValue())) {
+                        tectonEntry.getValue().GetSpores().add(entry.getValue());
+                    }
+                }
+            }
+
+            for (Map.Entry<String, FungusBody> entry : fungusBodyMap.entrySet()) {
+                for (Map.Entry<String, Tecton> tectonEntry : tectonMap.entrySet()) {
+                    if (entry.getValue().GetTecton().equals(tectonEntry.getValue())) {
+                        tectonEntry.getValue().SetFungusBody(entry.getValue());
+                    }
+                }
+            }
+
+            for (Map.Entry<String, Insect> entry : insectMap.entrySet()) {
+                for (Map.Entry<String, Tecton> tectonEntry : tectonMap.entrySet()) {
+                    if (entry.getValue().GetTecton().equals(tectonEntry.getValue())) {
+                        tectonEntry.getValue().AddInsect(entry.getValue());
+                    }
+                }
+            }
+
+            for (Map.Entry<String, Tecton> entry : tectonMap.entrySet()) {
+                Tecton currentTecton = entry.getValue();
+                String[] neighborNames = tectonNeighbors.get(entry.getKey());
+
+                if (neighborNames != null) {
+                    for (String neighborName : neighborNames) {
+                        if (!neighborName.isEmpty()) {
+                            Tecton neighbor = tectonMap.get(neighborName);
+
+                            if (neighbor != null && !currentTecton.GetNeighbours().contains(neighbor)) {
+                                currentTecton.AddNeighbour(neighbor);
+                            }
+
+                            if (neighbor != null && !neighbor.GetNeighbours().contains(currentTecton)) {
+                                neighbor.AddNeighbour(currentTecton);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (Map.Entry<String, Hypha> entry : hyphaMap.entrySet()) {
+                Hypha currentHypha = entry.getValue();
+                String[] neighborNames = hyphaNeighbors.get(entry.getKey());
+
+                for (String neighborName : neighborNames) {
+                    if (!neighborName.isEmpty()) {
+                        Hypha neighbor = hyphaMap.get(neighborName);
+                        if (neighbor != null && !currentHypha.GetNeighbours().contains(neighbor)) {
+                            currentHypha.AddNeighbour(neighbor);
+                        }
+                        if (neighbor != null && !neighbor.GetNeighbours().contains(currentHypha)) {
+                            neighbor.AddNeighbour(currentHypha);
+                        }
+                    }
+                }
+            }
+
+            planet.putAll(tectonMap);
+            planet.putAll(fungusMap);
+            planet.putAll(fungusBodyMap);
+            planet.putAll(insectColonyMap);
+            planet.putAll(insectMap);
+            planet.putAll(hyphaMap);
+            planet.putAll(sporeMap);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    public static void save(String filePath) {
         // Initialization:
-        NarrowTecton T1 = new NarrowTecton();
-        NarrowTecton T2 = new NarrowTecton();
-        NarrowTecton T3 = new NarrowTecton();
-        WideTecton T4 = new WideTecton();
-        Fungus F1 = new Fungus();
-        Fungus F2 = new Fungus();
-        InsectColony IC1 = new InsectColony();
-        T1.AddNeighbour(T2);
-        T1.AddNeighbour(T3);
-        T1.AddNeighbour(T4);
-        T2.AddNeighbour(T1);
-        T2.AddNeighbour(T4);
-        T3.AddNeighbour(T1);
-        T3.AddNeighbour(T4);
-        T4.AddNeighbour(T1);
-        T4.AddNeighbour(T2);
-        T4.AddNeighbour(T3);
-        FungusBody FB1 = new FungusBody(T1, F1);
-        F1.AddBody(FB1);
-        T1.SetFungusBody(FB1);
-        FungusBody FB2 = new FungusBody(T2, F2);
-        F2.AddBody(FB2);
-        T2.SetFungusBody(FB2);
-        Hypha H1 = new Hypha(new ArrayList<>(), F1, new ArrayList<>(List.of(T1)));
-        F1.AddHypha(H1);
-        T1.GetHyphas().add(H1);
-        Hypha H2 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2)));
-        F2.AddHypha(H2);
-        T2.GetHyphas().add(H2);
-        Hypha H3 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2,T4)));
-        F2.AddHypha(H3);
-        T4.GetHyphas().add(H3);
-        Hypha H4 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T4)));
-        F2.AddHypha(H4);
-        T4.GetHyphas().add(H4);
-        H2.AddNeighbour(H3);
-        H3.AddNeighbour(H4);
-        Spore S1 = new Spore(5, 0, F1, T1);
-        Spore S2 = new Spore(5, 0, F1, T1);
-        Insect I1 = new Insect(2,true,0,T1);
-        I1.SetHostColony(IC1);
-        I1.SetEatenBy(F1);
-        Insect I2 = new Insect(2,true,0,T1);
-        I2.SetHostColony(IC1);
-        I2.SetEatenBy(F1);
-        planet.put("T1", T1);
-        planet.put("T2", T2);
-        planet.put("T3", T3);
-        planet.put("T4", T4);
-        planet.put("F1", F1);
-        planet.put("F2", F2);
-        planet.put("IC1", IC1);
-        planet.put("FB1", FB1);
-        planet.put("FB2", FB2);
-        planet.put("H1", H1);
-        planet.put("H2", H2);
-        planet.put("H3", H3);
-        planet.put("H4", H4);
-        planet.put("S1", S1);
-        planet.put("S2", S2);
-        planet.put("I1", I1);
-        planet.put("I2", I2);
+        /*
+         * NarrowTecton T1 = new NarrowTecton();
+         * NarrowTecton T2 = new NarrowTecton();
+         * NarrowTecton T3 = new NarrowTecton();
+         * WideTecton T4 = new WideTecton();
+         * Fungus F1 = new Fungus();
+         * Fungus F2 = new Fungus();
+         * InsectColony IC1 = new InsectColony();
+         * T1.AddNeighbour(T2);
+         * T1.AddNeighbour(T3);
+         * T1.AddNeighbour(T4);
+         * T2.AddNeighbour(T1);
+         * T2.AddNeighbour(T4);
+         * T3.AddNeighbour(T1);
+         * T3.AddNeighbour(T4);
+         * T4.AddNeighbour(T1);
+         * T4.AddNeighbour(T2);
+         * T4.AddNeighbour(T3);
+         * FungusBody FB1 = new FungusBody(T1, F1);
+         * F1.AddBody(FB1);
+         * T1.SetFungusBody(FB1);
+         * FungusBody FB2 = new FungusBody(T2, F2);
+         * F2.AddBody(FB2);
+         * T2.SetFungusBody(FB2);
+         * Hypha H1 = new Hypha(new ArrayList<>(), F1, new ArrayList<>(List.of(T1)));
+         * F1.AddHypha(H1);
+         * T1.GetHyphas().add(H1);
+         * Hypha H2 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2)));
+         * F2.AddHypha(H2);
+         * T2.GetHyphas().add(H2);
+         * Hypha H3 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2,
+         * T4)));
+         * F2.AddHypha(H3);
+         * T4.GetHyphas().add(H3);
+         * Hypha H4 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T4)));
+         * F2.AddHypha(H4);
+         * T4.GetHyphas().add(H4);
+         * H2.AddNeighbour(H3);
+         * H3.AddNeighbour(H4);
+         * Spore S1 = new Spore(5, 0, F1, T1);
+         * Spore S2 = new Spore(5, 0, F1, T1);
+         * Insect I1 = new Insect(2, true, 0, T1);
+         * I1.SetHostColony(IC1);
+         * I1.SetEatenBy(F1);
+         * Insect I2 = new Insect(2, true, 0, T1);
+         * I2.SetHostColony(IC1);
+         * I2.SetEatenBy(F1);
+         * planet.put("T1", T1);
+         * planet.put("T2", T2);
+         * planet.put("T3", T3);
+         * planet.put("T4", T4);
+         * planet.put("F1", F1);
+         * planet.put("F2", F2);
+         * planet.put("IC1", IC1);
+         * planet.put("FB1", FB1);
+         * planet.put("FB2", FB2);
+         * planet.put("H1", H1);
+         * planet.put("H2", H2);
+         * planet.put("H3", H3);
+         * planet.put("H4", H4);
+         * planet.put("S1", S1);
+         * planet.put("S2", S2);
+         * planet.put("I1", I1);
+         * planet.put("I2", I2);
+         */
         // Writing
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
-        // Tectons:
-        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
-            String tectonName = entry1.getKey();
-            Object obj1 = entry1.getValue();
-            try {
-                ITectonView tectonView = (ITectonView) obj1;
-                String insectNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IInsectView insectView = (IInsectView) obj2;
-                        if (((ITectonView)insectView.GetTecton()).equals(tectonView)) {
-                            if (insectNames.equals("")) {
-                                insectNames=entry2.getKey();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Tectons:
+            for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+                String tectonName = entry1.getKey();
+                Object obj1 = entry1.getValue();
+                try {
+                    ITectonView tectonView = (ITectonView) obj1;
+                    String insectNames = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IInsectView insectView = (IInsectView) obj2;
+                            if (((ITectonView) insectView.GetTecton()).equals(tectonView)) {
+                                if (insectNames.equals("")) {
+                                    insectNames = entry2.getKey();
+                                } else {
+                                    insectNames += "," + entry2.getKey();
+                                }
                             }
-                            else{
-                                insectNames+=","+entry2.getKey();
-                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
-                }
-                String hyphaNames = "";
-                int num = 0;
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IHyphaView hyphaView = (IHyphaView) obj2;
-                        if (num==tectonView.GetHyphas().size()) {
-                            break;
+                    String hyphaNames = "";
+                    int num = 0;
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IHyphaView hyphaView = (IHyphaView) obj2;
+                            if (num == tectonView.GetHyphas().size()) {
+                                break;
+                            }
+                            for (IHyphaView ihView : tectonView.GetHyphas()) {
+                                if (hyphaView.equals(ihView)) {
+                                    if (hyphaNames.equals("")) {
+                                        hyphaNames = entry2.getKey();
+                                        num++;
+                                        break;
+                                    } else {
+                                        hyphaNames += "," + entry2.getKey();
+                                        num++;
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                        for (IHyphaView ihView : tectonView.GetHyphas()) {
-                            if (hyphaView.equals(ihView)) {
+                    }
+                    String sporeNames = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            ISporeView sporeView = (ISporeView) obj2;
+                            if (((ITectonView) sporeView.GetTecton()).equals(tectonView)) {
+                                if (sporeNames.equals("")) {
+                                    sporeNames = entry2.getKey();
+                                } else {
+                                    sporeNames += "," + entry2.getKey();
+                                }
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    String neighbourNames = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        boolean isNeighbour = false;
+                        try {
+                            ITectonView neighbourView = (ITectonView) obj2;
+                            for (ITectonView oneNeighbourView : ((ITectonView) neighbourView).GetNeighbours()) {
+                                if (oneNeighbourView.equals(tectonView)) {
+                                    isNeighbour = true;
+                                    break;
+                                }
+                            }
+                            if (isNeighbour) {
+                                if (neighbourNames.equals("")) {
+                                    neighbourNames = entry2.getKey();
+                                } else {
+                                    neighbourNames += "," + entry2.getKey();
+                                }
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    String fungusBodyName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IFungusBodyView fungusBodyView = (IFungusBodyView) obj2;
+                            if (((ITectonView) fungusBodyView.GetTecton()).equals(tectonView)) {
+                                fungusBodyName = entry2.getKey();
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    writer.write(tectonView
+                            .ToString(tectonName + "," + ((insectNames.equals("")) ? "" : "[" + insectNames + "]") + ","
+                                    + ((hyphaNames.equals("")) ? "" : "[" + hyphaNames + "]") + ","
+                                    + ((sporeNames.equals("")) ? "" : "[" + sporeNames + "]") + ","
+                                    + ((neighbourNames.equals("")) ? "" : "[" + neighbourNames + "]") + ","
+                                    + fungusBodyName + "\n"));
+                    System.out.println(tectonView
+                            .ToString(tectonName + "," + ((insectNames.equals("")) ? "" : "[" + insectNames + "]") + ","
+                                    + ((hyphaNames.equals("")) ? "" : "[" + hyphaNames + "]") + ","
+                                    + ((sporeNames.equals("")) ? "" : "[" + sporeNames + "]") + ","
+                                    + ((neighbourNames.equals("")) ? "" : "[" + neighbourNames + "]") + ","
+                                    + fungusBodyName + "\n"));
+                } catch (ClassCastException ccex) {
+                    // Wrong element, we do nothing and move on.
+                }
+            }
+            // Fungus:
+            for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+                String fungusName = entry1.getKey();
+                Object obj1 = entry1.getValue();
+                try {
+                    IFungusView fungusView = (IFungusView) obj1;
+                    String fungusBodyNames = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IFungusBodyView fungusBodyView = (IFungusBodyView) obj2;
+                            int num = 0;
+                            int max = fungusView.GetBodies().size();
+                            if (((IFungusView) fungusBodyView.GetHostFungus()).equals(fungusView)) {
+                                if (fungusBodyNames.equals("")) {
+                                    fungusBodyNames = entry2.getKey();
+                                    num++;
+                                } else {
+                                    fungusBodyNames += "," + entry2.getKey();
+                                    num++;
+                                }
+                            }
+                            if (num == max) {
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    String hyphaNames = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IHyphaView hyphaView = (IHyphaView) obj2;
+                            int num = 0;
+                            int max = fungusView.GetMycelium().size();
+                            if (((IFungusView) hyphaView.GetHostFungus()).equals(fungusView)) {
                                 if (hyphaNames.equals("")) {
-                                    hyphaNames=entry2.getKey();
+                                    hyphaNames = entry2.getKey();
                                     num++;
+                                } else {
+                                    hyphaNames += "," + entry2.getKey();
+                                    num++;
+                                }
+                            }
+                            if (num == max) {
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    writer.write(fungusView.ToString(fungusName + ","
+                            + ((fungusBodyNames.equals("")) ? fungusBodyNames : "[" + fungusBodyNames + "]") + ","
+                            + ((hyphaNames.equals("")) ? hyphaNames : "[" + hyphaNames + "]") + "\n"));
+                    System.out.println(fungusView.ToString(fungusName + ","
+                            + ((fungusBodyNames.equals("")) ? fungusBodyNames : "[" + fungusBodyNames + "]") + ","
+                            + ((hyphaNames.equals("")) ? hyphaNames : "[" + hyphaNames + "]") + "\n"));
+                } catch (ClassCastException ccex) {
+                    // Wrong element, we do nothing and move on.
+                }
+            }
+            // InsectColony:
+            for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+                String insectColonyName = entry1.getKey();
+                Object obj1 = entry1.getValue();
+                try {
+                    IInsectColonyView insectColonyView = (IInsectColonyView) obj1;
+                    String insectNames = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IInsectView insectView = (IInsectView) obj2;
+                            if (((IInsectColonyView) insectView.GetHostColony()).equals(insectColonyView)) {
+                                if (insectNames.equals("")) {
+                                    insectNames = entry2.getKey();
+                                } else {
+                                    insectNames += "," + entry2.getKey();
+                                }
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    writer.write(insectColonyView.ToString(
+                            insectColonyName + "," + ((insectNames.equals("")) ? insectNames : "[" + insectNames + "]")
+                                    + "," + insectColonyView.getNutrition() + "\n"));
+                    System.out.println(insectColonyView.ToString(
+                            insectColonyName + "," + ((insectNames.equals("")) ? insectNames : "[" + insectNames + "]")
+                                    + "," + insectColonyView.getNutrition() + "\n"));
+                } catch (ClassCastException ccex) {
+                    // Wrong element, we do nothing and move on.
+                }
+            }
+            // FungusBody:
+            for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+                String fungusBodyName = entry1.getKey();
+                Object obj1 = entry1.getValue();
+                try {
+                    IFungusBodyView fungusBodyView = (IFungusBodyView) obj1;
+                    String tectonName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            ITectonView tectonView = (ITectonView) obj2;
+                            if (((IFungusBodyView) tectonView.GetFungusBody()).equals(fungusBodyView)) {
+                                tectonName = entry2.getKey();
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    String fungusName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IFungusView fungusView = (IFungusView) obj2;
+                            for (IFungusBodyView fBView : fungusView.GetBodies()) {
+                                if (fBView.equals(fungusBodyView)) {
+                                    fungusName = entry2.getKey();
                                     break;
                                 }
-                                else{
-                                    hyphaNames+=","+entry2.getKey();
-                                    num++;
+                            }
+                            if (!fungusName.equals("")) {
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    writer.write(fungusBodyView.ToString(
+                            fungusBodyName + "," + fungusBodyView.GetIsDeveloped() + "," + fungusBodyView.GetAge() + ","
+                                    + fungusBodyView.GetIsDead() + "," + fungusBodyView.GetSporeCount() + ","
+                                    + fungusBodyView.GetShotsLeft() + "," + tectonName + "," + fungusName + "\n"));
+                    System.out.println(fungusBodyView.ToString(
+                            fungusBodyName + "," + fungusBodyView.GetIsDeveloped() + "," + fungusBodyView.GetAge() + ","
+                                    + fungusBodyView.GetIsDead() + "," + fungusBodyView.GetSporeCount() + ","
+                                    + fungusBodyView.GetShotsLeft() + "," + tectonName + "," + fungusName + "\n"));
+                } catch (ClassCastException ccex) {
+                    // Wrong element, we do nothing and move on.
+                }
+            }
+            // Hypha:
+            for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+                String hyphaName = entry1.getKey();
+                Object obj1 = entry1.getValue();
+                try {
+                    IHyphaView hyphaView = (IHyphaView) obj1;
+                    String neighbourNames = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        boolean isNeighbour = false;
+                        try {
+                            IHyphaView neighbourView = (IHyphaView) obj2;
+                            for (IHyphaView oneNeighbourView : ((IHyphaView) neighbourView).GetNeighbours()) {
+                                if (oneNeighbourView.equals(hyphaView)) {
+                                    isNeighbour = true;
                                     break;
                                 }
                             }
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                String sporeNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        ISporeView sporeView = (ISporeView) obj2;
-                        if (((ITectonView)sporeView.GetTecton()).equals(tectonView)) {
-                            if (sporeNames.equals("")) {
-                                sporeNames=entry2.getKey();
-                            }
-                            else{
-                                sporeNames+=","+entry2.getKey();
-                            }
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                String neighbourNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    boolean isNeighbour = false;
-                    try {
-                        ITectonView neighbourView = (ITectonView) obj2;
-                        for (ITectonView oneNeighbourView : ((ITectonView)neighbourView).GetNeighbours()) {
-                            if (oneNeighbourView.equals(tectonView)) {
-                                isNeighbour=true;
-                                break;
-                            }
-                        }
-                        if (isNeighbour) {
-                            if (neighbourNames.equals("")) {
-                                neighbourNames=entry2.getKey();
-                            }
-                            else{
-                                neighbourNames+=","+entry2.getKey();
-                            }
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                String fungusBodyName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IFungusBodyView fungusBodyView = (IFungusBodyView) obj2;
-                        if (((ITectonView)fungusBodyView.GetTecton()).equals(tectonView)) {
-                            fungusBodyName=entry2.getKey();
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                writer.write(tectonView.ToString(tectonName+","+((insectNames.equals(""))?"":"["+insectNames+"]")+","+((hyphaNames.equals(""))?"":"["+hyphaNames+"]")+","+((sporeNames.equals(""))?"":"["+sporeNames+"]")+","+((neighbourNames.equals(""))?"":"["+neighbourNames+"]")+","+fungusBodyName+"\n"));
-                System.out.println(tectonView.ToString(tectonName+","+((insectNames.equals(""))?"":"["+insectNames+"]")+","+((hyphaNames.equals(""))?"":"["+hyphaNames+"]")+","+((sporeNames.equals(""))?"":"["+sporeNames+"]")+","+((neighbourNames.equals(""))?"":"["+neighbourNames+"]")+","+fungusBodyName+"\n"));
-            } catch (ClassCastException ccex) {
-                // Wrong element, we do nothing and move on.
-            }
-        }
-        // Fungus:
-        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
-            String fungusName = entry1.getKey();
-            Object obj1 = entry1.getValue();
-            try {
-                IFungusView fungusView = (IFungusView) obj1;
-                String fungusBodyNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IFungusBodyView fungusBodyView = (IFungusBodyView) obj2;
-                        int num = 0;
-                        int max = fungusView.GetBodies().size();
-                        if (((IFungusView)fungusBodyView.GetHostFungus()).equals(fungusView)) {
-                            if (fungusBodyNames.equals("")) {
-                                fungusBodyNames=entry2.getKey();
-                                num++;
-                            }
-                            else{
-                                fungusBodyNames+=","+entry2.getKey();
-                                num++;
-                            }
-                        }
-                        if (num==max) {
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                String hyphaNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IHyphaView hyphaView = (IHyphaView) obj2;
-                        int num = 0;
-                        int max = fungusView.GetMycelium().size();
-                        if (((IFungusView)hyphaView.GetHostFungus()).equals(fungusView)) {
-                            if (hyphaNames.equals("")) {
-                                hyphaNames=entry2.getKey();
-                                num++;
-                            }
-                            else{
-                                hyphaNames+=","+entry2.getKey();
-                                num++;
-                            }
-                        }
-                        if (num==max) {
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                writer.write(fungusView.ToString(fungusName+","+((fungusBodyNames.equals(""))?fungusBodyNames:"["+fungusBodyNames+"]")+","+((hyphaNames.equals(""))?hyphaNames:"["+hyphaNames+"]")+"\n"));
-                System.out.println(fungusView.ToString(fungusName+","+((fungusBodyNames.equals(""))?fungusBodyNames:"["+fungusBodyNames+"]")+","+((hyphaNames.equals(""))?hyphaNames:"["+hyphaNames+"]")+"\n"));
-            } catch (ClassCastException ccex) {
-                // Wrong element, we do nothing and move on.
-            }
-        }
-        // InsectColony:
-        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
-            String insectColonyName = entry1.getKey();
-            Object obj1 = entry1.getValue();
-            try {
-                IInsectColonyView insectColonyView = (IInsectColonyView) obj1;
-                String insectNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IInsectView insectView = (IInsectView) obj2;
-                        if (((IInsectColonyView)insectView.GetHostColony()).equals(insectColonyView)) {
-                            if (insectNames.equals("")) {
-                                insectNames=entry2.getKey();
-                            }
-                            else{
-                                insectNames+=","+entry2.getKey();
-                            }
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                writer.write(insectColonyView.ToString(insectColonyName+","+((insectNames.equals(""))?insectNames:"["+insectNames+"]")+","+insectColonyView.getNutrition()+"\n"));
-                System.out.println(insectColonyView.ToString(insectColonyName+","+((insectNames.equals(""))?insectNames:"["+insectNames+"]")+","+insectColonyView.getNutrition()+"\n"));
-            } catch (ClassCastException ccex) {
-                // Wrong element, we do nothing and move on.
-            }
-        }
-        // FungusBody:
-        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
-            String fungusBodyName = entry1.getKey();
-            Object obj1 = entry1.getValue();
-            try {
-                IFungusBodyView fungusBodyView = (IFungusBodyView)obj1;
-                String tectonName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        ITectonView tectonView = (ITectonView) obj2;
-                        if (((IFungusBodyView)tectonView.GetFungusBody()).equals(fungusBodyView)) {
-                            tectonName=entry2.getKey();
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                String fungusName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IFungusView fungusView = (IFungusView) obj2;
-                        for (IFungusBodyView fBView : fungusView.GetBodies()) {
-                            if (fBView.equals(fungusBodyView)) {
-                                fungusName=entry2.getKey();
-                                break;
-                            }
-                        }
-                        if (!fungusName.equals("")) {
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                writer.write(fungusBodyView.ToString(fungusBodyName+","+fungusBodyView.GetIsDeveloped()+","+fungusBodyView.GetAge()+","+fungusBodyView.GetIsDead()+","+fungusBodyView.GetSporeCount()+","+fungusBodyView.GetShotsLeft()+","+tectonName+","+fungusName+"\n"));
-                System.out.println(fungusBodyView.ToString(fungusBodyName+","+fungusBodyView.GetIsDeveloped()+","+fungusBodyView.GetAge()+","+fungusBodyView.GetIsDead()+","+fungusBodyView.GetSporeCount()+","+fungusBodyView.GetShotsLeft()+","+tectonName+","+fungusName+"\n"));
-            } catch (ClassCastException ccex) {
-                // Wrong element, we do nothing and move on.
-            }
-        }
-        // Hypha:
-        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
-            String hyphaName = entry1.getKey();
-            Object obj1 = entry1.getValue();
-            try {
-                IHyphaView hyphaView = (IHyphaView) obj1;
-                String neighbourNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    boolean isNeighbour = false;
-                    try {
-                        IHyphaView neighbourView = (IHyphaView) obj2;
-                        for (IHyphaView oneNeighbourView : ((IHyphaView)neighbourView).GetNeighbours()) {
-                            if (oneNeighbourView.equals(hyphaView)) {
-                                isNeighbour=true;
-                                break;
-                            }
-                        }
-                        if (isNeighbour) {
-                            if (neighbourNames.equals("")) {
-                                neighbourNames=entry2.getKey();
-                            }
-                            else{
-                                neighbourNames+=","+entry2.getKey();
-                            }
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                String fungusName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IFungusView fungusView = (IFungusView) obj2;
-                        for (IHyphaView hView : fungusView.GetMycelium()) {
-                            if (hView.equals(hyphaView)) {
-                                fungusName=entry2.getKey();
-                                break;
-                            }
-                        }
-                        if (!fungusName.equals("")) {
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
-                    }
-                }
-                String tectonNames = "";
-                int num = 0;
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        ITectonView tectonView = (ITectonView) obj2;
-                        for (ITectonView itView : hyphaView.GetTectons()) {
-                            if (tectonView.equals(itView)) {
-                                if (tectonNames.equals("")) {
-                                    tectonNames=entry2.getKey();
-                                    num++;
-                                }
-                                else{
-                                    tectonNames+=","+entry2.getKey();
-                                    num++;
+                            if (isNeighbour) {
+                                if (neighbourNames.equals("")) {
+                                    neighbourNames = entry2.getKey();
+                                } else {
+                                    neighbourNames += "," + entry2.getKey();
                                 }
                             }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                        if (num==hyphaView.GetTectons().size()) {
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
+                    String fungusName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IFungusView fungusView = (IFungusView) obj2;
+                            for (IHyphaView hView : fungusView.GetMycelium()) {
+                                if (hView.equals(hyphaView)) {
+                                    fungusName = entry2.getKey();
+                                    break;
+                                }
+                            }
+                            if (!fungusName.equals("")) {
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    String tectonNames = "";
+                    int num = 0;
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            ITectonView tectonView = (ITectonView) obj2;
+                            for (ITectonView itView : hyphaView.GetTectons()) {
+                                if (tectonView.equals(itView)) {
+                                    if (tectonNames.equals("")) {
+                                        tectonNames = entry2.getKey();
+                                        num++;
+                                    } else {
+                                        tectonNames += "," + entry2.getKey();
+                                        num++;
+                                    }
+                                }
+                            }
+                            if (num == hyphaView.GetTectons().size()) {
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
+                        }
+                    }
+                    writer.write(hyphaView.ToString(hyphaName + ","
+                            + ((neighbourNames.equals("")) ? neighbourNames : "[" + neighbourNames + "]") + ","
+                            + fungusName + "," + ((tectonNames.equals("")) ? tectonNames : "[" + tectonNames + "]")
+                            + "\n"));
+                    System.out.println(hyphaView.ToString(hyphaName + ","
+                            + ((neighbourNames.equals("")) ? neighbourNames : "[" + neighbourNames + "]") + ","
+                            + fungusName + "," + ((tectonNames.equals("")) ? tectonNames : "[" + tectonNames + "]")
+                            + "\n"));
+                } catch (ClassCastException ccex) {
+                    // Wrong element, we do nothing and move on.
                 }
-                writer.write(hyphaView.ToString(hyphaName+","+((neighbourNames.equals(""))?neighbourNames:"["+neighbourNames+"]")+","+fungusName+","+((tectonNames.equals(""))?tectonNames:"["+tectonNames+"]")+"\n"));
-                System.out.println(hyphaView.ToString(hyphaName+","+((neighbourNames.equals(""))?neighbourNames:"["+neighbourNames+"]")+","+fungusName+","+((tectonNames.equals(""))?tectonNames:"["+tectonNames+"]")+"\n"));
-            } catch (ClassCastException ccex) {
-                // Wrong element, we do nothing and move on.
             }
-        }
-        // Spore:
-        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
-            String sporeName = entry1.getKey();
-            Object obj1 = entry1.getValue();
-            try {
-                ISporeView sporeView = (ISporeView) obj1;
-                String fungusName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IFungusView fungusView = (IFungusView) obj2;
-                        if (((IFungusView)sporeView.GetHostFungus()).equals(fungusView)) {
-                            fungusName=entry2.getKey();
-                            break;
+            // Spore:
+            for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+                String sporeName = entry1.getKey();
+                Object obj1 = entry1.getValue();
+                try {
+                    ISporeView sporeView = (ISporeView) obj1;
+                    String fungusName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IFungusView fungusView = (IFungusView) obj2;
+                            if (((IFungusView) sporeView.GetHostFungus()).equals(fungusView)) {
+                                fungusName = entry2.getKey();
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
-                }
-                String tectonName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        ITectonView tectonView = (ITectonView) obj2;
-                        if (((ITectonView)sporeView.GetTecton()).equals(tectonView)) {
-                            tectonName=entry2.getKey();
-                            break;
+                    String tectonName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            ITectonView tectonView = (ITectonView) obj2;
+                            if (((ITectonView) sporeView.GetTecton()).equals(tectonView)) {
+                                tectonName = entry2.getKey();
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
+                    writer.write(sporeView.ToString(sporeName + "," + sporeView.GetNutritionValue() + ","
+                            + sporeView.GetEffectDurr() + "," + fungusName + "," + tectonName + "\n"));
+                    System.out.println(sporeView.ToString(sporeName + "," + sporeView.GetNutritionValue() + ","
+                            + sporeView.GetEffectDurr() + "," + fungusName + "," + tectonName + "\n"));
+                } catch (ClassCastException ccex) {
+                    // Wrong element, we do nothing and move on.
                 }
-                writer.write(sporeView.ToString(sporeName+","+sporeView.GetNutritionValue()+","+sporeView.GetEffectDurr()+","+fungusName+","+tectonName+"\n"));
-                System.out.println(sporeView.ToString(sporeName+","+sporeView.GetNutritionValue()+","+sporeView.GetEffectDurr()+","+fungusName+","+tectonName+"\n"));
-            } catch (ClassCastException ccex) {
-                // Wrong element, we do nothing and move on.
             }
-        }
-        // Insect:
-        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
-            String insectName = entry1.getKey();
-            Object obj1 = entry1.getValue();
-            try {
-                IInsectView insectView = (IInsectView) obj1;
-                String insectColonyName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IInsectColonyView insectColonyView = (IInsectColonyView) obj2;
-                        if (((IInsectColonyView)insectView.GetHostColony()).equals(insectColonyView)) {
-                            insectColonyName=entry2.getKey();
-                            break;
+            // Insect:
+            for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+                String insectName = entry1.getKey();
+                Object obj1 = entry1.getValue();
+                try {
+                    IInsectView insectView = (IInsectView) obj1;
+                    String insectColonyName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IInsectColonyView insectColonyView = (IInsectColonyView) obj2;
+                            if (((IInsectColonyView) insectView.GetHostColony()).equals(insectColonyView)) {
+                                insectColonyName = entry2.getKey();
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
-                }
-                String tectonName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        ITectonView tectonView = (ITectonView) obj2;
-                        if (((ITectonView)insectView.GetTecton()).equals(tectonView)) {
-                            tectonName=entry2.getKey();
-                            break;
+                    String tectonName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            ITectonView tectonView = (ITectonView) obj2;
+                            if (((ITectonView) insectView.GetTecton()).equals(tectonView)) {
+                                tectonName = entry2.getKey();
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
-                }
-                String fungusName = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        IFungusView fungusView = (IFungusView) obj2;
-                        if (((IFungusView)insectView.GetEatenBy()).equals(fungusView)) {
-                            tectonName=entry2.getKey();
-                            break;
+                    String fungusName = "";
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            IFungusView fungusView = (IFungusView) obj2;
+                            if (insectView.GetEatenBy() != null
+                                    && ((IFungusView) insectView.GetEatenBy()).equals(fungusView)) {
+                                tectonName = entry2.getKey();
+                                break;
+                            }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
+                    writer.write(insectView.ToString(insectName + "," + insectView.GetSpeed() + ","
+                            + insectView.GetCutAbility() + "," + insectView.GetEffectTimeLeft() + "," + insectColonyName
+                            + "," + tectonName + "," + ((fungusName.equals("")) ? "null" : fungusName) + "\n"));
+                    System.out.println(insectView.ToString(insectName + "," + insectView.GetSpeed() + ","
+                            + insectView.GetCutAbility() + "," + insectView.GetEffectTimeLeft() + "," + insectColonyName
+                            + "," + tectonName + "," + ((fungusName.equals("")) ? "null" : fungusName) + "\n"));
+                } catch (ClassCastException ccex) {
+                    // Wrong element, we do nothing and move on.
                 }
-                writer.write(insectView.ToString(insectName+","+insectView.GetSpeed()+","+insectView.GetCutAbility()+","+insectView.GetEffectTimeLeft()+","+insectColonyName+","+tectonName+","+((fungusName.equals(""))?"null":fungusName)+"\n"));
-                System.out.println(insectView.ToString(insectName+","+insectView.GetSpeed()+","+insectView.GetCutAbility()+","+insectView.GetEffectTimeLeft()+","+insectColonyName+","+tectonName+","+((fungusName.equals(""))?"null":fungusName)+"\n"));
-            } catch (ClassCastException ccex) {
-                // Wrong element, we do nothing and move on.
             }
-        }
-        } catch (IOException ioex){
+        } catch (IOException ioex) {
             System.err.println(ioex);
         }
     }

@@ -3,7 +3,7 @@ package fungorium;
 import java.util.List;
 
 public interface IInsectColonyView {
-    Insect createInsect(Tecton t);
+    Insect createInsect(int s, boolean ca, int etl, Tecton t, Fungus eb);
 
     List<Insect> getInsects();
 

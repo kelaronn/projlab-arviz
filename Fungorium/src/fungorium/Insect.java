@@ -1,7 +1,9 @@
 package fungorium;
 
 public class Insect implements IInsectController, IInsectView {
-    private int speed = 1; // itt annyi hogy ez az  hogy hányszor tud egy körben mozogni az lenne a legszebb a speedre és ha -1 akkor meg nem csak mozogni nem tudsz hanem enni sem meg vágni sem és akkor az lenne a stun spore
+    private int speed = 2; // itt annyi hogy ez az hogy hányszor tud egy körben mozogni az lenne a legszebb
+                           // a speedre és ha -1 akkor meg nem csak mozogni nem tudsz hanem enni sem meg
+                           // vágni sem és akkor az lenne a stun spore
     private boolean cutAbility = true; // vágási képesség
     private int effectTimeLeft = 0; // hatásidő
     private InsectColony hostColony; // a rovarhoz tartozó kolónia
@@ -11,15 +13,17 @@ public class Insect implements IInsectController, IInsectView {
     /**
      * Default konstruktor
      */
-    public Insect(){}
+    public Insect() {
+    }
 
     /**
      * Konstruktor
-     * @param s sebesség
-     * @param ca vágási képesség
+     * 
+     * @param s   sebesség
+     * @param ca  vágási képesség
      * @param etl hatásidő
      */
-    public Insect(int s, boolean ca, int etl){
+    public Insect(int s, boolean ca, int etl) {
         speed = s;
         cutAbility = ca;
         effectTimeLeft = etl;
@@ -27,12 +31,13 @@ public class Insect implements IInsectController, IInsectView {
 
     /**
      * Konstruktor
-     * @param s sebesség
-     * @param ca vágási képesség
+     * 
+     * @param s   sebesség
+     * @param ca  vágási képesség
      * @param etl hatásidő
-     * @param t tekton amelyen elhelyeszkedik a rovar
+     * @param t   tekton amelyen elhelyeszkedik a rovar
      */
-    public Insect(int s, boolean ca, int etl, Tecton t){
+    public Insect(int s, boolean ca, int etl, Tecton t) {
         speed = s;
         cutAbility = ca;
         effectTimeLeft = etl;
@@ -40,16 +45,54 @@ public class Insect implements IInsectController, IInsectView {
     }
 
     /**
+     * Konstruktor
+     * 
+     * @param s
+     * @param ca
+     * @param etl
+     * @param t
+     * @param ic
+     */
+    public Insect(int s, boolean ca, int etl, Tecton t, InsectColony ic) {
+        speed = s;
+        cutAbility = ca;
+        effectTimeLeft = etl;
+        tecton = t;
+        hostColony = ic;
+        eatenBy = null;
+    }
+
+    /**
+     * Konstruktor
+     * 
+     * @param s   sebesség
+     * @param ca  vágási képesség
+     * @param etl hatásidő
+     * @param t   tekton amelyen elhelyeszkedik a rovar
+     * @param ic  kolónia amelyhez tartozik a rovar
+     * @param eb  gombafaj amelyik megette a rovart
+     */
+    public Insect(int s, boolean ca, int etl, InsectColony ic, Tecton t, Fungus eb) {
+        speed = s;
+        cutAbility = ca;
+        effectTimeLeft = etl;
+        tecton = t;
+        hostColony = ic;
+        eatenBy = eb;
+    }
+
+    /**
      * Spóra elfogyasztása
+     * 
      * @param s spóra
      */
     @Override
-    public void EatSpore(Spore s){
-        if(s.GetTecton() != tecton){
-            //throw new IllegalArgumentException("Spore is not on the right tecton");
+    public void EatSpore(Spore s) {
+        if (s.GetTecton() != tecton) {
+            // throw new IllegalArgumentException("Spore is not on the right tecton");
             System.out.println("Insect and Spore are not on the same Tecton");
             return;
-        }        
+        }
 
         s.GiveEffect(this);
         System.out.println(">[Spore].GiveEffect(this)");
@@ -63,12 +106,13 @@ public class Insect implements IInsectController, IInsectView {
 
     /**
      * Mozgás
+     * 
      * @param t tekton
      * @return sikeres-e a mozgás
      */
     @Override
-    public boolean Move(Tecton t){
-        if(t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null){
+    public boolean Move(Tecton t) {
+        if (t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null) {
             t.AddInsect(this);
             System.out.println(">[Tecton].AddInsect(this)");
             tecton.RemoveInsect(this);
@@ -76,154 +120,169 @@ public class Insect implements IInsectController, IInsectView {
             this.SetTecton(t);
             System.out.println(">[Insect].SetTecton(t)");
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
     /**
      * Vágás
+     * 
      * @param t tekton
      * @return sikeres-e a vágás
      */
     @Override
-    public boolean Cut(Tecton t){
-        if(!cutAbility){return false;}
+    public boolean Cut(Tecton t) {
+        if (!cutAbility) {
+            return false;
+        }
 
         Hypha h;
         Tecton correctTecton;
 
-        if(t.GetHypha(t, tecton) != null){
+        if (t.GetHypha(t, tecton) != null) {
             h = t.GetHypha(t, tecton);
             System.out.println(">[Tecton].GetHypha(t, tecton)");
             correctTecton = t;
-        }
-        else if(tecton.GetHypha(t, tecton) != null){
+        } else if (tecton.GetHypha(t, tecton) != null) {
             h = tecton.GetHypha(t, tecton);
             System.out.println(">[Tecton].GetHypha(t, tecton)");
             correctTecton = tecton;
-        }
-        else{
+        } else {
             return false;
         }
 
-        if(t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null){
+        if (t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null) {
             h.GetHostFungus().RemoveHypha(h);
             System.out.println(">[Fungus].RemoveHypha(h)");
             correctTecton.RemoveHypha(h);
             System.out.println(">[Tecton].RemoveHypha(h)");
-            for(Hypha n : h.GetNeighbours()){
+            for (Hypha n : h.GetNeighbours()) {
                 n.RemoveNeighbours(h);
                 System.out.println(">[Hypha].RemoveNeighbours(h)");
             }
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
     /**
      * Sebesség lekérdezése
+     * 
      * @return sebesség
      */
     @Override
-    public int GetSpeed(){
+    public int GetSpeed() {
         return speed;
     }
 
     /**
      * Vágási képesség lekérdezése
+     * 
      * @return vágási képesség
      */
     @Override
-    public boolean GetCutAbility(){
+    public boolean GetCutAbility() {
         return cutAbility;
     }
 
     /**
      * Hatásidő lekérdezése
+     * 
      * @return hatásidő
      */
     @Override
-    public int GetEffectTimeLeft(){
+    public int GetEffectTimeLeft() {
         return effectTimeLeft;
     }
 
     /**
      * Host kolónia lekérdezése
+     * 
      * @return host kolónia
      */
     @Override
-    public InsectColony GetHostColony(){
+    public InsectColony GetHostColony() {
         return hostColony;
     }
 
     /**
      * Tekton lekérdezése
+     * 
      * @return tekton
      */
     @Override
-    public Tecton GetTecton(){
+    public Tecton GetTecton() {
         return tecton;
     }
 
     /**
      * Sebesség beállítása
+     * 
      * @param s sebesség
      */
-    public void SetSpeed(int s){
+    public void SetSpeed(int s) {
         speed = s;
     }
 
     /**
      * Vágási képesség beállítása
+     * 
      * @param ca vágási képesség
      */
-    public void SetCutAbility(boolean ca){
+    public void SetCutAbility(boolean ca) {
         cutAbility = ca;
     }
 
     /**
      * Hatásidő beállítása
+     * 
      * @param etf hatásidő
      */
-    public void SetEffectTimeLeft(int etf){
+    public void SetEffectTimeLeft(int etf) {
         effectTimeLeft = etf;
     }
 
     /**
      * Host kolónia beállítása
+     * 
      * @param ic host kolónia
      */
-    public void SetHostColony(InsectColony ic){
+    public void SetHostColony(InsectColony ic) {
         hostColony = ic;
     }
 
     /**
      * Tekton beállítása
-    * @param t tekton
+     * 
+     * @param t tekton
      */
-    public void SetTecton(Tecton t){
+    public void SetTecton(Tecton t) {
         tecton = t;
     }
 
     /**
      * Lekéri melyik Fungus ette meg a rovart.
      * Ha null akkor nem ette meg egyik Fungus Sem.
+     * 
      * @return Melyik Fungus ette meg a rovart. Fungus.
      */
     @Override
-    public Fungus GetEatenBy(){ return eatenBy; }
+    public Fungus GetEatenBy() {
+        return eatenBy;
+    }
 
     /**
      * Gombafaj beállítása, amelyik megette a rovar.
+     * 
      * @param fungus gombafaj
      */
-    public void SetEatenBy(Fungus fungus){ eatenBy = fungus; }
+    public void SetEatenBy(Fungus fungus) {
+        eatenBy = fungus;
+    }
 
-    public String ToString(String data){
-        return "Insect,"+data;
+    public String ToString(String data) {
+        return "Insect," + data;
     }
 }

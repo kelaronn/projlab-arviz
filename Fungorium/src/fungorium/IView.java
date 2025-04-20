@@ -25,6 +25,13 @@ public interface IView {
     public int getfCtr();
 
     /**
+     * Getter metódus az fbCtr attribútumhoz.
+     * 
+     * @return fbCtr
+     */
+    public int getfbCtr();
+
+    /**
      * Getter metódus az hCtr attribútumhoz.
      * 
      * @return hCtr
