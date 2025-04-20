@@ -14,4 +14,6 @@ public interface IInsectView {
     Tecton GetTecton();
 
     Fungus GetEatenBy();
+
+    String ToString(String data);
 }

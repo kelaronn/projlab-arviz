@@ -95,4 +95,8 @@ public class InsectColony implements IInsectColonyView, IInsectColonyController 
     public void AddInsect(Insect insectToAdd) {
         insects.add(insectToAdd);
     }
+
+    public String ToString(String data){
+        return "InsectColony,"+data;
+    }
 }

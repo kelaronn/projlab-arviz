@@ -23,4 +23,6 @@ public interface IHyphaView {
      * @return A neighbours lista referenciája.
      */
     List<Hypha> GetNeighbours();
+
+    String ToString(String data);
 }

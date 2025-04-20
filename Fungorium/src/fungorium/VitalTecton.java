@@ -25,4 +25,9 @@ public class VitalTecton extends NarrowTecton{
     public boolean SupplyHyphas(){
         return true;
     }
+
+    @Override
+    public String ToString(String data){
+        return "VitalTecton,"+data;
+    }
 }

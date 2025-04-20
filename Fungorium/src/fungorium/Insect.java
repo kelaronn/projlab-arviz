@@ -222,4 +222,8 @@ public class Insect implements IInsectController, IInsectView {
      * @param fungus gombafaj
      */
     public void SetEatenBy(Fungus fungus){ eatenBy = fungus; }
+
+    public String ToString(String data){
+        return "Insect,"+data;
+    }
 }

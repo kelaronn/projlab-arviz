@@ -85,4 +85,9 @@ public class WideTecton extends Tecton {
         System.out.println(">[Fungus].AddHypha(hyphaBetweenTectons)");
         return true;
     }
+
+    @Override
+    public String ToString(String data){
+        return "WideTecton,"+data;
+    }
 }

@@ -25,4 +25,9 @@ public class StunSpore extends Spore {
         System.out.println(">[Insect].SetEffectTimeLeft(2)");
         return true;
     }
+
+    @Override
+    public String ToString(String data){
+        return "StunSpore,"+data;
+    }
 }

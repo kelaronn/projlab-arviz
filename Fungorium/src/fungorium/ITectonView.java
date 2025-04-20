@@ -21,4 +21,6 @@ public interface ITectonView {
     void AddNeighbour(Tecton neighbour);
 
     List<Hypha> GetHyphas();
+
+    String ToString(String data);
 }

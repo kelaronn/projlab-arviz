@@ -118,4 +118,7 @@ public class Spore implements ISporeView {
         tecton = t;
     }
 
+    public String ToString(String data){
+        return "Spore,"+data;
+    }
 }

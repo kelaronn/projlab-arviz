@@ -447,4 +447,8 @@ public abstract class Tecton implements ITectonController, ITectonView {
     public boolean SupplyHyphas(){
         return false;
     }
+
+    public String ToString(String data){
+        return "Tecton,"+data;
+    }
 }

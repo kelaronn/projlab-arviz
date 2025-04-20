@@ -49,4 +49,9 @@ public class BarrenTecton extends NarrowTecton{
         }
         return true;
     }
+
+    @Override
+    public String ToString(String data){
+        return "BarrenTecton,"+data;
+    }
 }

@@ -10,4 +10,6 @@ public interface IInsectColonyView {
     int getNutrition();
 
     void AddInsect(Insect insectToAdd);
+
+    String ToString(String data);
 }

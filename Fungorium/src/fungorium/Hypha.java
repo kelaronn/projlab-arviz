@@ -198,4 +198,9 @@ public class Hypha implements IHyphaView, IHyphaController {
         }
         return false;
     }
+
+    @Override
+    public String ToString(String data){
+        return "Hypha,"+data;
+    }
 }

@@ -18,4 +18,6 @@ public interface IFungusView {
      * @return A gombafonalak listája.
      */
     List<Hypha> GetMycelium();
+
+    String ToString(String data);
 }

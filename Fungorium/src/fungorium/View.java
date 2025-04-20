@@ -1,11 +1,17 @@
 package fungorium;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class View implements IView {
-    HashMap<String, Object> planet = new HashMap<>();
+    private static LinkedHashMap<String, Object> planet = new LinkedHashMap<>();
     GameController controller = new GameController();
     int icCtr = 0;
     int fCtr = 0;
@@ -18,6 +24,7 @@ public class View implements IView {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             help();
+            save("test0_out.txt");
             System.out.println("\n#### Main Menu #####");
             System.out.println("1 \t- Grow Hypha");
             System.out.println("2 \t- Atrophy of Hypha");
@@ -449,5 +456,486 @@ public class View implements IView {
                 "moveinsect: Leírás: Rovar mozgatása.\nOpciók: -i [Name]: Rovar neve.\n-t [Name]: Tekton neve.");
         System.out.println(
                 "cuthypha: Leírás: Gombafonal elvágása.\nOpciók: -i [Name]: Rovar neve.\n-h [Name]: Gombafonal neve.");
+    }
+
+    public static void save(String filePath){
+        // Initialization:
+        NarrowTecton T1 = new NarrowTecton();
+        NarrowTecton T2 = new NarrowTecton();
+        NarrowTecton T3 = new NarrowTecton();
+        WideTecton T4 = new WideTecton();
+        Fungus F1 = new Fungus();
+        Fungus F2 = new Fungus();
+        InsectColony IC1 = new InsectColony();
+        T1.AddNeighbour(T2);
+        T1.AddNeighbour(T3);
+        T1.AddNeighbour(T4);
+        T2.AddNeighbour(T1);
+        T2.AddNeighbour(T4);
+        T3.AddNeighbour(T1);
+        T3.AddNeighbour(T4);
+        T4.AddNeighbour(T1);
+        T4.AddNeighbour(T2);
+        T4.AddNeighbour(T3);
+        FungusBody FB1 = new FungusBody(T1, F1);
+        F1.AddBody(FB1);
+        T1.SetFungusBody(FB1);
+        FungusBody FB2 = new FungusBody(T2, F2);
+        F2.AddBody(FB2);
+        T2.SetFungusBody(FB2);
+        Hypha H1 = new Hypha(new ArrayList<>(), F1, new ArrayList<>(List.of(T1)));
+        F1.AddHypha(H1);
+        T1.GetHyphas().add(H1);
+        Hypha H2 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2)));
+        F2.AddHypha(H2);
+        T2.GetHyphas().add(H2);
+        Hypha H3 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2,T4)));
+        F2.AddHypha(H3);
+        T4.GetHyphas().add(H3);
+        Hypha H4 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T4)));
+        F2.AddHypha(H4);
+        T4.GetHyphas().add(H4);
+        H2.AddNeighbour(H3);
+        H3.AddNeighbour(H4);
+        Spore S1 = new Spore(5, 0, F1, T1);
+        Spore S2 = new Spore(5, 0, F1, T1);
+        Insect I1 = new Insect(2,true,0,T1);
+        I1.SetHostColony(IC1);
+        I1.SetEatenBy(F1);
+        Insect I2 = new Insect(2,true,0,T1);
+        I2.SetHostColony(IC1);
+        I2.SetEatenBy(F1);
+        planet.put("T1", T1);
+        planet.put("T2", T2);
+        planet.put("T3", T3);
+        planet.put("T4", T4);
+        planet.put("F1", F1);
+        planet.put("F2", F2);
+        planet.put("IC1", IC1);
+        planet.put("FB1", FB1);
+        planet.put("FB2", FB2);
+        planet.put("H1", H1);
+        planet.put("H2", H2);
+        planet.put("H3", H3);
+        planet.put("H4", H4);
+        planet.put("S1", S1);
+        planet.put("S2", S2);
+        planet.put("I1", I1);
+        planet.put("I2", I2);
+        // Writing
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))){
+        // Tectons:
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String tectonName = entry1.getKey();
+            Object obj1 = entry1.getValue();
+            try {
+                ITectonView tectonView = (ITectonView) obj1;
+                String insectNames = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IInsectView insectView = (IInsectView) obj2;
+                        if (((ITectonView)insectView.GetTecton()).equals(tectonView)) {
+                            if (insectNames.equals("")) {
+                                insectNames=entry2.getKey();
+                            }
+                            else{
+                                insectNames+=","+entry2.getKey();
+                            }
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String hyphaNames = "";
+                int num = 0;
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IHyphaView hyphaView = (IHyphaView) obj2;
+                        if (num==tectonView.GetHyphas().size()) {
+                            break;
+                        }
+                        for (IHyphaView ihView : tectonView.GetHyphas()) {
+                            if (hyphaView.equals(ihView)) {
+                                if (hyphaNames.equals("")) {
+                                    hyphaNames=entry2.getKey();
+                                    num++;
+                                    break;
+                                }
+                                else{
+                                    hyphaNames+=","+entry2.getKey();
+                                    num++;
+                                    break;
+                                }
+                            }
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String sporeNames = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        ISporeView sporeView = (ISporeView) obj2;
+                        if (((ITectonView)sporeView.GetTecton()).equals(tectonView)) {
+                            if (sporeNames.equals("")) {
+                                sporeNames=entry2.getKey();
+                            }
+                            else{
+                                sporeNames+=","+entry2.getKey();
+                            }
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String neighbourNames = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    boolean isNeighbour = false;
+                    try {
+                        ITectonView neighbourView = (ITectonView) obj2;
+                        for (ITectonView oneNeighbourView : ((ITectonView)neighbourView).GetNeighbours()) {
+                            if (oneNeighbourView.equals(tectonView)) {
+                                isNeighbour=true;
+                                break;
+                            }
+                        }
+                        if (isNeighbour) {
+                            if (neighbourNames.equals("")) {
+                                neighbourNames=entry2.getKey();
+                            }
+                            else{
+                                neighbourNames+=","+entry2.getKey();
+                            }
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String fungusBodyName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IFungusBodyView fungusBodyView = (IFungusBodyView) obj2;
+                        if (((ITectonView)fungusBodyView.GetTecton()).equals(tectonView)) {
+                            fungusBodyName=entry2.getKey();
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                writer.write(tectonView.ToString(tectonName+","+((insectNames.equals(""))?"":"["+insectNames+"]")+","+((hyphaNames.equals(""))?"":"["+hyphaNames+"]")+","+((sporeNames.equals(""))?"":"["+sporeNames+"]")+","+((neighbourNames.equals(""))?"":"["+neighbourNames+"]")+","+fungusBodyName+"\n"));
+                System.out.println(tectonView.ToString(tectonName+","+((insectNames.equals(""))?"":"["+insectNames+"]")+","+((hyphaNames.equals(""))?"":"["+hyphaNames+"]")+","+((sporeNames.equals(""))?"":"["+sporeNames+"]")+","+((neighbourNames.equals(""))?"":"["+neighbourNames+"]")+","+fungusBodyName+"\n"));
+            } catch (ClassCastException ccex) {
+                // Wrong element, we do nothing and move on.
+            }
+        }
+        // Fungus:
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String fungusName = entry1.getKey();
+            Object obj1 = entry1.getValue();
+            try {
+                IFungusView fungusView = (IFungusView) obj1;
+                String fungusBodyNames = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IFungusBodyView fungusBodyView = (IFungusBodyView) obj2;
+                        int num = 0;
+                        int max = fungusView.GetBodies().size();
+                        if (((IFungusView)fungusBodyView.GetHostFungus()).equals(fungusView)) {
+                            if (fungusBodyNames.equals("")) {
+                                fungusBodyNames=entry2.getKey();
+                                num++;
+                            }
+                            else{
+                                fungusBodyNames+=","+entry2.getKey();
+                                num++;
+                            }
+                        }
+                        if (num==max) {
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String hyphaNames = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IHyphaView hyphaView = (IHyphaView) obj2;
+                        int num = 0;
+                        int max = fungusView.GetMycelium().size();
+                        if (((IFungusView)hyphaView.GetHostFungus()).equals(fungusView)) {
+                            if (hyphaNames.equals("")) {
+                                hyphaNames=entry2.getKey();
+                                num++;
+                            }
+                            else{
+                                hyphaNames+=","+entry2.getKey();
+                                num++;
+                            }
+                        }
+                        if (num==max) {
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                writer.write(fungusView.ToString(fungusName+","+((fungusBodyNames.equals(""))?fungusBodyNames:"["+fungusBodyNames+"]")+","+((hyphaNames.equals(""))?hyphaNames:"["+hyphaNames+"]")+"\n"));
+                System.out.println(fungusView.ToString(fungusName+","+((fungusBodyNames.equals(""))?fungusBodyNames:"["+fungusBodyNames+"]")+","+((hyphaNames.equals(""))?hyphaNames:"["+hyphaNames+"]")+"\n"));
+            } catch (ClassCastException ccex) {
+                // Wrong element, we do nothing and move on.
+            }
+        }
+        // InsectColony:
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String insectColonyName = entry1.getKey();
+            Object obj1 = entry1.getValue();
+            try {
+                IInsectColonyView insectColonyView = (IInsectColonyView) obj1;
+                String insectNames = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IInsectView insectView = (IInsectView) obj2;
+                        if (((IInsectColonyView)insectView.GetHostColony()).equals(insectColonyView)) {
+                            if (insectNames.equals("")) {
+                                insectNames=entry2.getKey();
+                            }
+                            else{
+                                insectNames+=","+entry2.getKey();
+                            }
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                writer.write(insectColonyView.ToString(insectColonyName+","+((insectNames.equals(""))?insectNames:"["+insectNames+"]")+","+insectColonyView.getNutrition()+"\n"));
+                System.out.println(insectColonyView.ToString(insectColonyName+","+((insectNames.equals(""))?insectNames:"["+insectNames+"]")+","+insectColonyView.getNutrition()+"\n"));
+            } catch (ClassCastException ccex) {
+                // Wrong element, we do nothing and move on.
+            }
+        }
+        // FungusBody:
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String fungusBodyName = entry1.getKey();
+            Object obj1 = entry1.getValue();
+            try {
+                IFungusBodyView fungusBodyView = (IFungusBodyView)obj1;
+                String tectonName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        ITectonView tectonView = (ITectonView) obj2;
+                        if (((IFungusBodyView)tectonView.GetFungusBody()).equals(fungusBodyView)) {
+                            tectonName=entry2.getKey();
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String fungusName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IFungusView fungusView = (IFungusView) obj2;
+                        for (IFungusBodyView fBView : fungusView.GetBodies()) {
+                            if (fBView.equals(fungusBodyView)) {
+                                fungusName=entry2.getKey();
+                                break;
+                            }
+                        }
+                        if (!fungusName.equals("")) {
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                writer.write(fungusBodyView.ToString(fungusBodyName+","+fungusBodyView.GetIsDeveloped()+","+fungusBodyView.GetAge()+","+fungusBodyView.GetIsDead()+","+fungusBodyView.GetSporeCount()+","+fungusBodyView.GetShotsLeft()+","+tectonName+","+fungusName+"\n"));
+                System.out.println(fungusBodyView.ToString(fungusBodyName+","+fungusBodyView.GetIsDeveloped()+","+fungusBodyView.GetAge()+","+fungusBodyView.GetIsDead()+","+fungusBodyView.GetSporeCount()+","+fungusBodyView.GetShotsLeft()+","+tectonName+","+fungusName+"\n"));
+            } catch (ClassCastException ccex) {
+                // Wrong element, we do nothing and move on.
+            }
+        }
+        // Hypha:
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String hyphaName = entry1.getKey();
+            Object obj1 = entry1.getValue();
+            try {
+                IHyphaView hyphaView = (IHyphaView) obj1;
+                String neighbourNames = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    boolean isNeighbour = false;
+                    try {
+                        IHyphaView neighbourView = (IHyphaView) obj2;
+                        for (IHyphaView oneNeighbourView : ((IHyphaView)neighbourView).GetNeighbours()) {
+                            if (oneNeighbourView.equals(hyphaView)) {
+                                isNeighbour=true;
+                                break;
+                            }
+                        }
+                        if (isNeighbour) {
+                            if (neighbourNames.equals("")) {
+                                neighbourNames=entry2.getKey();
+                            }
+                            else{
+                                neighbourNames+=","+entry2.getKey();
+                            }
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String fungusName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IFungusView fungusView = (IFungusView) obj2;
+                        for (IHyphaView hView : fungusView.GetMycelium()) {
+                            if (hView.equals(hyphaView)) {
+                                fungusName=entry2.getKey();
+                                break;
+                            }
+                        }
+                        if (!fungusName.equals("")) {
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String tectonNames = "";
+                int num = 0;
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        ITectonView tectonView = (ITectonView) obj2;
+                        for (ITectonView itView : hyphaView.GetTectons()) {
+                            if (tectonView.equals(itView)) {
+                                if (tectonNames.equals("")) {
+                                    tectonNames=entry2.getKey();
+                                    num++;
+                                }
+                                else{
+                                    tectonNames+=","+entry2.getKey();
+                                    num++;
+                                }
+                            }
+                        }
+                        if (num==hyphaView.GetTectons().size()) {
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                writer.write(hyphaView.ToString(hyphaName+","+((neighbourNames.equals(""))?neighbourNames:"["+neighbourNames+"]")+","+fungusName+","+((tectonNames.equals(""))?tectonNames:"["+tectonNames+"]")+"\n"));
+                System.out.println(hyphaView.ToString(hyphaName+","+((neighbourNames.equals(""))?neighbourNames:"["+neighbourNames+"]")+","+fungusName+","+((tectonNames.equals(""))?tectonNames:"["+tectonNames+"]")+"\n"));
+            } catch (ClassCastException ccex) {
+                // Wrong element, we do nothing and move on.
+            }
+        }
+        // Spore:
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String sporeName = entry1.getKey();
+            Object obj1 = entry1.getValue();
+            try {
+                ISporeView sporeView = (ISporeView) obj1;
+                String fungusName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IFungusView fungusView = (IFungusView) obj2;
+                        if (((IFungusView)sporeView.GetHostFungus()).equals(fungusView)) {
+                            fungusName=entry2.getKey();
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String tectonName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        ITectonView tectonView = (ITectonView) obj2;
+                        if (((ITectonView)sporeView.GetTecton()).equals(tectonView)) {
+                            tectonName=entry2.getKey();
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                writer.write(sporeView.ToString(sporeName+","+sporeView.GetNutritionValue()+","+sporeView.GetEffectDurr()+","+fungusName+","+tectonName+"\n"));
+                System.out.println(sporeView.ToString(sporeName+","+sporeView.GetNutritionValue()+","+sporeView.GetEffectDurr()+","+fungusName+","+tectonName+"\n"));
+            } catch (ClassCastException ccex) {
+                // Wrong element, we do nothing and move on.
+            }
+        }
+        // Insect:
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String insectName = entry1.getKey();
+            Object obj1 = entry1.getValue();
+            try {
+                IInsectView insectView = (IInsectView) obj1;
+                String insectColonyName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IInsectColonyView insectColonyView = (IInsectColonyView) obj2;
+                        if (((IInsectColonyView)insectView.GetHostColony()).equals(insectColonyView)) {
+                            insectColonyName=entry2.getKey();
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String tectonName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        ITectonView tectonView = (ITectonView) obj2;
+                        if (((ITectonView)insectView.GetTecton()).equals(tectonView)) {
+                            tectonName=entry2.getKey();
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                String fungusName = "";
+                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    Object obj2 = entry2.getValue();
+                    try {
+                        IFungusView fungusView = (IFungusView) obj2;
+                        if (((IFungusView)insectView.GetEatenBy()).equals(fungusView)) {
+                            tectonName=entry2.getKey();
+                            break;
+                        }
+                    } catch (ClassCastException ccex) {
+                        // Wrong element, we do nothing and move on.
+                    }
+                }
+                writer.write(insectView.ToString(insectName+","+insectView.GetSpeed()+","+insectView.GetCutAbility()+","+insectView.GetEffectTimeLeft()+","+insectColonyName+","+tectonName+","+((fungusName.equals(""))?"null":fungusName)+"\n"));
+                System.out.println(insectView.ToString(insectName+","+insectView.GetSpeed()+","+insectView.GetCutAbility()+","+insectView.GetEffectTimeLeft()+","+insectColonyName+","+tectonName+","+((fungusName.equals(""))?"null":fungusName)+"\n"));
+            } catch (ClassCastException ccex) {
+                // Wrong element, we do nothing and move on.
+            }
+        }
+        } catch (IOException ioex){
+            System.err.println(ioex);
+        }
     }
 }

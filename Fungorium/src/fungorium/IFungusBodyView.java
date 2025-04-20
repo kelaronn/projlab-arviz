@@ -14,4 +14,6 @@ public interface IFungusBodyView {
     Tecton GetTecton();
 
     Fungus GetHostFungus();
+
+    String ToString(String data);
 }

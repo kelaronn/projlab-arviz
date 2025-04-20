@@ -78,5 +78,9 @@ public class NarrowTecton extends Tecton {
         System.out.println(">[Fungus].AddHypha(hyphaBetweenTectons)");
         return true;
     }
-
+    
+    @Override
+    public String ToString(String data){
+        return "NarrowTecton,"+data;
+    }
 }

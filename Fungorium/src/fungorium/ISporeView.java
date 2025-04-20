@@ -8,4 +8,6 @@ public interface ISporeView {
     Fungus GetHostFungus();
 
     Tecton GetTecton();
+
+    String ToString(String data);
 }

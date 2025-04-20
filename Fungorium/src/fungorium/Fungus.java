@@ -87,4 +87,8 @@ public class Fungus implements IFungusView, IFungusController {
      * @return A mycelium lista referenciája.
      */
     public List<Hypha> GetMycelium() { return mycelium; }
+
+    public String ToString(String data){
+        return "Fungus,"+data;
+    }
 }

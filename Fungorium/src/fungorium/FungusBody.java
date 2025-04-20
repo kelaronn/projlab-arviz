@@ -301,4 +301,8 @@ public class FungusBody implements IFungusBodyController, IFungusBodyView {
             System.out.println("ProduceSpore unsuccess, because FungusBody is dead.");
         }   
     }
+
+    public String ToString(String data){
+        return "FungusBody,"+data;
+    }
 }
