@@ -3,7 +3,7 @@ package fungorium;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class FungusBody implements IFungusBodyController, IFungusBodyView {
+public class FungusBody implements IFungusBodyView, IFungusBodyController {
     boolean isDeveloped; /**A gombatest fejlettségét kifejező logikai érték. Igaz ha a gombatest fejelett*/
     int age; /**A gombatest életkora*/
     boolean isDead; /**A gomba halott, ha az isDead logikai érték igaz*/
