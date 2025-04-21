@@ -95,7 +95,10 @@ public class View implements IView {
             save("test0_out.txt");
             addt("/addt -n T5 -t b");
             addf("/addf -n F3");
+            addic("/addic -n IC2 -nv 10");
             addfb("/addfb -n FB3 -f F2 -t T4 -d n -a 3 -dv y -sc 10 -sl 6");
+            addh("/addh -n H5 -f F1 -ts T1 -tn T4");
+            addh("/addh -n H6 -f F1 -ts T4");
             save("test0_out.txt");
             //-----------------------------------------------
             int inp = getInput(scanner);
@@ -1293,12 +1296,12 @@ public class View implements IView {
             default:
                 break;
         }
-        System.out.println("Sikeres gombatest létrehozás "+name+" néven!");
+        System.out.println("Sikeres tekton létrehozás "+name+" néven!");
     }
 
     public static void addf(String command){
         String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("/addt")) {
+        if (!parts[0].equals("/addf")) {
             System.out.println("Rossz függvényhívás!");
             return;
         }
@@ -1330,6 +1333,50 @@ public class View implements IView {
         String name = args.get("n");
         Fungus actFungus = new Fungus();
         planet.put(name, actFungus);
+        System.out.println("Sikeres gombafaj létrehozás "+name+" néven!");
+    }
+
+    public static void addic(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/addic")) {
+            System.out.println("Rossz függvényhívás!");
+            return;
+        }
+        LinkedHashMap<String, String> args = new LinkedHashMap<>();
+        for (int i = 1; i < parts.length; i+=2) {
+            if (i+1<parts.length && parts[i].startsWith("-")) {
+                args.put(parts[i].substring(1), parts[i+1]);
+            }
+            else{
+                System.out.println("Hibás argumentum formátum: "+parts[i]);
+                return;
+            }
+        }
+        if (!args.containsKey("n")) {
+            System.out.println("Hiányzik a -n [Name] argumentum.");
+            return;
+        }
+        if (args.get("n").equals("") || args.get("n")==null) {
+            System.out.println("Nincs név megadva (-n): "+args.get("n"));
+            return;
+        }
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String Name = entry1.getKey();
+            if (Name.equals(args.get("n"))) {
+                System.out.println("Ez a név már foglalt (-n): "+args.get("n"));
+                return;
+            }
+        }
+        String name = args.get("n");
+        if (args.containsKey("nv") && (args.get("nv").equals("") || args.get("nv")==null || parseIntNumberMinZero(args.get("nv")) ==-1)) {
+            System.out.println("Nincs össz tápanyag mennyiség megadva vagy hibás (-nv): "+args.get("nv"));
+            return;
+        }
+        int nv = args.containsKey("nv") ? parseIntNumberMinZero(args.get("nv")) : 0;
+        InsectColony actInsectColony = new InsectColony();
+        actInsectColony.addNutrition(nv);
+        planet.put(name, actInsectColony);
+        System.out.println("Sikeres rovar kolónia létrehozás "+name+" néven!");
     }
 
     public static void addfb(String command){
@@ -1416,6 +1463,8 @@ public class View implements IView {
                 try {
                     tecton = (WeakTecton)planet.get(args.get("t"));
                     castError = false;
+                    System.out.println("Gyenge tektonra a gombatest növesztés nem lehetséges!");
+                    return;
                 } catch (ClassCastException ccex) {
                     castError = true;
                 }
@@ -1431,6 +1480,10 @@ public class View implements IView {
             if (castError) tecton = (BarrenTecton)planet.get(args.get("t"));
         } catch (ClassCastException ccex) {
             System.out.println("Nincs ilyen tekton (-t): "+args.get("t"));
+            return;
+        }
+        if (tecton.GetFungusBody()!=null) {
+            System.out.println("Már van gombatest a tektonon!");
             return;
         }
         if (args.containsKey("d") && (args.get("d").equals("") || args.get("d")==null)) {
@@ -1464,6 +1517,220 @@ public class View implements IView {
         planet.put(name, actFungusBody);
         System.out.println("Sikeres gombatest létrehozás "+name+" néven!");
     }
+
+    public static void addh(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/addh")) {
+            System.out.println("Rossz függvényhívás!");
+            return;
+        }
+        LinkedHashMap<String, String> args = new LinkedHashMap<>();
+        for (int i = 1; i < parts.length; i+=2) {
+            if (i+1<parts.length && parts[i].startsWith("-")) {
+                args.put(parts[i].substring(1), parts[i+1]);
+            }
+            else{
+                System.out.println("Hibás argumentum formátum: "+parts[i]);
+                return;
+            }
+        }
+        if (!args.containsKey("n")) {
+            System.out.println("Hiányzik a -n [Name] argumentum.");
+            return;
+        }
+        if (!args.containsKey("f")) {
+            System.out.println("Hiányzik a -f [Name] argumentum.");
+            return;
+        }
+        if (!args.containsKey("ts")) {
+            System.out.println("Hiányzik a -ts [Name] argumentum.");
+            return;
+        }
+        if (args.get("n").equals("") || args.get("n")==null) {
+            System.out.println("Nincs név megadva (-n): "+args.get("n"));
+            return;
+        }
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String Name = entry1.getKey();
+            if (Name.equals(args.get("n"))) {
+                System.out.println("Ez a név már foglalt (-n): "+args.get("n"));
+                return;
+            }
+        }
+        String name = args.get("n");
+        if (((Fungus)planet.get(args.get("f")))==null) {
+            System.out.println("Nincs ilyen gombafaj (-f): "+args.get("f"));
+            return;
+        }
+        Fungus fungusType = null;
+        try {
+            fungusType = (Fungus)planet.get(args.get("f"));
+        } catch (ClassCastException ccex) {
+            System.out.println("Nincs ilyen gombafaj (-f): "+args.get("f"));
+            return;
+        }
+        fungusType = (Fungus)planet.get(args.get("f"));
+        if (planet.get(args.get("ts"))==null) {
+            System.out.println("Nincs ilyen tekton (-ts): "+args.get("ts"));
+            return;
+        }
+        Tecton tectonTS = null;
+        boolean maxLimitTS = true;
+        boolean castError = false;
+        try {
+            try {
+                tectonTS = (BarrenTecton)planet.get(args.get("ts"));
+            } catch (ClassCastException ccex) {
+                castError = true;
+            }
+            if (castError) {
+                try {
+                    tectonTS = (NarrowTecton)planet.get(args.get("ts"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tectonTS = (VitalTecton)planet.get(args.get("ts"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tectonTS = (WeakTecton)planet.get(args.get("ts"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tectonTS = (WideTecton)planet.get(args.get("ts"));
+                    maxLimitTS = false;
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) tectonTS = (BarrenTecton)planet.get(args.get("ts"));
+        } catch (ClassCastException ccex) {
+            System.out.println("Nincs ilyen tekton (-ts): "+args.get("ts"));
+            return;
+        }
+        if (args.containsKey("tn")) {
+            if ((args.get("tn").equals("") || args.get("tn")==null)) {
+                System.out.println("Nincs tekton megadva (-tn): "+args.get("tn"));
+                return;
+            }
+            if (planet.get(args.get("ts"))==null) {
+                System.out.println("Nincs ilyen tekton (-ts): "+args.get("ts"));
+                return;
+            }
+            Tecton tectonTN = null;
+            boolean maxLimitTN = true;
+            castError = false;
+            try {
+                try {
+                    tectonTN = (BarrenTecton)planet.get(args.get("tn"));
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+                if (castError) {
+                    try {
+                        tectonTN = (NarrowTecton)planet.get(args.get("tn"));
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) {
+                    try {
+                        tectonTN = (VitalTecton)planet.get(args.get("tn"));
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) {
+                    try {
+                        tectonTN = (WeakTecton)planet.get(args.get("tn"));
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) {
+                    try {
+                        tectonTN = (WideTecton)planet.get(args.get("tn"));
+                        maxLimitTN = false;
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) tectonTN = (BarrenTecton)planet.get(args.get("tn"));
+            } catch (ClassCastException ccex) {
+                System.out.println("Nincs ilyen tekton (-tn): "+args.get("tn"));
+                return;
+            }
+            if (!tectonTS.GetNeighbours().contains(tectonTN)) {
+                System.out.println("A(z) "+args.get("ts")+" és "+args.get("tn")+" tektonok nem szomszédosak!");
+                return;
+            }
+            if (maxLimitTN && tectonTN.GetHyphas().size()>=1) {
+                System.out.println("Nincs hely a tektonon (-tn): "+args.get("tn"));
+                return;
+            }
+            for (Hypha hypha : tectonTN.GetHyphas()) {
+                if (hypha.GetHostFungus().equals(fungusType)) {
+                    System.out.println("Ennek a gombafajnak már van fonala a "+args.get("tn")+" tektonon!");
+                    return;
+                }
+            }
+            Hypha actHypha = new Hypha(new ArrayList<>(), fungusType, new ArrayList<>(List.of(tectonTS, tectonTN)));
+            fungusType.AddHypha(actHypha);
+            tectonTN.GetHyphas().add(actHypha);
+            planet.put(name, actHypha);
+            System.out.println("Sikeres gombafonál létrehozás "+name+" néven!");
+            return;
+        }
+        if (maxLimitTS && tectonTS.GetHyphas().size()>=1) {
+            System.out.println("Nincs hely a tektonon (-ts): "+args.get("ts"));
+            return;
+        }
+        for (Hypha hypha : tectonTS.GetHyphas()) {
+            if (hypha.GetHostFungus().equals(fungusType) && hypha.GetTectons().size()==1) {
+                System.out.println("Ennek a gombafajnak már van fonala a "+args.get("ts")+" tektonon!");
+                return;
+            }
+        }
+        Hypha actHypha = new Hypha(new ArrayList<>(), fungusType, new ArrayList<>(List.of(tectonTS)));
+        fungusType.AddHypha(actHypha);
+        tectonTS.GetHyphas().add(actHypha);
+        planet.put(name, actHypha);
+        System.out.println("Sikeres gombafonál létrehozás "+name+" néven!");
+    }
+
+    public static void adds(){
+        //
+    }
+
+    public static void addi(){
+        //
+    }
+
+    public static void altt(){
+        //
+    }
+
+    public static void alth(){
+        //
+    }
+
     private static int parseIntNumberMinZero(String value){
         if (value == null || value.isEmpty() || !value.matches("-?\\d+")) {
             return -1;
