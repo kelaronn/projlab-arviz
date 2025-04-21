@@ -1,7 +1,7 @@
 package fungorium;
 
 public interface IInsectController {
-    void EatSpore(Spore s);
+    boolean EatSpore(Spore s);
 
     boolean Move(Tecton t);
 

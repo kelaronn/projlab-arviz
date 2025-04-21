@@ -11,6 +11,10 @@ public class SlowSpore extends Spore{
         super(nv, ed, hf);
     }
 
+    public SlowSpore(int nv, int ed, Fungus fungus, Tecton tecton) {
+        super(nv,ed,fungus,tecton);
+    }
+
     /**
      * Hatás kifejtése (a rovar sebességének nullára csökkentése)
      * @param i rovar
@@ -18,9 +22,9 @@ public class SlowSpore extends Spore{
      */
     @Override public boolean GiveEffect(Insect i){
         i.SetSpeed(0);
-        System.out.println(">[Insect].SetSpeed(0)");
+
         i.SetEffectTimeLeft(this.GetEffectDurr());
-        System.out.println(">[Insect].SetEffectTimeLeft(2)");
+
         return true;
     }
 

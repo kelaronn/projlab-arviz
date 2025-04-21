@@ -16,6 +16,7 @@ public interface IView {
      * @return icCtr
      */
     public int getIcCtr();
+    public void IncIcCtr();
 
     /**
      * Getter metódus az fCtr attribútumhoz.
@@ -23,13 +24,20 @@ public interface IView {
      * @return fCtr
      */
     public int getfCtr();
+    public void IncfCtr();
+    /**
+     * Getter metódus az fbCtr attribútumhoz.
+     *
+     * @return fbCtr
+     */
+    public int getfbCtr();
+    public void IncfbCtr();
 
     /**
      * Getter metódus az fbCtr attribútumhoz.
      * 
      * @return fbCtr
      */
-    public int getfbCtr();
 
     /**
      * Getter metódus az hCtr attribútumhoz.
@@ -37,6 +45,7 @@ public interface IView {
      * @return hCtr
      */
     public int gethCtr();
+    public void InchCtr();
 
     /**
      * Getter metódus az tCtr attribútumhoz.
@@ -44,6 +53,7 @@ public interface IView {
      * @return tCtr
      */
     public int gettCtr();
+    public void InctCtr();
 
     /**
      * Getter metódus az iCtr attribútumhoz.
@@ -51,6 +61,7 @@ public interface IView {
      * @return iCtr
      */
     public int getiCtr();
+    public void InciCtr();
 
     /**
      * Getter metódus az sCtr attribútumhoz.
@@ -58,4 +69,6 @@ public interface IView {
      * @return sCtr
      */
     public int getsCtr();
+    public void IncsCtr();
+
 }

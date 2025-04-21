@@ -2,13 +2,13 @@ package fungorium;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public interface ITectonView {
-    Tecton Break();
 
     ArrayList<Tecton> GetNeighbours();
 
-    void AddSpore(Fungus fungus);
+    void AddSpore(Fungus fungus,boolean isRandom, Random rand);
 
     List<Spore> GetSpores();
 
@@ -21,6 +21,8 @@ public interface ITectonView {
     void AddNeighbour(Tecton neighbour);
 
     List<Hypha> GetHyphas();
+
+    List<Insect> GetInsects();
 
     String ToString(String data);
 }

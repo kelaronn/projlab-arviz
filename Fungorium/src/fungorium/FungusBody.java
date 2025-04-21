@@ -1,6 +1,7 @@
 package fungorium;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class FungusBody implements IFungusBodyView, IFungusBodyController {
     boolean isDeveloped; /**A gombatest fejlettségét kifejező logikai érték. Igaz ha a gombatest fejelett*/
@@ -209,18 +210,18 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
 
     /**ShootSpores függvény implementálja a gombatest spóralövésének logikáját*/
     @Override
-    public void ShootSpores(){
+    public boolean ShootSpores(boolean isRandom, Random rand){
         if(isDead){
             System.err.println("Error: The fungus body is dead and cannot shoot spores.");
-            return;
+            return false;
         }
         if(sporeCount<4){
             System.err.println("Error: The fungus body has less than 4 spores.");
-            return;
+            return false;
         }
         if (tecton == null) {
             System.err.println("Error: The fungus body is not located on any tecton.");
-            return;
+            return false;
         }
 
         ArrayList<Tecton> neighbours = new ArrayList<>(); 
@@ -228,11 +229,11 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
         System.out.println(">[Tecton].GetNeighbours()");
         if (neighbours == null) {
             System.err.println("Error: The tecton of the fungus body has no neighbours.");
-            return;
+            return false;
         } 
 
         for(int i=0; i<neighbours.size(); ++i) {
-            neighbours.get(i).AddSpore(hostFungus);
+            neighbours.get(i).AddSpore(hostFungus,isRandom,rand);
             System.out.println(">[Tecton].AddSpore()");
         }
         if(isDeveloped){
@@ -243,7 +244,7 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
                 System.out.println(">[Tecton].GetNeighbours()");
                 for(int j=0; j < nns.size(); ++j) {
                     if(!this.GetTecton().equals(nns.get(j))){
-                        nns.get(j).AddSpore(hostFungus);
+                        nns.get(j).AddSpore(hostFungus,isRandom,rand);
                         System.out.println("[Tecton].AddSpore()");
                     }
                 }
@@ -252,22 +253,25 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
         sporeCount-=4;
         shotsLeft--;
         System.out.println("ShootSpores success");
+        return true;
     }
 
     /**
      * Gombatest meghalását implementálja
+     *
+     * @return
      */
     @Override
-    public void Die(){
+    public boolean Die(){
         /*tecton.AbsorbHyphas();
         System.out.println("[Tecton].AbsorbHyphas()");
         isDead=true;*/
         if(!this.GetIsDead()){
             this.SetIsDead(true);
             Hypha sameTypeHypha = null;
-            System.out.println(">[FungusBody].GetTecton().GetHyphas()");
-            System.out.println(">[Hypha].GetHostFungus() loop");
-            System.out.println(">[Hypha].GetHostFungus() loop");
+            //System.out.println(">[FungusBody].GetTecton().GetHyphas()");
+            //System.out.println(">[Hypha].GetHostFungus() loop");
+            //System.out.println(">[Hypha].GetHostFungus() loop");
             for (Hypha hypha : this.GetTecton().GetHyphas()) {
                 if(hypha.GetHostFungus().equals(this.GetHostFungus())){
                     sameTypeHypha = hypha;
@@ -276,29 +280,32 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
             }
             if(sameTypeHypha != null){
                 sameTypeHypha.Atrophy();
-                System.out.println(">[Hypha].Atrophy()");
+                //System.out.println(">[Hypha].Atrophy()");
             }
-            System.out.println(">[FungusBody].SetIsDead(true)");
-            System.out.println("Die() success.");
+            //System.out.println(">[FungusBody].SetIsDead(true)");
+            //System.out.println("Die() success.");
         }
         
         else{
-            System.out.println("Die() unsuccess, because FungusBody is already dead.");
+            //System.out.println("Die() unsuccess, because FungusBody is already dead.");
         }
+        return false;
     }
 
     /**
      * Spórát termel a gombatestnek
      */
     @Override
-    public void ProduceSpore(){
+    public boolean ProduceSpore(){
         System.out.println(">[FungusBody].GetIsDead()");
         if(!this.GetIsDead()){
             sporeCount++;
-            System.out.println("ProduceSpore success.");
+            //System.out.println("ProduceSpore success.");
+            return true;
         }
         else{
-            System.out.println("ProduceSpore unsuccess, because FungusBody is dead.");
+            return false;
+            //System.out.println("ProduceSpore unsuccess, because FungusBody is dead.");
         }   
     }
 

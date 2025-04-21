@@ -1,9 +1,11 @@
 package fungorium;
 
+import java.util.Random;
+
 public interface IFungusBodyController {
-    void ShootSpores();
+    boolean ShootSpores(boolean isRandom, Random rand);
 
-    void Die();
+    boolean Die();
 
-    void ProduceSpore();
+    boolean ProduceSpore();
 }

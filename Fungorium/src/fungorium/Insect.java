@@ -83,25 +83,22 @@ public class Insect implements IInsectController, IInsectView {
 
     /**
      * Spóra elfogyasztása
-     * 
+     *
      * @param s spóra
+     * @return
      */
     @Override
-    public void EatSpore(Spore s) {
+    public boolean EatSpore(Spore s) {
         if (s.GetTecton() != tecton) {
             // throw new IllegalArgumentException("Spore is not on the right tecton");
-            System.out.println("Insect and Spore are not on the same Tecton");
-            return;
+            System.err.println("Insect and Spore are not on the same Tecton");
+            return false;
         }
 
         s.GiveEffect(this);
-        System.out.println(">[Spore].GiveEffect(this)");
         hostColony.addNutrition(s.GetNutritionValue());
-        System.out.println(">[InsectColony].addNutrition(s.GetNutritionValue())");
         tecton.RemoveSpore(s);
-        System.out.println(">[Tecton].RemoveSpore(s)");
-        System.out.println("Spore eaten.");
-
+        return true;
     }
 
     /**
@@ -114,11 +111,11 @@ public class Insect implements IInsectController, IInsectView {
     public boolean Move(Tecton t) {
         if (t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null) {
             t.AddInsect(this);
-            System.out.println(">[Tecton].AddInsect(this)");
+
             tecton.RemoveInsect(this);
-            System.out.println(">[Tecton].AddInsect(this)");
+
             this.SetTecton(t);
-            System.out.println(">[Insect].SetTecton(t)");
+
             return true;
         } else {
             return false;
@@ -142,11 +139,11 @@ public class Insect implements IInsectController, IInsectView {
 
         if (t.GetHypha(t, tecton) != null) {
             h = t.GetHypha(t, tecton);
-            System.out.println(">[Tecton].GetHypha(t, tecton)");
+            //System.out.println(">[Tecton].GetHypha(t, tecton)");
             correctTecton = t;
         } else if (tecton.GetHypha(t, tecton) != null) {
             h = tecton.GetHypha(t, tecton);
-            System.out.println(">[Tecton].GetHypha(t, tecton)");
+            //System.out.println(">[Tecton].GetHypha(t, tecton)");
             correctTecton = tecton;
         } else {
             return false;
@@ -154,12 +151,12 @@ public class Insect implements IInsectController, IInsectView {
 
         if (t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null) {
             h.GetHostFungus().RemoveHypha(h);
-            System.out.println(">[Fungus].RemoveHypha(h)");
+            //System.out.println(">[Fungus].RemoveHypha(h)");
             correctTecton.RemoveHypha(h);
-            System.out.println(">[Tecton].RemoveHypha(h)");
+            //System.out.println(">[Tecton].RemoveHypha(h)");
             for (Hypha n : h.GetNeighbours()) {
                 n.RemoveNeighbours(h);
-                System.out.println(">[Hypha].RemoveNeighbours(h)");
+                //System.out.println(">[Hypha].RemoveNeighbours(h)");
             }
             return true;
         } else {
