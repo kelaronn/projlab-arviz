@@ -43,10 +43,16 @@ public class BarrenTecton extends NarrowTecton{
      */
     @Override
     public boolean AbsorbHyphas(){
+        if(absorptionTime > 1){
+            absorptionTime--;
+            return false;
+        }
+
         for (int i=0; i<hyphas.size(); i++){
-            System.out.println(">[BarrenTecton].RemoveHypha(h)");
+            //System.out.println(">[BarrenTecton].RemoveHypha(h)");
             RemoveHypha(hyphas.get(i));
         }
+        absorptionTime = 3;
         return true;
     }
 

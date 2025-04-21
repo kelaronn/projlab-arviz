@@ -1,7 +1,6 @@
 package fungorium;
 
 public interface IInsectView {
-    void EatSpore(Spore s);
 
     int GetSpeed();
 

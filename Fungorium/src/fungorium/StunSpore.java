@@ -11,6 +11,10 @@ public class StunSpore extends Spore {
         super(nv, ed, hf);
     }
 
+    public StunSpore(int nv, int ed, Fungus fungus, Tecton tecton) {
+        super(nv,ed,fungus,tecton);
+    }
+
     /**
      * Hatás kifejtése (a rovar sebességének nullára csökkentése, vágási képességének megszüntetése)
      * @param i rovar
@@ -18,11 +22,11 @@ public class StunSpore extends Spore {
      */
     @Override public boolean GiveEffect(Insect i){
         i.SetSpeed(0);
-        System.out.println(">[Insect].SetSpeed(0)");
+
         i.SetCutAbility(false);
-        System.out.println(">[Insect].SetCutAbility(false)");
+
         i.SetEffectTimeLeft(this.GetEffectDurr());
-        System.out.println(">[Insect].SetEffectTimeLeft(2)");
+
         return true;
     }
 

@@ -11,6 +11,10 @@ public class DisarmSpore extends Spore {
         super(nv, ed, hf);
     }
 
+    public DisarmSpore(int nv, int ed, Fungus fungus, Tecton tecton) {
+        super(nv,ed,fungus,tecton);
+    }
+
     /**
      * Hatás kifejtése (a rovar vágási képességének megszüntetése)
      * @param i rovar
@@ -18,9 +22,9 @@ public class DisarmSpore extends Spore {
      */
     @Override public boolean GiveEffect(Insect i){
         i.SetCutAbility(false);
-        System.out.println(">[Insect].SetCutAbility(false)");
+
         i.SetEffectTimeLeft(this.GetEffectDurr());
-        System.out.println(">[Insect].SetEffectTimeLeft(2)");
+
         return true;
     }
 

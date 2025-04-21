@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,13 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class View implements IView {
     private static LinkedHashMap<String, Object> planet = new LinkedHashMap<>();
-    GameController controller = new GameController();
+    GameController controller = new GameController(this);
     int icCtr = 0;
     int fCtr = 0;
     int fbCtr = 0;
@@ -314,6 +314,14 @@ public class View implements IView {
     }
 
     /**
+     * Inkrementer metódus az icCtr attribútumhoz.
+     *
+     */
+    public void IncIcCtr() {
+        icCtr++;
+    }
+
+    /**
      * Getter metódus az fCtr attribútumhoz.
      * 
      * @return fCtr
@@ -323,12 +331,28 @@ public class View implements IView {
     }
 
     /**
-     * Getter metódus a fbCtr attribútumhoz.
-     * 
+     * Inkrementer metódus az fCtr attribútumhoz.
+     *
+     */
+    public void IncfCtr() {
+        fCtr++;
+    }
+
+    /**
+     * Getter metódus az fbCtr attribútumhoz.
+     *
      * @return fbCtr
      */
     public int getfbCtr() {
         return fbCtr;
+    }
+
+    /**
+     * Inkrementer metódus az fbCtr attribútumhoz.
+     *
+     */
+    public void IncfbCtr() {
+        fbCtr++;
     }
 
     /**
@@ -341,12 +365,28 @@ public class View implements IView {
     }
 
     /**
+     * Inkrementer metódus a hCtr attribútumhoz.
+     *
+     */
+    public void InchCtr() {
+        hCtr++;
+    }
+
+    /**
      * Getter metódus a tCtr attribútumhoz.
      * 
      * @return tCtr
      */
     public int gettCtr() {
         return tCtr;
+    }
+
+    /**
+     * Inkrementer metódus a tCtr attribútumhoz.
+     *
+     */
+    public void InctCtr() {
+        tCtr++;
     }
 
     /**
@@ -359,12 +399,28 @@ public class View implements IView {
     }
 
     /**
+     * Inkrementer metódus az iCtr attribútumhoz.
+     *
+     */
+    public void InciCtr() {
+        iCtr++;
+    }
+
+    /**
      * Getter metódus az sCtr attribútumhoz.
      * 
      * @return sCtr
      */
     public int getsCtr() {
         return sCtr;
+    }
+
+    /**
+     * Inkrementer metódus az sCtr attribútumhoz.
+     *
+     */
+    public void IncsCtr() {
+        sCtr++;
     }
 
     /**
@@ -465,7 +521,7 @@ public class View implements IView {
 
     /**
      * Beolvassa a fájlt és inicializálja a játék állapotát.
-     * 
+     *
      * @param filePath
      */
     public static void load(String filePath) {

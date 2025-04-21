@@ -41,7 +41,6 @@ public class WideTecton extends Tecton {
         for(Hypha h : hyphas){
             if(h.GetHostFungus().equals(fungus))
                 return false;
-            System.out.println(">[Hypha].GetHostFungus()");
         }
         // ha nincs megadva szomszédos tekton, csak lerak egy hifát
         if(t0 == null){
