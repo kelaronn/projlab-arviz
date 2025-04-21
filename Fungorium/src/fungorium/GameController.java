@@ -11,6 +11,7 @@ public class GameController {
     Turn currentTurn = Turn.Fungus1;  // default
 
     private boolean isRandom = true;
+    private boolean turns = true;
 
     public GameController(IView view){
         this.view = view;
@@ -23,6 +24,9 @@ public class GameController {
      * 3. tektonokat tor kette, ha be van kapcsolva a random. 5% esellyel.
      */
     private void EndOfRound(){
+        if(!turns)
+            return;
+
         List<String> fbKeys = new ArrayList<>();
         List<String> iKeys = new ArrayList<>();
         List<String> tKeys = new ArrayList<>();
@@ -86,6 +90,9 @@ public class GameController {
      *              -         ha = "np", kovetkezo jatekos. Utolso jatekos utan uj kor jon es visszakerul az elso jatekos.
      */
     public void Trigg(String event){
+        if(!turns)
+            return;
+
         // kovetkezo kor
         if(event  == "nr"){
             EndOfRound();
@@ -113,7 +120,7 @@ public class GameController {
         }
     }
     /**
-     * A random paraméterek ki- és bekapcsolását vezérli.
+     * A random paraméterek ki- és bekapcsolását vezérli. Alapertelmezetten be van kapcsolva.
      * @param cmd --String: "enable", ha beállítjuk, "disable", ha kikapcsoljuk, ha üres akkor ellentettjére állítja.
      */
     public void Rand(String cmd){
@@ -132,6 +139,22 @@ public class GameController {
     }
 
     /**
+     * A koroket ki- és bekapcsolo parancs. Alapértelmezetten vannak korok.
+     * @param cmd -- String: "enable" bekapccsolja, "disable" kikapcsolja a koroket. Ha ures ellentetjere allitja.
+     */
+    public void Turns(String cmd){
+        if(cmd.length() == 0){
+            turns = !turns;
+        }
+        else if(cmd == "enable"){
+            turns = true;
+        }
+        else if(cmd == "disable"){
+            turns = false;
+        }
+    }
+
+    /**
      * Meghívja a paramtérként kapott tektonon a paraméterként kapott Gombával a GrowFungusBodyt.
      * Sikeres metodushivas utan belerakja az uj Gombatestet a planetbe.
      * Sikeres metodushivas utan kiveszi a felhasznalt sporakat a planetbol.
@@ -141,9 +164,12 @@ public class GameController {
      * @return sikeres-e a művelet.
      */
     public boolean GrowFungusBody(ITectonController tecton, Fungus fungus){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect colony kor van");
-            return false;
+
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect colony kor van");
+                return false;
+            }
         }
 
         boolean successful = tecton.GrowFungusBody(fungus);
@@ -183,9 +209,11 @@ public class GameController {
      * @return sikeres-e a művelet.
      */
     public boolean GrowFungusBodyFromInsect(ITectonController tecton, Fungus fungus){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect colony kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect colony kor van");
+                return false;
+            }
         }
 
         boolean successful = tecton.GrowFungusBodyFromInsect(fungus);
@@ -223,9 +251,11 @@ public class GameController {
      * @return sikeres-e a muvelet.
      */
     public boolean AbsorbHypha(ITectonController tecton){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect colony kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect colony kor van");
+                return false;
+            }
         }
 
         boolean successful = tecton.AbsorbHyphas();
@@ -296,9 +326,11 @@ public class GameController {
      * @return sikeres-e a muvelet.
      */
     public boolean ProduceSpore(IFungusBodyController fb){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect colony kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect colony kor van");
+                return false;
+            }
         }
 
         boolean success = fb.ProduceSpore();
@@ -317,9 +349,11 @@ public class GameController {
      * @return sikeres-e a művelet
      */
     public boolean ShootSpores(IFungusBodyController fb){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect colony kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect colony kor van");
+                return false;
+            }
         }
 
         boolean success = fb.ShootSpores(isRandom, rand);
@@ -366,9 +400,11 @@ public class GameController {
      * @return
      */
     public boolean DieFungusBody(IFungusBodyController fb){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect Colony kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect Colony kor van");
+                return false;
+            }
         }
 
         boolean success = fb.Die();
@@ -392,9 +428,11 @@ public class GameController {
      * @return Sikeres-e a muvelet.
      */
     public boolean GrowHypha(Fungus fungus,Tecton tectonFrom, Tecton tectonTo){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect colony kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect colony kor van");
+                return false;
+            }
         }
 
         boolean  success = tectonFrom.AddHypha(fungus,tectonTo);
@@ -433,9 +471,11 @@ public class GameController {
      * @return Sikeres-e a muvelet.
      */
     public boolean AtrophyOfHypha(IHyphaController hypha){
-        if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
-            System.err.println("Insect colony kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Colony1 || currentTurn != Turn.Colony2){
+                System.err.println("Insect colony kor van");
+                return false;
+            }
         }
 
         boolean success = hypha.Atrophy();
@@ -455,9 +495,11 @@ public class GameController {
      * @return Sikeres-e a muvelet
      */
     public boolean EatStunnedInsect(IHyphaController hypha, Insect insect){
-        if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
-            System.err.println("Fungus kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
+                System.err.println("Fungus kor van");
+                return false;
+            }
         }
 
         boolean success = hypha.EatStunnedInsect(insect);
@@ -477,9 +519,11 @@ public class GameController {
      * @return Sikeres-e a muvelet.
      */
     public boolean EatSpore(IInsectController insect, Spore spore){
-        if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
-            System.err.println("Fungus kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
+                System.err.println("Fungus kor van");
+                return false;
+            }
         }
 
         boolean success = insect.EatSpore(spore);
@@ -501,9 +545,11 @@ public class GameController {
      * @return Sikeres-e a muvelet
      */
     public boolean MoveInsect(IInsectController insect, Tecton tecton){
-        if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
-            System.err.println("Fungus kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
+                System.err.println("Fungus kor van");
+                return false;
+            }
         }
 
         boolean success = insect.Move(tecton);
@@ -522,9 +568,11 @@ public class GameController {
      * @return
      */
     public boolean CutHypha(IInsectController insect, Tecton tecton){
-        if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
-            System.err.println("Fungus kor van");
-            return false;
+        if (turns) {
+            if(currentTurn == Turn.Fungus1 || currentTurn != Turn.Fungus2){
+                System.err.println("Fungus kor van");
+                return false;
+            }
         }
 
         boolean success = insect.Cut(tecton);
