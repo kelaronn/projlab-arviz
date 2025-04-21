@@ -114,9 +114,9 @@ public class GameController {
     }
     /**
      * A random paraméterek ki- és bekapcsolását vezérli.
-     * @param cmd --String: enable, ha beállítjuk, disable, ha kikapcsoljuk, ha üres akkor ellentettjére állítja.
+     * @param cmd --String: "enable", ha beállítjuk, "disable", ha kikapcsoljuk, ha üres akkor ellentettjére állítja.
      */
-    public void rand(String cmd){
+    public void Rand(String cmd){
         if(cmd.length() == 0) {
             isRandom = isRandom ? false : true;
         }
@@ -188,7 +188,7 @@ public class GameController {
             return false;
         }
 
-        boolean successful = tecton.GrowFungusBody(fungus);
+        boolean successful = tecton.GrowFungusBodyFromInsect(fungus);
         if(!successful)
             return false;
 
