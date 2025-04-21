@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.io.BufferedWriter;
@@ -91,12 +92,10 @@ public class View implements IView {
             // help();
             load("test0_in.txt");
             //----------------------------------------------
-            System.out.println("\nMódosítás elött:\n");
             save("test0_out.txt");
-            System.out.println("\nMódosítás:\n");
-            //addfb("/addfb -n FB3 -f F2 -t T3 -d h -a 3 -dv h -sc 10 -sl 6");
-            addfb("/addfb -n FB3 -f F2 -t T3 -d h -a 3 -dv h -sc 10");
-            System.out.println("\nMódosítás után:\n");
+            addt("/addt -n T5 -t b");
+            addf("/addf -n F3");
+            addfb("/addfb -n FB3 -f F2 -t T4 -d n -a 3 -dv y -sc 10 -sl 6");
             save("test0_out.txt");
             //-----------------------------------------------
             int inp = getInput(scanner);
@@ -895,12 +894,12 @@ public class View implements IView {
                                     + ((sporeNames.equals("")) ? "" : "[" + sporeNames + "]") + ","
                                     + ((neighbourNames.equals("")) ? "" : "[" + neighbourNames + "]") + ","
                                     + fungusBodyName + "\n"));
-                    System.out.println(tectonView
+                    /*System.out.println(tectonView
                             .ToString(tectonName + "," + ((insectNames.equals("")) ? "" : "[" + insectNames + "]") + ","
                                     + ((hyphaNames.equals("")) ? "" : "[" + hyphaNames + "]") + ","
                                     + ((sporeNames.equals("")) ? "" : "[" + sporeNames + "]") + ","
                                     + ((neighbourNames.equals("")) ? "" : "[" + neighbourNames + "]") + ","
-                                    + fungusBodyName + "\n"));
+                                    + fungusBodyName + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -960,9 +959,9 @@ public class View implements IView {
                     writer.write(fungusView.ToString(fungusName + ","
                             + ((fungusBodyNames.equals("")) ? fungusBodyNames : "[" + fungusBodyNames + "]") + ","
                             + ((hyphaNames.equals("")) ? hyphaNames : "[" + hyphaNames + "]") + "\n"));
-                    System.out.println(fungusView.ToString(fungusName + ","
+                    /*System.out.println(fungusView.ToString(fungusName + ","
                             + ((fungusBodyNames.equals("")) ? fungusBodyNames : "[" + fungusBodyNames + "]") + ","
-                            + ((hyphaNames.equals("")) ? hyphaNames : "[" + hyphaNames + "]") + "\n"));
+                            + ((hyphaNames.equals("")) ? hyphaNames : "[" + hyphaNames + "]") + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -992,9 +991,9 @@ public class View implements IView {
                     writer.write(insectColonyView.ToString(
                             insectColonyName + "," + ((insectNames.equals("")) ? insectNames : "[" + insectNames + "]")
                                     + "," + insectColonyView.getNutrition() + "\n"));
-                    System.out.println(insectColonyView.ToString(
+                    /*System.out.println(insectColonyView.ToString(
                             insectColonyName + "," + ((insectNames.equals("")) ? insectNames : "[" + insectNames + "]")
-                                    + "," + insectColonyView.getNutrition() + "\n"));
+                                    + "," + insectColonyView.getNutrition() + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -1010,7 +1009,7 @@ public class View implements IView {
                         Object obj2 = entry2.getValue();
                         try {
                             ITectonView tectonView = (ITectonView) obj2;
-                            if (((IFungusBodyView) tectonView.GetFungusBody()).equals(fungusBodyView)) {
+                            if (((IFungusBodyView) tectonView.GetFungusBody()) != null && ((IFungusBodyView) tectonView.GetFungusBody()).equals(fungusBodyView)) {
                                 tectonName = entry2.getKey();
                                 break;
                             }
@@ -1040,10 +1039,10 @@ public class View implements IView {
                             fungusBodyName + "," + fungusBodyView.GetIsDeveloped() + "," + fungusBodyView.GetAge() + ","
                                     + fungusBodyView.GetIsDead() + "," + fungusBodyView.GetSporeCount() + ","
                                     + fungusBodyView.GetShotsLeft() + "," + tectonName + "," + fungusName + "\n"));
-                    System.out.println(fungusBodyView.ToString(
+                    /*System.out.println(fungusBodyView.ToString(
                             fungusBodyName + "," + fungusBodyView.GetIsDeveloped() + "," + fungusBodyView.GetAge() + ","
                                     + fungusBodyView.GetIsDead() + "," + fungusBodyView.GetSporeCount() + ","
-                                    + fungusBodyView.GetShotsLeft() + "," + tectonName + "," + fungusName + "\n"));
+                                    + fungusBodyView.GetShotsLeft() + "," + tectonName + "," + fungusName + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -1123,10 +1122,10 @@ public class View implements IView {
                             + ((neighbourNames.equals("")) ? neighbourNames : "[" + neighbourNames + "]") + ","
                             + fungusName + "," + ((tectonNames.equals("")) ? tectonNames : "[" + tectonNames + "]")
                             + "\n"));
-                    System.out.println(hyphaView.ToString(hyphaName + ","
+                    /*System.out.println(hyphaView.ToString(hyphaName + ","
                             + ((neighbourNames.equals("")) ? neighbourNames : "[" + neighbourNames + "]") + ","
                             + fungusName + "," + ((tectonNames.equals("")) ? tectonNames : "[" + tectonNames + "]")
-                            + "\n"));
+                            + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -1165,8 +1164,8 @@ public class View implements IView {
                     }
                     writer.write(sporeView.ToString(sporeName + "," + sporeView.GetNutritionValue() + ","
                             + sporeView.GetEffectDurr() + "," + fungusName + "," + tectonName + "\n"));
-                    System.out.println(sporeView.ToString(sporeName + "," + sporeView.GetNutritionValue() + ","
-                            + sporeView.GetEffectDurr() + "," + fungusName + "," + tectonName + "\n"));
+                    /*System.out.println(sporeView.ToString(sporeName + "," + sporeView.GetNutritionValue() + ","
+                            + sporeView.GetEffectDurr() + "," + fungusName + "," + tectonName + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -1220,9 +1219,9 @@ public class View implements IView {
                     writer.write(insectView.ToString(insectName + "," + insectView.GetSpeed() + ","
                             + insectView.GetCutAbility() + "," + insectView.GetEffectTimeLeft() + "," + insectColonyName
                             + "," + tectonName + "," + ((fungusName.equals("")) ? "null" : fungusName) + "\n"));
-                    System.out.println(insectView.ToString(insectName + "," + insectView.GetSpeed() + ","
+                    /*System.out.println(insectView.ToString(insectName + "," + insectView.GetSpeed() + ","
                             + insectView.GetCutAbility() + "," + insectView.GetEffectTimeLeft() + "," + insectColonyName
-                            + "," + tectonName + "," + ((fungusName.equals("")) ? "null" : fungusName) + "\n"));
+                            + "," + tectonName + "," + ((fungusName.equals("")) ? "null" : fungusName) + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -1230,6 +1229,107 @@ public class View implements IView {
         } catch (IOException ioex) {
             System.err.println(ioex);
         }
+    }
+
+    public static void addt(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/addt")) {
+            System.out.println("Rossz függvényhívás!");
+            return;
+        }
+        LinkedHashMap<String, String> args = new LinkedHashMap<>();
+        for (int i = 1; i < parts.length; i+=2) {
+            if (i+1<parts.length && parts[i].startsWith("-")) {
+                args.put(parts[i].substring(1), parts[i+1]);
+            }
+            else{
+                System.out.println("Hibás argumentum formátum: "+parts[i]);
+                return;
+            }
+        }
+        if (!args.containsKey("n")) {
+            System.out.println("Hiányzik a -n [Name] argumentum.");
+            return;
+        }
+        if (args.get("n").equals("") || args.get("n")==null) {
+            System.out.println("Nincs név megadva (-n): "+args.get("n"));
+            return;
+        }
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String Name = entry1.getKey();
+            if (Name.equals(args.get("n"))) {
+                System.out.println("Ez a név már foglalt (-n): "+args.get("n"));
+                return;
+            }
+        }
+        String name = args.get("n");
+        LinkedList<String> typeList = new LinkedList<>(List.of("n","wi","v","we","b"));
+        if (args.containsKey("t") && (args.get("t").equals("") || args.get("t")==null || !typeList.contains(args.get("t")))) {
+            System.out.println("Nincs tekton típus megadva vagy hibás (-t): "+args.get("t"));
+            return;
+        }
+        String tectonType = args.containsKey("t") ? args.get("t") : "n";
+        switch (tectonType) {
+            case "n":
+                NarrowTecton actTectonN = new NarrowTecton();
+                planet.put(name, actTectonN);
+                break;
+            case "wi":
+                WideTecton actTectonWi = new WideTecton();
+                planet.put(name, actTectonWi);
+                break;
+            case "v":
+                VitalTecton actTectonV = new VitalTecton();
+                planet.put(name, actTectonV);
+                break;
+            case "we":
+                WeakTecton actTectonWe = new WeakTecton();
+                planet.put(name, actTectonWe);
+                break;
+            case "b":
+                BarrenTecton actTectonB = new BarrenTecton();
+                planet.put(name, actTectonB);
+                break;
+            default:
+                break;
+        }
+        System.out.println("Sikeres gombatest létrehozás "+name+" néven!");
+    }
+
+    public static void addf(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/addt")) {
+            System.out.println("Rossz függvényhívás!");
+            return;
+        }
+        LinkedHashMap<String, String> args = new LinkedHashMap<>();
+        for (int i = 1; i < parts.length; i+=2) {
+            if (i+1<parts.length && parts[i].startsWith("-")) {
+                args.put(parts[i].substring(1), parts[i+1]);
+            }
+            else{
+                System.out.println("Hibás argumentum formátum: "+parts[i]);
+                return;
+            }
+        }
+        if (!args.containsKey("n")) {
+            System.out.println("Hiányzik a -n [Name] argumentum.");
+            return;
+        }
+        if (args.get("n").equals("") || args.get("n")==null) {
+            System.out.println("Nincs név megadva (-n): "+args.get("n"));
+            return;
+        }
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String Name = entry1.getKey();
+            if (Name.equals(args.get("n"))) {
+                System.out.println("Ez a név már foglalt (-n): "+args.get("n"));
+                return;
+            }
+        }
+        String name = args.get("n");
+        Fungus actFungus = new Fungus();
+        planet.put(name, actFungus);
     }
 
     public static void addfb(String command){
