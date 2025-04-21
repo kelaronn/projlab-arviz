@@ -106,7 +106,7 @@ public class View implements IView {
                 break;
             }
 
-            switch (inp) {
+            /* switch (inp) {
                 case 1:
                     Tester tester = new Tester();
 
@@ -336,7 +336,7 @@ public class View implements IView {
                     break;
                 default:
                     System.out.println("There is no such option, please try again.");
-            }
+            } */
         }
         scanner.close();
     }
