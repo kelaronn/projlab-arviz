@@ -24,11 +24,81 @@ public class View implements IView {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+         // Initialization:
+         NarrowTecton T1 = new NarrowTecton();
+         NarrowTecton T2 = new NarrowTecton();
+         NarrowTecton T3 = new NarrowTecton();
+         WideTecton T4 = new WideTecton();
+         Fungus F1 = new Fungus();
+         Fungus F2 = new Fungus();
+         InsectColony IC1 = new InsectColony();
+         T1.AddNeighbour(T2);
+         T1.AddNeighbour(T3);
+         T1.AddNeighbour(T4);
+         T2.AddNeighbour(T1);
+         T2.AddNeighbour(T4);
+         T3.AddNeighbour(T1);
+         T3.AddNeighbour(T4);
+         T4.AddNeighbour(T1);
+         T4.AddNeighbour(T2);
+         T4.AddNeighbour(T3);
+         FungusBody FB1 = new FungusBody(T1, F1);
+         F1.AddBody(FB1);
+         T1.SetFungusBody(FB1);
+         FungusBody FB2 = new FungusBody(T2, F2);
+         F2.AddBody(FB2);
+         T2.SetFungusBody(FB2);
+         Hypha H1 = new Hypha(new ArrayList<>(), F1, new ArrayList<>(List.of(T1)));
+         F1.AddHypha(H1);
+         T1.GetHyphas().add(H1);
+         Hypha H2 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2)));
+         F2.AddHypha(H2);
+         T2.GetHyphas().add(H2);
+         Hypha H3 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2,T4)));
+         F2.AddHypha(H3);
+         T4.GetHyphas().add(H3);
+         Hypha H4 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T4)));
+         F2.AddHypha(H4);
+         T4.GetHyphas().add(H4);
+         H2.AddNeighbour(H3);
+         H3.AddNeighbour(H4);
+         Spore S1 = new Spore(5, 0, F1, T1);
+         Spore S2 = new Spore(5, 0, F1, T1);
+         Insect I1 = new Insect(2, true, 0, T1);
+         I1.SetHostColony(IC1);
+         I1.SetEatenBy(F1);
+         Insect I2 = new Insect(2, true, 0, T1);
+         I2.SetHostColony(IC1);
+         I2.SetEatenBy(F1);
+         planet.put("T1", T1);
+         planet.put("T2", T2);
+         planet.put("T3", T3);
+         planet.put("T4", T4);
+         planet.put("F1", F1);
+         planet.put("F2", F2);
+         planet.put("IC1", IC1);
+         planet.put("FB1", FB1);
+         planet.put("FB2", FB2);
+         planet.put("H1", H1);
+         planet.put("H2", H2);
+         planet.put("H3", H3);
+         planet.put("H4", H4);
+         planet.put("S1", S1);
+         planet.put("S2", S2);
+         planet.put("I1", I1);
+         planet.put("I2", I2);
         while (true) {
             // help();
             load("test0_in.txt");
+            //----------------------------------------------
+            System.out.println("\nMódosítás elött:\n");
             save("test0_out.txt");
-
+            System.out.println("\nMódosítás:\n");
+            //addfb("/addfb -n FB3 -f F2 -t T3 -d h -a 3 -dv h -sc 10 -sl 6");
+            addfb("/addfb -n FB3 -f F2 -t T3 -d h -a 3 -dv h -sc 10");
+            System.out.println("\nMódosítás után:\n");
+            save("test0_out.txt");
+            //-----------------------------------------------
             int inp = getInput(scanner);
 
             if (inp == 0) {
@@ -661,72 +731,6 @@ public class View implements IView {
     }
 
     public static void save(String filePath) {
-        // Initialization:
-        /*
-         * NarrowTecton T1 = new NarrowTecton();
-         * NarrowTecton T2 = new NarrowTecton();
-         * NarrowTecton T3 = new NarrowTecton();
-         * WideTecton T4 = new WideTecton();
-         * Fungus F1 = new Fungus();
-         * Fungus F2 = new Fungus();
-         * InsectColony IC1 = new InsectColony();
-         * T1.AddNeighbour(T2);
-         * T1.AddNeighbour(T3);
-         * T1.AddNeighbour(T4);
-         * T2.AddNeighbour(T1);
-         * T2.AddNeighbour(T4);
-         * T3.AddNeighbour(T1);
-         * T3.AddNeighbour(T4);
-         * T4.AddNeighbour(T1);
-         * T4.AddNeighbour(T2);
-         * T4.AddNeighbour(T3);
-         * FungusBody FB1 = new FungusBody(T1, F1);
-         * F1.AddBody(FB1);
-         * T1.SetFungusBody(FB1);
-         * FungusBody FB2 = new FungusBody(T2, F2);
-         * F2.AddBody(FB2);
-         * T2.SetFungusBody(FB2);
-         * Hypha H1 = new Hypha(new ArrayList<>(), F1, new ArrayList<>(List.of(T1)));
-         * F1.AddHypha(H1);
-         * T1.GetHyphas().add(H1);
-         * Hypha H2 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2)));
-         * F2.AddHypha(H2);
-         * T2.GetHyphas().add(H2);
-         * Hypha H3 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2,
-         * T4)));
-         * F2.AddHypha(H3);
-         * T4.GetHyphas().add(H3);
-         * Hypha H4 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T4)));
-         * F2.AddHypha(H4);
-         * T4.GetHyphas().add(H4);
-         * H2.AddNeighbour(H3);
-         * H3.AddNeighbour(H4);
-         * Spore S1 = new Spore(5, 0, F1, T1);
-         * Spore S2 = new Spore(5, 0, F1, T1);
-         * Insect I1 = new Insect(2, true, 0, T1);
-         * I1.SetHostColony(IC1);
-         * I1.SetEatenBy(F1);
-         * Insect I2 = new Insect(2, true, 0, T1);
-         * I2.SetHostColony(IC1);
-         * I2.SetEatenBy(F1);
-         * planet.put("T1", T1);
-         * planet.put("T2", T2);
-         * planet.put("T3", T3);
-         * planet.put("T4", T4);
-         * planet.put("F1", F1);
-         * planet.put("F2", F2);
-         * planet.put("IC1", IC1);
-         * planet.put("FB1", FB1);
-         * planet.put("FB2", FB2);
-         * planet.put("H1", H1);
-         * planet.put("H2", H2);
-         * planet.put("H3", H3);
-         * planet.put("H4", H4);
-         * planet.put("S1", S1);
-         * planet.put("S2", S2);
-         * planet.put("I1", I1);
-         * planet.put("I2", I2);
-         */
         // Writing
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             // Tectons:
@@ -1169,6 +1173,153 @@ public class View implements IView {
             }
         } catch (IOException ioex) {
             System.err.println(ioex);
+        }
+    }
+
+    public static void addfb(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/addfb")) {
+            System.out.println("Rossz függvényhívás!");
+            return;
+        }
+        LinkedHashMap<String, String> args = new LinkedHashMap<>();
+        for (int i = 1; i < parts.length; i+=2) {
+            if (i+1<parts.length && parts[i].startsWith("-")) {
+                args.put(parts[i].substring(1), parts[i+1]);
+            }
+            else{
+                System.out.println("Hibás argumentum formátum: "+parts[i]);
+                return;
+            }
+        }
+        if (!args.containsKey("n")) {
+            System.out.println("Hiányzik a -n [Name] argumentum.");
+            return;
+        }
+        if (!args.containsKey("f")) {
+            System.out.println("Hiányzik a -f [Name] argumentum.");
+            return;
+        }
+        if (!args.containsKey("t")) {
+            System.out.println("Hiányzik a -t [Name] argumentum.");
+            return;
+        }
+        if (args.get("n").equals("") || args.get("n")==null) {
+            System.out.println("Nincs név megadva (-n): "+args.get("n"));
+            return;
+        }
+        for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
+            String Name = entry1.getKey();
+            if (Name.equals(args.get("n"))) {
+                System.out.println("Ez a név már foglalt (-n): "+args.get("n"));
+                return;
+            }
+        }
+        String name = args.get("n");
+        if (((Fungus)planet.get(args.get("f")))==null) {
+            System.out.println("Nincs ilyen gombafaj (-f): "+args.get("f"));
+            return;
+        }
+        Fungus fungusType = null;
+        try {
+            fungusType = (Fungus)planet.get(args.get("f"));
+        } catch (ClassCastException ccex) {
+            System.out.println("Nincs ilyen gombafaj (-f): "+args.get("f"));
+            return;
+        }
+        fungusType = (Fungus)planet.get(args.get("f"));
+        if (planet.get(args.get("t"))==null) {
+            System.out.println("Nincs ilyen tekton (-t): "+args.get("t"));
+            return;
+        }
+        Tecton tecton = null;
+        boolean castError = false;
+        try {
+            try {
+                tecton = (BarrenTecton)planet.get(args.get("t"));
+            } catch (ClassCastException ccex) {
+                castError = true;
+            }
+            if (castError) {
+                try {
+                    tecton = (NarrowTecton)planet.get(args.get("t"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tecton = (VitalTecton)planet.get(args.get("t"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tecton = (WeakTecton)planet.get(args.get("t"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tecton = (WideTecton)planet.get(args.get("t"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) tecton = (BarrenTecton)planet.get(args.get("t"));
+        } catch (ClassCastException ccex) {
+            System.out.println("Nincs ilyen tekton (-t): "+args.get("t"));
+            return;
+        }
+        if (args.containsKey("d") && (args.get("d").equals("") || args.get("d")==null)) {
+            System.out.println("Nincs állapot megadva (-d): "+args.get("d"));
+            return;
+        }
+        boolean isDead = args.containsKey("d") && args.get("d").equalsIgnoreCase("y");
+        if (args.containsKey("a") && (args.get("a").equals("") || args.get("a")==null || parseIntNumberMinZero(args.get("a")) ==-1)) {
+            System.out.println("Nincs életkor megadva vagy hibás (-a): "+args.get("a"));
+            return;
+        }
+        int age = args.containsKey("a") ? parseIntNumberMinZero(args.get("a")) : 0;
+        if (args.containsKey("dv") && (args.get("dv").equals("") || args.get("dv")==null)) {
+            System.out.println("Nincs állapot megadva (-dv): "+args.get("dv"));
+            return;
+        }
+        boolean fullyDeveloped = args.containsKey("dv") && args.get("dv").equalsIgnoreCase("y");
+        if (args.containsKey("sc") && (args.get("sc").equals("") || args.get("sc")==null || parseIntNumberMinZero(args.get("sc")) ==-1)) {
+            System.out.println("Nincs spóra szám megadva vagy hibás (-sc): "+args.get("sc"));
+            return;
+        }
+        int sporeCount = args.containsKey("sc") ? parseIntNumberMinZero(args.get("sc")) : 0;
+        if (args.containsKey("sl") && (args.get("sl").equals("") || args.get("sl")==null || parseIntNumberMinZero(args.get("sl")) ==-1)) {
+            System.out.println("Nincs maximális lövés szám megadva vagy hibás (-sl): "+args.get("sl"));
+            return;
+        }
+        int shotLimit = args.containsKey("sl") ? parseIntNumberMinZero(args.get("sl")) : 0;
+        FungusBody actFungusBody = new FungusBody(tecton, fungusType, fullyDeveloped, age, isDead, sporeCount, shotLimit);
+        fungusType.AddBody(actFungusBody);
+        tecton.SetFungusBody(actFungusBody);
+        planet.put(name, actFungusBody);
+        System.out.println("Sikeres gombatest létrehozás "+name+" néven!");
+    }
+    private static int parseIntNumberMinZero(String value){
+        if (value == null || value.isEmpty() || !value.matches("-?\\d+")) {
+            return -1;
+        }
+        else{
+            int result = Integer.parseInt(value);
+            if(result < 0){
+                return 0;
+            }
+            else{
+                return result;
+            }
         }
     }
 }
