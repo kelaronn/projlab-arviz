@@ -91,7 +91,8 @@ public class View implements IView {
         while (true) {
             // help();
             load("test0_in.txt");
-            //----------------------------------------------
+            //---------------------------------------------------------------------
+            // Test section:
             save("test0_out.txt");
             addt("/addt -n T5 -t b");
             addf("/addf -n F3");
@@ -102,8 +103,10 @@ public class View implements IView {
             adds("/adds -n S3 -f F1 -tn T4 -t sd -nv 10 -ed 5");
             addi("/addi -n I3 -ic IC2 -t T3 -sd 3 -ca y -et 0");
             altt("/altt -n T4 -nh T5");
+            alth("/alth -n H1 -nh H5");
+            alth("/alth -n H5 -nh H6");
             save("test0_out.txt");
-            //-----------------------------------------------
+            //---------------------------------------------------------------------
             int inp = getInput(scanner);
 
             if (inp == 0) {
@@ -2149,15 +2152,22 @@ public class View implements IView {
                 System.out.println("#Nincs ilyen tekton (-nh): "+args.get("nh"));
                 return;
             }
-            for (Tecton actTecton : tecton.neighbours) {
+            for (Tecton actTecton : tecton.GetNeighbours()) {
                 if (actTecton.equals(tectonNH)) {
                     System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" tektonok mar szomszedosak!");
                     return;
                 }
             }
-            tecton.AddNeighbour(tectonNH);
-            tectonNH.AddNeighbour(tecton);
-            System.out.println("#Sikeresen kialakitva a szomszedsag "+args.get("n")+" es "+args.get("nh")+" tekton kozott.");
+            if (!tecton.equals(tectonNH)) {
+                tecton.AddNeighbour(tectonNH);
+                tectonNH.AddNeighbour(tecton);
+                System.out.println("#Sikeresen kialakitva a szomszedsag "+args.get("n")+" es "+args.get("nh")+" tekton kozott.");
+                return;
+            }
+            else{
+                System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" tektonok ugyan azok!");
+                return;
+            }
         }
         else{
             System.out.println("#A(z) -nh kapcsolo hianya miatt a muvelet meghiusult!");
@@ -2165,7 +2175,92 @@ public class View implements IView {
     }
 
     public static void alth(String command){
-        //
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/alth")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return;
+        }
+        LinkedHashMap<String, String> args = new LinkedHashMap<>();
+        for (int i = 1; i < parts.length; i+=2) {
+            if (i+1<parts.length && parts[i].startsWith("-")) {
+                args.put(parts[i].substring(1), parts[i+1]);
+            }
+            else{
+                System.out.println("#Hibas argumentum formatum: "+parts[i]);
+                return;
+            }
+        }
+        if (!args.containsKey("n")) {
+            System.out.println("#Hianyzik a -n [Name] argumentum.");
+            return;
+        }
+        /*if (!args.containsKey("nh")) {
+            System.out.println("#Hianyzik a -nh [Name] argumentum.");
+            return;
+        }*/
+        if (args.get("n").equals("") || args.get("n")==null) {
+            System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
+            return;
+        }
+        if (planet.get(args.get("n"))==null) {
+            System.out.println("#Nincs ilyen gombafonal (-n): "+args.get("n"));
+            return;
+        }
+        Hypha hypha = null;
+        try {
+            hypha = (Hypha)planet.get(args.get("n"));
+        } catch (ClassCastException ccex) {
+            System.out.println("#Nincs ilyen gombafonal (-n): "+args.get("n"));
+            return;
+        }
+        hypha = (Hypha)planet.get(args.get("n"));
+        if (args.containsKey("nh")) {
+            if (args.get("nh").equals("") || args.get("nh")==null) {
+                System.out.println("#Nincs nev megadva (-nh): "+args.get("nh"));
+                return;
+            }
+            if (planet.get(args.get("nh"))==null) {
+                System.out.println("#Nincs ilyen gombafonal (-nh): "+args.get("nh"));
+                return;
+            }
+            Hypha hyphaNH = null;
+            try {
+                hyphaNH = (Hypha)planet.get(args.get("nh"));
+            } catch (ClassCastException ccex) {
+                System.out.println("#Nincs ilyen gombafonal (-nh): "+args.get("nh"));
+                return;
+            }
+            hyphaNH = (Hypha)planet.get(args.get("nh"));
+            if (hypha.GetHostFungus().equals(hyphaNH.GetHostFungus())) {
+                if (!hypha.equals(hyphaNH)) {
+                    for (Hypha actHypha : hypha.GetNeighbours()) {
+                        if (actHypha.equals(hyphaNH)) {
+                            System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" gombafonalak mar szomszedosak!");
+                            return;
+                        }
+                    }
+                    for (Tecton actTecton : hypha.GetTectons()) {
+                        if (hyphaNH.GetTectons().contains(actTecton)) {
+                            hypha.AddNeighbour(hyphaNH);
+                            hyphaNH.AddNeighbour(hypha);
+                            System.out.println("#Sikeresen kialakitva a szomszedsag "+args.get("n")+" es "+args.get("nh")+" gombafonal kozott.");
+                            return;
+                        }
+                    }
+                }
+                else{
+                    System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" gombafonalak ugyan azok!");
+                    return;
+                }
+            }
+            else{
+                System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" gombafonalak nem ugyanabba a gombafajba tartoznak!");
+                return;
+            }
+        }
+        else{
+            System.out.println("#A(z) -nh kapcsolo hianya miatt a muvelet meghiusult!");
+        }
     }
 
     public static void lstt(){
