@@ -101,6 +101,7 @@ public class View implements IView {
             addh("/addh -n H6 -f F1 -ts T4");
             adds("/adds -n S3 -f F1 -tn T4 -t sd -nv 10 -ed 5");
             addi("/addi -n I3 -ic IC2 -t T3 -sd 3 -ca y -et 0");
+            altt("/altt -n T4 -nh T5");
             save("test0_out.txt");
             //-----------------------------------------------
             int inp = getInput(scanner);
@@ -2017,11 +2018,181 @@ public class View implements IView {
         System.out.println("#Sikeres rovar letrehozas "+name+" neven!");
     }
 
-    public static void altt(){
+    public static void altt(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/altt")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return;
+        }
+        LinkedHashMap<String, String> args = new LinkedHashMap<>();
+        for (int i = 1; i < parts.length; i+=2) {
+            if (i+1<parts.length && parts[i].startsWith("-")) {
+                args.put(parts[i].substring(1), parts[i+1]);
+            }
+            else{
+                System.out.println("#Hibas argumentum formatum: "+parts[i]);
+                return;
+            }
+        }
+        if (!args.containsKey("n")) {
+            System.out.println("#Hianyzik a -n [Name] argumentum.");
+            return;
+        }
+        /*if (!args.containsKey("nh")) {
+            System.out.println("#Hianyzik a -nh [Name] argumentum.");
+            return;
+        }*/
+        if (args.get("n").equals("") || args.get("n")==null) {
+            System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
+            return;
+        }
+        if (planet.get(args.get("n"))==null) {
+            System.out.println("#Nincs ilyen tekton (-n): "+args.get("n"));
+            return;
+        }
+        Tecton tecton = null;
+        boolean castError = false;
+        try {
+            try {
+                tecton = (BarrenTecton)planet.get(args.get("n"));
+            } catch (ClassCastException ccex) {
+                castError = true;
+            }
+            if (castError) {
+                try {
+                    tecton = (NarrowTecton)planet.get(args.get("n"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tecton = (VitalTecton)planet.get(args.get("n"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tecton = (WeakTecton)planet.get(args.get("n"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) {
+                try {
+                    tecton = (WideTecton)planet.get(args.get("n"));
+                    castError = false;
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+            }
+            if (castError) tecton = (BarrenTecton)planet.get(args.get("n"));
+        } catch (ClassCastException ccex) {
+            System.out.println("#Nincs ilyen tekton (-n): "+args.get("n"));
+            return;
+        }
+        if (args.containsKey("nh")) {
+            if (args.get("nh").equals("") || args.get("nh")==null) {
+                System.out.println("#Nincs nev megadva (-nh): "+args.get("nh"));
+                return;
+            }
+            if (planet.get(args.get("nh"))==null) {
+                System.out.println("#Nincs ilyen tekton (-nh): "+args.get("nh"));
+                return;
+            }
+            Tecton tectonNH = null;
+            castError = false;
+            try {
+                try {
+                    tectonNH = (BarrenTecton)planet.get(args.get("nh"));
+                } catch (ClassCastException ccex) {
+                    castError = true;
+                }
+                if (castError) {
+                    try {
+                        tectonNH = (NarrowTecton)planet.get(args.get("nh"));
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) {
+                    try {
+                        tectonNH = (VitalTecton)planet.get(args.get("nh"));
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) {
+                    try {
+                        tectonNH = (WeakTecton)planet.get(args.get("nh"));
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) {
+                    try {
+                        tectonNH = (WideTecton)planet.get(args.get("nh"));
+                        castError = false;
+                    } catch (ClassCastException ccex) {
+                        castError = true;
+                    }
+                }
+                if (castError) tectonNH = (BarrenTecton)planet.get(args.get("nh"));
+            } catch (ClassCastException ccex) {
+                System.out.println("#Nincs ilyen tekton (-nh): "+args.get("nh"));
+                return;
+            }
+            for (Tecton actTecton : tecton.neighbours) {
+                if (actTecton.equals(tectonNH)) {
+                    System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" tektonok mar szomszedosak!");
+                    return;
+                }
+            }
+            tecton.AddNeighbour(tectonNH);
+            tectonNH.AddNeighbour(tecton);
+            System.out.println("#Sikeresen kialakitva a szomszedsag "+args.get("n")+" es "+args.get("nh")+" tekton kozott.");
+        }
+        else{
+            System.out.println("#A(z) -nh kapcsolo hianya miatt a muvelet meghiusult!");
+        }
+    }
+
+    public static void alth(String command){
         //
     }
 
-    public static void alth(){
+    public static void lstt(){
+        //
+    }
+
+    public static void lstf(){
+        //
+    }
+
+    public static void lstic(){
+        //
+    }
+
+    public static void lstfb(){
+        //
+    }
+
+    public static void lsth(){
+        //
+    }
+
+    public static void lsts(){
+        //
+    }
+
+    public static void lsti(){
         //
     }
 
