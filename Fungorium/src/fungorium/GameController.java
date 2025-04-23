@@ -105,24 +105,41 @@ public class GameController {
     /**
      * A parameterben atadott utasitasnak megfeleloen lepteti a jatek koret.
      *
-     * @param event - String, ha = "nr", kovetkezo kor, jatekost nem valt
+     * @param command - String, ha = "nr", kovetkezo kor, jatekost nem valt
      *              -         ha = "np", kovetkezo jatekos. Utolso jatekos utan uj kor jon es visszakerul az elso jatekos.
      */
-    public void Trigg(String event){
+    public boolean Trigg(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/trigg")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return false;
+        }
+        if (parts.length != 2) {
+            System.out.println("#Hiba a paraméterezéssel!");
+            return false;
+        }
+        String event = parts[1];
         if(!turns)
-            return;
+            return false;
 
         if(event.equals("nr")){
             EndOfRound();
+            return true;
         }
         else if(event.equals("np")){
-
-            if(playerIndex < players.size())
-                playerIndex++;
-            else
-                playerIndex = 0;
-
-            currentPlayer = players.get(playerIndex);
+            if (!players.isEmpty()) {
+                if(playerIndex < players.size())
+                    playerIndex++;
+                else
+                    playerIndex = 0;
+                currentPlayer = players.get(playerIndex);
+                return true;
+            }
+            else return false;
+        }
+        else{
+            System.err.println("#Error: '" + event + "' is not a valid command in method: trigg");
+            return false;
         }
 
 
@@ -154,36 +171,73 @@ public class GameController {
     }
     /**
      * A random paraméterek ki- és bekapcsolását vezérli. Alapertelmezetten be van kapcsolva.
-     * @param cmd --String: "enable", ha beállítjuk, "disable", ha kikapcsoljuk, ha üres akkor ellentettjére állítja.
+     * @param command --String: "enable", ha beállítjuk, "disable", ha kikapcsoljuk, ha üres akkor ellentettjére állítja.
      */
-    public void Rand(String cmd){
-        if(cmd.isEmpty()) {
-            isRandom = isRandom ? false : true;
+    public boolean Rand(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/rand")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return false;
         }
-        else if (cmd.equals("enable")) {
+        if (parts.length > 2) {
+            System.out.println("#Hiba a paraméterezéssel!");
+            return false;
+        }
+        String cmd = "";
+        if (parts.length == 2) {
+            cmd = parts[1];
+        }
+        if(cmd.isEmpty() || cmd.equals("")) {
+            isRandom = !isRandom;
+            return true;
+        }
+        else if (cmd.equals("enable") || cmd.equals("e")) {
             isRandom = true;
+            return true;
         }
-        else if (cmd.equals("disable")) {
+        else if (cmd.equals("disable") || cmd.equals("d")) {
             isRandom = false;
+            return true;
         }
         else{
             System.err.println("Error: '" + cmd + "' is not a valid command in method: rand");
+            return false;
         }
     }
 
     /**
      * A koroket ki- és bekapcsolo parancs. Alapértelmezetten vannak korok.
-     * @param cmd -- String: "enable" bekapccsolja, "disable" kikapcsolja a koroket. Ha ures ellentetjere allitja.
+     * @param command -- String: "enable" bekapccsolja, "disable" kikapcsolja a koroket. Ha ures ellentetjere allitja.
      */
-    public void Turns(String cmd){
-        if(cmd.isEmpty()){
+    public boolean Turns(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/turns")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return false;
+        }
+        if (parts.length > 2) {
+            System.out.println("#Hiba a paraméterezéssel!");
+            return false;
+        }
+        String cmd = "";
+        if (parts.length == 2) {
+            cmd = parts[1];
+        }
+        if(cmd.isEmpty() || cmd.equals("")){
             turns = !turns;
+            return true;
         }
-        else if(cmd.equals("enable")){
+        else if(cmd.equals("enable") || cmd.equals("e")){
             turns = true;
+            return true;
         }
-        else if(cmd.equals("disable")){
+        else if(cmd.equals("disable") || cmd.equals("d")){
             turns = false;
+            return true;
+        }
+        else{
+            System.err.println("Error: '" + cmd + "' is not a valid command in method: turns");
+            return false;
         }
     }
 

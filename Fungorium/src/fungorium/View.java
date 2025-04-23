@@ -32,98 +32,16 @@ public class View implements IView {
     }
 
     public static void main(String[] args) {
-        View fungoriumView = new View();
+        View view = new View();
         System.out.println("Fungorium game (prototype):");
+        System.out.println("(Segitseg: /help)");
         //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
-         // Initialization:
-         NarrowTecton T1 = new NarrowTecton();
-         NarrowTecton T2 = new NarrowTecton();
-         NarrowTecton T3 = new NarrowTecton();
-         WideTecton T4 = new WideTecton();
-         Fungus F1 = new Fungus();
-         Fungus F2 = new Fungus();
-         InsectColony IC1 = new InsectColony();
-         T1.AddNeighbour(T2);
-         T1.AddNeighbour(T3);
-         T1.AddNeighbour(T4);
-         T2.AddNeighbour(T1);
-         T2.AddNeighbour(T4);
-         T3.AddNeighbour(T1);
-         T3.AddNeighbour(T4);
-         T4.AddNeighbour(T1);
-         T4.AddNeighbour(T2);
-         T4.AddNeighbour(T3);
-         FungusBody FB1 = new FungusBody(T1, F1);
-         F1.AddBody(FB1);
-         T1.SetFungusBody(FB1);
-         FungusBody FB2 = new FungusBody(T2, F2);
-         F2.AddBody(FB2);
-         T2.SetFungusBody(FB2);
-         Hypha H1 = new Hypha(new ArrayList<>(), F1, new ArrayList<>(List.of(T1)));
-         F1.AddHypha(H1);
-         T1.GetHyphas().add(H1);
-         Hypha H2 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2)));
-         F2.AddHypha(H2);
-         T2.GetHyphas().add(H2);
-         Hypha H3 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T2,T4)));
-         F2.AddHypha(H3);
-         T4.GetHyphas().add(H3);
-         Hypha H4 = new Hypha(new ArrayList<>(), F2, new ArrayList<>(List.of(T4)));
-         F2.AddHypha(H4);
-         T4.GetHyphas().add(H4);
-         H2.AddNeighbour(H3);
-         H3.AddNeighbour(H4);
-         Spore S1 = new Spore(5, 0, F1, T1);
-         Spore S2 = new Spore(5, 0, F1, T1);
-         Insect I1 = new Insect(2, true, 0, T1);
-         I1.SetHostColony(IC1);
-         I1.SetEatenBy(F1);
-         Insect I2 = new Insect(2, true, 0, T1);
-         I2.SetHostColony(IC1);
-         I2.SetEatenBy(F1);
-         planet.put("T1", T1);
-         planet.put("T2", T2);
-         planet.put("T3", T3);
-         planet.put("T4", T4);
-         planet.put("F1", F1);
-         planet.put("F2", F2);
-         planet.put("IC1", IC1);
-         planet.put("FB1", FB1);
-         planet.put("FB2", FB2);
-         planet.put("H1", H1);
-         planet.put("H2", H2);
-         planet.put("H3", H3);
-         planet.put("H4", H4);
-         planet.put("S1", S1);
-         planet.put("S2", S2);
-         planet.put("I1", I1);
-         planet.put("I2", I2);
-         //help();
-         //load("test0_in.txt");
-         save("test0_out.txt");
-         /*addt("/addt -n T5 -t b");
-         addf("/addf -n F3");
-         addic("/addic -n IC2 -nv 10");
-         addfb("/addfb -n FB3 -f F2 -t T4 -d n -a 3 -dv y -sc 10 -sl 6");
-         addh("/addh -n H5 -f F1 -ts T1 -tn T4");
-         addh("/addh -n H6 -f F1 -ts T4");
-         adds("/adds -n S3 -f F1 -tn T4 -t sd -nv 10 -ed 5");
-         addi("/addi -n I3 -ic IC2 -t T3 -sd 3 -ca y -et 0");
-         altt("/altt -n T4 -nh T5");
-         alth("/alth -n H1 -nh H5");
-         alth("/alth -n H5 -nh H6");*/
          exec("/exec test0_array.txt");
-         /*lstt();
-         lstf();
-         lstic();
-         lstfb();
-         lsth();
-         lsts();
-         lsti();*/
-         save("test0_out.txt");
-         //rst();
-         //===============================================================================================//
+         load("/load test0_out.txt");
+         save("/save test0_out.txt");
+         //controller.MoveInsect((IInsectController)planet.get("I1"), (Tecton)planet.get("T1"));
+         //=====================================================================================================//
         while (true) {
             /*String command = scanner.nextLine().trim();
             String[] parts = command.split(" ");
@@ -547,9 +465,19 @@ public class View implements IView {
     /**
      * Beolvassa a fájlt és inicializálja a játék állapotát.
      *
-     * @param filePath
+     * @param command
      */
-    public static void load(String filePath) {
+    public static boolean load(String command) {
+        String[] cmdParts = command.trim().split("\\s+");
+        if (!cmdParts[0].equals("/load")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return false;
+        }
+        if (cmdParts.length != 2) {
+            System.out.println("#Hiba a parameterezessel!");
+            return false;
+        }
+
         Map<String, Tecton> tectonMap = new LinkedHashMap<>();
         Map<String, Fungus> fungusMap = new LinkedHashMap<>();
         Map<String, FungusBody> fungusBodyMap = new LinkedHashMap<>();
@@ -560,7 +488,7 @@ public class View implements IView {
         Map<String, String[]> tectonNeighbors = new LinkedHashMap<>();
         Map<String, String[]> hyphaNeighbors = new LinkedHashMap<>();
 
-        try (Scanner scanner = new Scanner(new File(filePath))) {
+        try (Scanner scanner = new Scanner(new File(cmdParts[1]))) {
             planet.clear();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -600,6 +528,10 @@ public class View implements IView {
                     }
                     case "BarrenTecton" -> {
                         tectonMap.put(name, new BarrenTecton());
+                        tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                    }
+                    case "VitalTecton" -> {
+                        tectonMap.put(name, new VitalTecton());
                         tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
                     }
                     case "Fungus" -> fungusMap.put(name, new Fungus());
@@ -644,6 +576,31 @@ public class View implements IView {
                         fungusMap.get(parts[3]).AddHypha(hyphaMap.get(name));
                     }
                     case "Spore" -> sporeMap.put(name, new Spore(
+                            Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3]),
+                            fungusMap.get(parts[4]),
+                            tectonMap.get(parts[5])));
+                    case "SpeedSpore" -> sporeMap.put(name, new SpeedSpore(
+                            Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3]),
+                            fungusMap.get(parts[4]),
+                            tectonMap.get(parts[5])));
+                    /*case "SplitSpore" -> sporeMap.put(name, new SplitSpore(
+                            Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3]),
+                            fungusMap.get(parts[4]),
+                            tectonMap.get(parts[5])));*/
+                    case "SlowSpore" -> sporeMap.put(name, new SlowSpore(
+                            Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3]),
+                            fungusMap.get(parts[4]),
+                            tectonMap.get(parts[5])));
+                    case "DisarmSpore" -> sporeMap.put(name, new DisarmSpore(
+                            Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3]),
+                            fungusMap.get(parts[4]),
+                            tectonMap.get(parts[5])));
+                    case "StunSpore" -> sporeMap.put(name, new StunSpore(
                             Integer.parseInt(parts[2]),
                             Integer.parseInt(parts[3]),
                             fungusMap.get(parts[4]),
@@ -738,12 +695,23 @@ public class View implements IView {
             planet.putAll(sporeMap);
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
+            return false;
         }
+        return true;
     }
 
-    public static void save(String filePath) {
+    public static boolean save(String command) {
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/save")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return false;
+        }
+        if (parts.length != 2) {
+            System.out.println("#Hiba a parameterezessel!");
+            return false;
+        }
         // Writing
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(parts[1]))) {
             // Tectons:
             for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
                 String tectonName = entry1.getKey();
@@ -1158,8 +1126,11 @@ public class View implements IView {
                 }
             }
         } catch (IOException ioex) {
-            System.err.println(ioex);
+            System.out.println(ioex);
+            return false;
         }
+        System.out.println("#Sikeres fajlba iras.");
+        return true;
     }
 
     public static boolean addt(String command){
@@ -2636,7 +2607,7 @@ public class View implements IView {
             return false;
         }
         if (parts.length != 2) {
-            System.out.println("#Hiba a paraméterezéssel!");
+            System.out.println("#Hiba a parameterezessel!");
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(parts[1]))) {
             LinkedHashMap<String, Object> oldPlanet = new LinkedHashMap<>();
@@ -2656,10 +2627,13 @@ public class View implements IView {
                             everythingGood = exec(line);
                             break;
                         case "/rand":
-                            // Well...
+                            everythingGood = controller.Rand(line);
                             break;
                         case "/trigg":
-                            // Well...
+                            everythingGood = controller.Trigg(line); // Valami gond van! (EndOfRound)
+                            break;
+                        case "/turns":
+                            everythingGood = controller.Turns(line);
                             break;
                         case "/addt":
                             everythingGood = addt(line);
@@ -2710,10 +2684,10 @@ public class View implements IView {
                             lsti();
                             break;
                         case "/save":
-                            save(line); // Kell true/false?
+                            everythingGood = save(line);
                             break;
                         case "/load":
-                            load(line); // Kell true/false?
+                            everythingGood = load(line);
                             break;
                         case "/rst":
                             rst();
@@ -2726,10 +2700,42 @@ public class View implements IView {
                 }
                 else{
                     switch (select) {
-                        case "":
-                            // Nem per jeles parancsok helye!
+                        case "breaktecton":
+                            // Well...
                             break;
-                    
+                        case "growfungusbody":
+                            // Well...
+                            break;
+                        case "absorbhypha":
+                            // Well...
+                            break;
+                        case "producespore":
+                            // Well...
+                            break;
+                        case "shootspores":
+                            // Well...
+                            break;
+                        case "diefungusbody":
+                            // Well...
+                            break;
+                        case "growhypha":
+                            // Well...
+                            break;
+                        case "atrophyofhypha":
+                            // Well...
+                            break;
+                        case "eatstunnedinsect":
+                            // Well...
+                            break;
+                        case "eatspore":
+                            // Well...
+                            break;
+                        case "moveinsect":
+                            // Well...
+                            break;
+                        case "cuthypha":
+                            // Well...
+                            break;
                         default:
                             System.out.println("#Nem letezo parancs: "+select);
                             everythingGood = false;
@@ -2772,6 +2778,7 @@ public class View implements IView {
             e.printStackTrace();
         }
         System.out.println("Fungorium game (prototype):");
+        System.out.println("(Segitseg: /help)");
     }
 
     private static int parseIntNumberMinZero(String value){
