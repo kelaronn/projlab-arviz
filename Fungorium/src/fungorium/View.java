@@ -124,6 +124,190 @@ public class View implements IView {
                 break;
             }
 
+            String command = scanner.nextLine().trim();
+            String[] parts = command.split(" ");
+            
+            if (parts.length > 0) {
+                switch (parts[0]) {
+                    case "/help":
+                        help();
+                        break;
+                    case "/addf":
+                        addf(command);
+                        break;
+                    case "/addt":
+                        addt(command);
+                        break;
+                    case "/addfb":
+                        addfb(command);
+                        break;
+                    case "/addh":
+                        addh(command);
+                        break;
+                    case "/adds":
+                        adds(command);
+                        break;
+                    case "/addic":
+                        addic(command);
+                        break;
+                    case "/addi":
+                        addi(command);
+                        break;
+                    case "/altt":
+                        altt(command);
+                        break;
+                    case "/alth":
+                        alth(command);
+                        break;
+                    case "/lstf":
+                        lstf();
+                        break;
+                    case "/lstt":
+                        lstt();
+                        break;
+                    case "/lstfb":
+                        lstfb();
+                        break;
+                    case "/lsth":
+                        lsth();
+                        break;
+                    case "/lstic":
+                        lstic();
+                        break;
+                    case "/lsti":
+                        lsti();
+                        break;
+                    case "/rst":
+                        break;
+                    case "/save":
+                        if (parts.length > 1) {
+                            save(parts[1]);
+                        } else {
+                            System.out.println("Hiba: A /save parancshoz meg kell adni a kimeneti fájl nevét.");
+                        }
+                        break;
+                    case "/load":
+                        if (parts.length > 1) {
+                            load(parts[1]);
+                        } else {
+                            System.out.println("Hiba: A /load parancshoz meg kell adni a mentett fájl elérési útját.");
+                        }
+                        break;
+                    case "/breaktecton":
+                        if (parts.length > 2 && parts[1].equals("-t")) {
+                            String tectonName = parts[2];
+                            Tecton tecton = (Tecton)planet.get(tectonName);
+                            if (tecton != null) {
+                                tecton.BreakTecton();
+                            } else {
+                                System.out.println("Hiba: A megadott tekton nem található.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /breaktecton parancshoz meg kell adni a tekton nevét (-t kapcsolóval).");
+                        }
+                        break;
+                    case "/growfungusbody":
+                        if (parts.length > 4 && parts[1].equals("-f") && parts[3].equals("-t")) {
+                            String fungusName = parts[2];
+                            String tectonName = parts[4];
+                            Fungus fungus = (Fungus)planet.get(fungusName);
+                            Tecton tecton = (Tecton)planet.get(tectonName);
+                            if (fungus != null && tecton != null) {
+                                controller.GrowFungusBody(tecton, fungus);
+                            } else {
+                                System.out.println("Hiba: A megadott gombafaj vagy tekton nem található.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /growfungusbody parancshoz meg kell adni a gombafaj és tekton nevét (-f és -t kapcsolókkal).");
+                        }
+                        break;
+                    case "/absorbhypha":
+                        if (parts.length > 2 && parts[1].equals("-t")) {
+                            String tectonName = parts[2];
+                            Tecton tecton = (Tecton)planet.get(tectonName);
+                            if (tecton != null) {
+                                controller.AbsorbHypha(tecton);
+                            } else {
+                                System.out.println("Hiba: A megadott tekton nem található.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /absorbhypha parancshoz meg kell adni a tekton nevét (-t kapcsolóval).");
+                        }
+                        break;
+                    case "/producespore":
+                        if (parts.length > 2 && parts[1].equals("-fb")) {
+                            String fungusBodyName = parts[2];
+                            FungusBody fungusBody = (FungusBody)planet.get(fungusBodyName);
+                            if (fungusBody != null) {
+                                controller.ProduceSpore(fungusBody);
+                            } else {
+                                System.out.println("Hiba: A megadott gombatest nem található.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /producespore parancshoz meg kell adni a gombatest nevét (-fb kapcsolóval).");
+                        }
+                        break;
+                    case "/shootspores":
+                        if (parts.length > 2 && parts[1].equals("-fb")) {
+                            String fungusBodyName = parts[2];
+                            FungusBody fungusBody = (FungusBody)planet.get(fungusBodyName);
+                            if (fungusBody != null) {
+                                controller.ShootSpores(fungusBody);
+                            } else {
+                                System.out.println("Hiba: A megadott gombatest nem található.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /shootspores parancshoz meg kell adni a gombatest nevét (-fb kapcsolóval).");
+                        }
+                        break;
+                    case "/diefungusbody":
+                        if (parts.length > 2 && parts[1].equals("-fb")) {
+                            String fungusBodyName = parts[2];
+                            FungusBody fungusBody = (FungusBody)planet.get(fungusBodyName);
+                            if (fungusBody != null) {
+                                controller.DieFungusBody(fungusBody);
+                            } else {
+                                System.out.println("Hiba: A megadott gombatest nem található.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /diefungusbody parancshoz meg kell adni a gombatest nevét (-fb kapcsolóval).");
+                        }
+                        break;
+                    case "/growhypha":
+                        if (parts.length > 6 && parts[1].equals("-f") && parts[3].equals("-ts") && parts[5].equals("-tn")) {
+                            String fungusName = parts[2];
+                            String tectonFromName = parts[4];
+                            String tectonToName = parts[6];
+                            Fungus fungus = (Fungus)planet.get(fungusName);
+                            Tecton tectonFrom = (Tecton)planet.get(tectonFromName);
+                            Tecton tectonTo = (Tecton)planet.get(tectonToName);
+                            if (fungus != null && tectonFrom != null && tectonTo != null) {
+                                controller.GrowHypha(fungus, tectonFrom, tectonTo);
+                            } else {
+                                System.out.println("Hiba: A megadott gombafaj vagy tektonok nem találhatók.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /growhypha parancshoz meg kell adni a gombafaj és tektonok nevét (-f, -ts és -tn kapcsolókkal).");
+                        }
+                        break;
+                    case "/atrophyofhypha":
+                        if (parts.length > 2 && parts[1].equals("-h")) {
+                            String hyphaName = parts[2];
+                            Hypha hypha = (Hypha)planet.get(hyphaName);
+                            if (hypha != null) {
+                                controller.AtrophyOfHypha(hypha);
+                            } else {
+                                System.out.println("Hiba: A megadott gombafonal nem található.");
+                            }
+                        } else {
+                            System.out.println("Hiba: A /atrophyofhypha parancshoz meg kell adni a gombafonal nevét (-h kapcsolóval).");
+                        }
+                        break;
+                    default:
+                        System.out.println("Ismeretlen parancs. Használd a /help parancsot a segítségért.");
+                }
+            }
+
             /* switch (inp) {
                 case 1:
                     Tester tester = new Tester();
