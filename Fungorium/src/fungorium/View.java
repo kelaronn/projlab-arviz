@@ -1,6 +1,7 @@
 package fungorium;
 
 import java.io.File;
+import java.io.FileReader;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -94,7 +96,7 @@ public class View implements IView {
             //---------------------------------------------------------------------
             // Test section:
             save("test0_out.txt");
-            addt("/addt -n T5 -t b");
+            /*addt("/addt -n T5 -t b");
             addf("/addf -n F3");
             addic("/addic -n IC2 -nv 10");
             addfb("/addfb -n FB3 -f F2 -t T4 -d n -a 3 -dv y -sc 10 -sl 6");
@@ -104,14 +106,15 @@ public class View implements IView {
             addi("/addi -n I3 -ic IC2 -t T3 -sd 3 -ca y -et 0");
             altt("/altt -n T4 -nh T5");
             alth("/alth -n H1 -nh H5");
-            alth("/alth -n H5 -nh H6");
-            lstt();
+            alth("/alth -n H5 -nh H6");*/
+            exec("/exec test0_array.txt");
+            /*lstt();
             lstf();
             lstic();
             lstfb();
             lsth();
             lsts();
-            lsti();
+            lsti();*/
             save("test0_out.txt");
             //---------------------------------------------------------------------
             int inp = getInput(scanner);
@@ -1213,9 +1216,6 @@ public class View implements IView {
                     writer.write(insectView.ToString(insectName + "," + insectView.GetSpeed() + ","
                             + insectView.GetCutAbility() + "," + insectView.GetEffectTimeLeft() + "," + insectColonyName
                             + "," + tectonName + "," + ((fungusName.equals("")) ? "null" : fungusName) + "\n"));
-                    /*System.out.println(insectView.ToString(insectName + "," + insectView.GetSpeed() + ","
-                            + insectView.GetCutAbility() + "," + insectView.GetEffectTimeLeft() + "," + insectColonyName
-                            + "," + tectonName + "," + ((fungusName.equals("")) ? "null" : fungusName) + "\n"));*/
                 } catch (ClassCastException ccex) {
                     // Wrong element, we do nothing and move on.
                 }
@@ -1225,11 +1225,11 @@ public class View implements IView {
         }
     }
 
-    public static void addt(String command){
+    public static boolean addt(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/addt")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -1238,29 +1238,29 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
             String Name = entry1.getKey();
             if (Name.equals(args.get("n"))) {
                 System.out.println("#Ez a nev mar foglalt (-n): "+args.get("n"));
-                return;
+                return false;
             }
         }
         String name = args.get("n");
         LinkedList<String> typeList = new LinkedList<>(List.of("n","wi","v","we","b"));
         if (args.containsKey("t") && (args.get("t").equals("") || args.get("t")==null || !typeList.contains(args.get("t")))) {
             System.out.println("#Nincs tekton tipus megadva vagy hibas (-t): "+args.get("t"));
-            return;
+            return false;
         }
         String tectonType = args.containsKey("t") ? args.get("t") : "n";
         switch (tectonType) {
@@ -1288,13 +1288,14 @@ public class View implements IView {
                 break;
         }
         System.out.println("#Sikeres tekton letrehozas "+name+" neven!");
+        return true;
     }
 
-    public static void addf(String command){
+    public static boolean addf(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/addf")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -1303,35 +1304,36 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
             String Name = entry1.getKey();
             if (Name.equals(args.get("n"))) {
                 System.out.println("#Ez a nev mar foglalt (-n): "+args.get("n"));
-                return;
+                return false;
             }
         }
         String name = args.get("n");
         Fungus actFungus = new Fungus();
         planet.put(name, actFungus);
         System.out.println("#Sikeres gombafaj letrehozas "+name+" neven!");
+        return true;
     }
 
-    public static void addic(String command){
+    public static boolean addic(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/addic")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -1340,41 +1342,42 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
             String Name = entry1.getKey();
             if (Name.equals(args.get("n"))) {
                 System.out.println("#Ez a nev mar foglalt (-n): "+args.get("n"));
-                return;
+                return false;
             }
         }
         String name = args.get("n");
         if (args.containsKey("nv") && (args.get("nv").equals("") || args.get("nv")==null || parseIntNumberMinZero(args.get("nv")) ==-1)) {
             System.out.println("#Nincs osszegyujtott tapanyag mennyiseg megadva vagy hibas (-nv): "+args.get("nv"));
-            return;
+            return false;
         }
         int nutritionValue = args.containsKey("nv") ? parseIntNumberMinZero(args.get("nv")) : 0;
         InsectColony actInsectColony = new InsectColony();
         actInsectColony.addNutrition(nutritionValue);
         planet.put(name, actInsectColony);
         System.out.println("#Sikeres rovar kolonia letrehozas "+name+" neven!");
+        return true;
     }
 
-    public static void addfb(String command){
+    public static boolean addfb(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/addfb")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -1383,48 +1386,48 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("f")) {
             System.out.println("#Hianyzik a -f [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("t")) {
             System.out.println("#Hianyzik a -t [Name] argumentum.");
-            return;
+            return false;
         }
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
             String Name = entry1.getKey();
             if (Name.equals(args.get("n"))) {
                 System.out.println("#Ez a nev mar foglalt (-n): "+args.get("n"));
-                return;
+                return false;
             }
         }
         String name = args.get("n");
-        if (((Fungus)planet.get(args.get("f")))==null) {
+        if ((planet.get(args.get("f")))==null) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return;
+            return false;
         }
         Fungus fungusType = null;
         try {
             fungusType = (Fungus)planet.get(args.get("f"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return;
+            return false;
         }
         fungusType = (Fungus)planet.get(args.get("f"));
         if (planet.get(args.get("t"))==null) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return;
+            return false;
         }
         Tecton tecton = null;
         boolean castError = false;
@@ -1455,7 +1458,7 @@ public class View implements IView {
                     tecton = (WeakTecton)planet.get(args.get("t"));
                     castError = false;
                     System.out.println("#Gyenge tektonra a gombatest novesztes nem lehetseges!");
-                    return;
+                    return false;
                 } catch (ClassCastException ccex) {
                     castError = true;
                 }
@@ -1471,35 +1474,35 @@ public class View implements IView {
             if (castError) tecton = (BarrenTecton)planet.get(args.get("t"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return;
+            return false;
         }
         if (tecton.GetFungusBody()!=null) {
             System.out.println("#Mar van egy masik gombatest a tektonon!");
-            return;
+            return false;
         }
         if (args.containsKey("d") && (args.get("d").equals("") || args.get("d")==null)) {
             System.out.println("#Nincs allapot megadva (-d): "+args.get("d"));
-            return;
+            return false;
         }
         boolean isDead = args.containsKey("d") && args.get("d").equalsIgnoreCase("y");
         if (args.containsKey("a") && (args.get("a").equals("") || args.get("a")==null || parseIntNumberMinZero(args.get("a")) ==-1)) {
             System.out.println("#Nincs eletkor megadva vagy hibas (-a): "+args.get("a"));
-            return;
+            return false;
         }
         int age = args.containsKey("a") ? parseIntNumberMinZero(args.get("a")) : 0;
         if (args.containsKey("dv") && (args.get("dv").equals("") || args.get("dv")==null)) {
             System.out.println("#Nincs allapot megadva (-dv): "+args.get("dv"));
-            return;
+            return false;
         }
         boolean fullyDeveloped = args.containsKey("dv") && args.get("dv").equalsIgnoreCase("y");
         if (args.containsKey("sc") && (args.get("sc").equals("") || args.get("sc")==null || parseIntNumberMinZero(args.get("sc")) ==-1)) {
             System.out.println("#Nincs spora szam megadva vagy hibas (-sc): "+args.get("sc"));
-            return;
+            return false;
         }
         int sporeCount = args.containsKey("sc") ? parseIntNumberMinZero(args.get("sc")) : 0;
         if (args.containsKey("sl") && (args.get("sl").equals("") || args.get("sl")==null || parseIntNumberMinZero(args.get("sl")) ==-1)) {
             System.out.println("#Nincs maximalis loves szam megadva vagy hibas (-sl): "+args.get("sl"));
-            return;
+            return false;
         }
         int shotLimit = args.containsKey("sl") ? parseIntNumberMinZero(args.get("sl")) : 0;
         FungusBody actFungusBody = new FungusBody(tecton, fungusType, fullyDeveloped, age, isDead, sporeCount, shotLimit);
@@ -1507,13 +1510,14 @@ public class View implements IView {
         tecton.SetFungusBody(actFungusBody);
         planet.put(name, actFungusBody);
         System.out.println("#Sikeres gombatest letrehozas "+name+" neven!");
+        return true;
     }
 
-    public static void addh(String command){
+    public static boolean addh(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/addh")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -1522,48 +1526,48 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("f")) {
             System.out.println("#Hianyzik a -f [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("ts")) {
             System.out.println("#Hianyzik a -ts [Name] argumentum.");
-            return;
+            return false;
         }
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
             String Name = entry1.getKey();
             if (Name.equals(args.get("n"))) {
                 System.out.println("#Ez a nev mar foglalt (-n): "+args.get("n"));
-                return;
+                return false;
             }
         }
         String name = args.get("n");
         if (((Fungus)planet.get(args.get("f")))==null) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return;
+            return false;
         }
         Fungus fungusType = null;
         try {
             fungusType = (Fungus)planet.get(args.get("f"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return;
+            return false;
         }
         fungusType = (Fungus)planet.get(args.get("f"));
         if (planet.get(args.get("ts"))==null) {
             System.out.println("#Nincs ilyen tekton (-ts): "+args.get("ts"));
-            return;
+            return false;
         }
         Tecton tectonTS = null;
         boolean maxLimitTS = true;
@@ -1610,16 +1614,16 @@ public class View implements IView {
             if (castError) tectonTS = (BarrenTecton)planet.get(args.get("ts"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-ts): "+args.get("ts"));
-            return;
+            return false;
         }
         if (args.containsKey("tn")) {
             if ((args.get("tn").equals("") || args.get("tn")==null)) {
                 System.out.println("#Nincs tekton megadva (-tn): "+args.get("tn"));
-                return;
+                return false;
             }
             if (planet.get(args.get("tn"))==null) {
                 System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
-                return;
+                return false;
             }
             Tecton tectonTN = null;
             boolean maxLimitTN = true;
@@ -1666,20 +1670,20 @@ public class View implements IView {
                 if (castError) tectonTN = (BarrenTecton)planet.get(args.get("tn"));
             } catch (ClassCastException ccex) {
                 System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
-                return;
+                return false;
             }
             if (!tectonTS.GetNeighbours().contains(tectonTN)) {
                 System.out.println("#A(z) "+args.get("ts")+" es a(z) "+args.get("tn")+" tektonok nem szomszedosak!");
-                return;
-            }
-            if (maxLimitTN && tectonTN.GetHyphas().size()>=1) {
-                System.out.println("#Nincs hely a tektonon (-tn): "+args.get("tn"));
-                return;
+                return false;
             }
             for (Hypha hypha : tectonTN.GetHyphas()) {
-                if (hypha.GetHostFungus().equals(fungusType)) {
-                    System.out.println("#Ennek a gombafajnak mar van gombafonala a(z) "+args.get("tn")+" tektonon!");
-                    return;
+                if (maxLimitTN && !fungusType.equals(hypha.GetHostFungus())) {
+                    System.out.println("#Nincs hely a tektonon (-tn): "+args.get("tn"));
+                    return false;
+                }
+                else if (hypha.GetHostFungus().equals(fungusType) && hypha.GetTectons().size()==2) {
+                    System.out.println("#Ennek a gombafajnak mar van gombafonala a tektonon (-tn): "+args.get("tn"));
+                    return false;
                 }
             }
             Hypha actHypha = new Hypha(new ArrayList<>(), fungusType, new ArrayList<>(List.of(tectonTS, tectonTN)));
@@ -1687,16 +1691,16 @@ public class View implements IView {
             tectonTN.GetHyphas().add(actHypha);
             planet.put(name, actHypha);
             System.out.println("#Sikeres gombafonal letrehozas "+name+" neven!");
-            return;
-        }
-        if (maxLimitTS && tectonTS.GetHyphas().size()>=1) {
-            System.out.println("#Nincs hely a tektonon (-ts): "+args.get("ts"));
-            return;
+            return true;
         }
         for (Hypha hypha : tectonTS.GetHyphas()) {
-            if (hypha.GetHostFungus().equals(fungusType) && hypha.GetTectons().size()==1) {
-                System.out.println("#Ennek a gombafajnak mar van fonala a(z) "+args.get("ts")+" tektonon!");
-                return;
+            if (maxLimitTS && !hypha.GetHostFungus().equals(fungusType)) {
+                System.out.println("#Nincs hely a tektonon (-ts): "+args.get("ts"));
+                return false;
+            }
+            else if (hypha.GetHostFungus().equals(fungusType) && hypha.GetTectons().size()==1) {
+                System.out.println("#Ennek a gombafajnak mar van gombafonala a tektonon (-ts): "+args.get("ts"));
+                return false;
             }
         }
         Hypha actHypha = new Hypha(new ArrayList<>(), fungusType, new ArrayList<>(List.of(tectonTS)));
@@ -1704,13 +1708,14 @@ public class View implements IView {
         tectonTS.GetHyphas().add(actHypha);
         planet.put(name, actHypha);
         System.out.println("#Sikeres gombafonal letrehozas "+name+" neven!");
+        return true;
     }
 
-    public static void adds(String command){
+    public static boolean adds(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/adds")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -1719,52 +1724,52 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("f")) {
             System.out.println("#Hianyzik a -f [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("tn")) {
             System.out.println("#Hianyzik a -tn [Name] argumentum.");
-            return;
+            return false;
         }
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
             String Name = entry1.getKey();
             if (Name.equals(args.get("n"))) {
                 System.out.println("#Ez a nev mar foglalt (-n): "+args.get("n"));
-                return;
+                return false;
             }
         }
         String name = args.get("n");
         if (((Fungus)planet.get(args.get("f")))==null) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return;
+            return false;
         }
         Fungus fungusType = null;
         try {
             fungusType = (Fungus)planet.get(args.get("f"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return;
+            return false;
         }
         fungusType = (Fungus)planet.get(args.get("f"));
         if ((args.get("tn").equals("") || args.get("tn")==null)) {
             System.out.println("#Nincs tekton megadva (-tn): "+args.get("tn"));
-            return;
+            return false;
         }
         if (planet.get(args.get("tn"))==null) {
             System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
-            return;
+            return false;
         }
         Tecton tectonTN = null;
         boolean castError = false;
@@ -1809,22 +1814,22 @@ public class View implements IView {
             if (castError) tectonTN = (BarrenTecton)planet.get(args.get("tn"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
-            return;
+            return false;
         }
         LinkedList<String> typeList = new LinkedList<>(List.of("s","sd","st","sw","dm","sn"));
         if (args.containsKey("t") && (args.get("t").equals("") || args.get("t")==null || !typeList.contains(args.get("t")))) {
             System.out.println("#Nincs spora tipus megadva vagy hibas (-t): "+args.get("t"));
-            return;
+            return false;
         }
         String sporeType = args.containsKey("t") ? args.get("t") : "s";
         if (args.containsKey("nv") && (args.get("nv").equals("") || args.get("nv")==null || parseIntNumberMinZero(args.get("nv")) ==-1)) {
             System.out.println("#Nincs tapanyag ertek megadva vagy hibas (-nv): "+args.get("nv"));
-            return;
+            return false;
         }
         int nutritionValue = args.containsKey("nv") ? parseIntNumberMinZero(args.get("nv")) : 0;
         if (args.containsKey("ed") && (args.get("ed").equals("") || args.get("ed")==null || parseIntNumberMinZero(args.get("ed")) ==-1)) {
             System.out.println("#Nincs effekt hatas ideje megadva vagy hibas (-ed): "+args.get("ed"));
-            return;
+            return false;
         }
         int effectDurr = args.containsKey("ed") ? parseIntNumberMinZero(args.get("ed")) : 0;
         switch (sporeType) {
@@ -1863,13 +1868,14 @@ public class View implements IView {
                 break;
         }
         System.out.println("#Sikeres spora letrehozas "+name+" neven!");
+        return true;
     }
 
-    public static void addi(String command){
+    public static boolean addi(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/addi")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -1878,48 +1884,48 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("ic")) {
             System.out.println("#Hianyzik a -ic [Name] argumentum.");
-            return;
+            return false;
         }
         if (!args.containsKey("t")) {
             System.out.println("#Hianyzik a -t [Name] argumentum.");
-            return;
+            return false;
         }
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
             String Name = entry1.getKey();
             if (Name.equals(args.get("n"))) {
                 System.out.println("#Ez a nev mar foglalt (-n): "+args.get("n"));
-                return;
+                return false;
             }
         }
         String name = args.get("n");
         if (((InsectColony)planet.get(args.get("ic")))==null) {
             System.out.println("#Nincs ilyen rovar kolonia (-ic): "+args.get("ic"));
-            return;
+            return false;
         }
         InsectColony insectColonyType = null;
         try {
             insectColonyType = (InsectColony)planet.get(args.get("ic"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen rovar kolonia (-ic): "+args.get("ic"));
-            return;
+            return false;
         }
         insectColonyType = (InsectColony)planet.get(args.get("ic"));
         if (planet.get(args.get("t"))==null) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return;
+            return false;
         }
         Tecton tecton = null;
         boolean castError = false;
@@ -1964,35 +1970,35 @@ public class View implements IView {
             if (castError) tecton = (BarrenTecton)planet.get(args.get("t"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return;
+            return false;
         }
         if (args.containsKey("sd") && (args.get("sd").equals("") || args.get("sd")==null || parseIntNumberMinZero(args.get("sd")) ==-1)) {
             System.out.println("#Nincs sebesseg/lepesszam ertek megadva vagy hibas (-sd): "+args.get("sd"));
-            return;
+            return false;
         }
         int speed = args.containsKey("sd") ? parseIntNumberMinZero(args.get("sd")) : 2;
         if (args.containsKey("ca") && (args.get("ca").equals("") || args.get("ca")==null)) {
             System.out.println("#Nincs allapot megadva (-ca): "+args.get("ca"));
-            return;
+            return false;
         }
         boolean cutAbility = !args.containsKey("ca") || (args.containsKey("ca") && args.get("ca").equalsIgnoreCase("y"));
         if (args.containsKey("et") && (args.get("et").equals("") || args.get("et")==null || parseIntNumberMinZero(args.get("et")) ==-1)) {
             System.out.println("#Nincs effekt hatas ido megadva vagy hibas (-et): "+args.get("et"));
-            return;
+            return false;
         }
         int effectTimeLeft = args.containsKey("et") ? parseIntNumberMinZero(args.get("et")) : 0;
         Fungus eatenBy;
         if (args.containsKey("eb")) {
             if (((Fungus)planet.get(args.get("eb")))==null) {
                 System.out.println("#Nincs ilyen gombafaj (-eb): "+args.get("eb"));
-                return;
+                return false;
             }
             eatenBy = null;
             try {
                 eatenBy = (Fungus)planet.get(args.get("eb"));
             } catch (ClassCastException ccex) {
                 System.out.println("#Nincs ilyen gombafaj (-eb): "+args.get("eb"));
-                return;
+                return false;
             }
             eatenBy = (Fungus)planet.get(args.get("eb"));
         }
@@ -2004,13 +2010,14 @@ public class View implements IView {
         tecton.AddInsect(actInsect);
         planet.put(name, actInsect);
         System.out.println("#Sikeres rovar letrehozas "+name+" neven!");
+        return true;
     }
 
-    public static void altt(String command){
+    public static boolean altt(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/altt")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -2019,24 +2026,24 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         /*if (!args.containsKey("nh")) {
             System.out.println("#Hianyzik a -nh [Name] argumentum.");
-            return;
+            return false;
         }*/
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         if (planet.get(args.get("n"))==null) {
             System.out.println("#Nincs ilyen tekton (-n): "+args.get("n"));
-            return;
+            return false;
         }
         Tecton tecton = null;
         boolean castError = false;
@@ -2081,16 +2088,16 @@ public class View implements IView {
             if (castError) tecton = (BarrenTecton)planet.get(args.get("n"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-n): "+args.get("n"));
-            return;
+            return false;
         }
         if (args.containsKey("nh")) {
             if (args.get("nh").equals("") || args.get("nh")==null) {
                 System.out.println("#Nincs nev megadva (-nh): "+args.get("nh"));
-                return;
+                return false;
             }
             if (planet.get(args.get("nh"))==null) {
                 System.out.println("#Nincs ilyen tekton (-nh): "+args.get("nh"));
-                return;
+                return false;
             }
             Tecton tectonNH = null;
             castError = false;
@@ -2135,35 +2142,36 @@ public class View implements IView {
                 if (castError) tectonNH = (BarrenTecton)planet.get(args.get("nh"));
             } catch (ClassCastException ccex) {
                 System.out.println("#Nincs ilyen tekton (-nh): "+args.get("nh"));
-                return;
+                return false;
             }
             for (Tecton actTecton : tecton.GetNeighbours()) {
                 if (actTecton.equals(tectonNH)) {
                     System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" tektonok mar szomszedosak!");
-                    return;
+                    return false;
                 }
             }
             if (!tecton.equals(tectonNH)) {
                 tecton.AddNeighbour(tectonNH);
                 tectonNH.AddNeighbour(tecton);
                 System.out.println("#Sikeresen kialakitva a szomszedsag "+args.get("n")+" es "+args.get("nh")+" tekton kozott.");
-                return;
+                return true;
             }
             else{
                 System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" tektonok ugyan azok!");
-                return;
+                return false;
             }
         }
         else{
             System.out.println("#A(z) -nh kapcsolo hianya miatt a muvelet meghiusult!");
+            return false;
         }
     }
 
-    public static void alth(String command){
+    public static boolean alth(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/alth")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         LinkedHashMap<String, String> args = new LinkedHashMap<>();
         for (int i = 1; i < parts.length; i+=2) {
@@ -2172,48 +2180,48 @@ public class View implements IView {
             }
             else{
                 System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return;
+                return false;
             }
         }
         if (!args.containsKey("n")) {
             System.out.println("#Hianyzik a -n [Name] argumentum.");
-            return;
+            return false;
         }
         /*if (!args.containsKey("nh")) {
             System.out.println("#Hianyzik a -nh [Name] argumentum.");
-            return;
+            return false;
         }*/
         if (args.get("n").equals("") || args.get("n")==null) {
             System.out.println("#Nincs nev megadva (-n): "+args.get("n"));
-            return;
+            return false;
         }
         if (planet.get(args.get("n"))==null) {
             System.out.println("#Nincs ilyen gombafonal (-n): "+args.get("n"));
-            return;
+            return false;
         }
         Hypha hypha = null;
         try {
             hypha = (Hypha)planet.get(args.get("n"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen gombafonal (-n): "+args.get("n"));
-            return;
+            return false;
         }
         hypha = (Hypha)planet.get(args.get("n"));
         if (args.containsKey("nh")) {
             if (args.get("nh").equals("") || args.get("nh")==null) {
                 System.out.println("#Nincs nev megadva (-nh): "+args.get("nh"));
-                return;
+                return false;
             }
             if (planet.get(args.get("nh"))==null) {
                 System.out.println("#Nincs ilyen gombafonal (-nh): "+args.get("nh"));
-                return;
+                return false;
             }
             Hypha hyphaNH = null;
             try {
                 hyphaNH = (Hypha)planet.get(args.get("nh"));
             } catch (ClassCastException ccex) {
                 System.out.println("#Nincs ilyen gombafonal (-nh): "+args.get("nh"));
-                return;
+                return false;
             }
             hyphaNH = (Hypha)planet.get(args.get("nh"));
             if (hypha.GetHostFungus().equals(hyphaNH.GetHostFungus())) {
@@ -2221,7 +2229,7 @@ public class View implements IView {
                     for (Hypha actHypha : hypha.GetNeighbours()) {
                         if (actHypha.equals(hyphaNH)) {
                             System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" gombafonalak mar szomszedosak!");
-                            return;
+                            return false;
                         }
                     }
                     for (Tecton actTecton : hypha.GetTectons()) {
@@ -2229,22 +2237,25 @@ public class View implements IView {
                             hypha.AddNeighbour(hyphaNH);
                             hyphaNH.AddNeighbour(hypha);
                             System.out.println("#Sikeresen kialakitva a szomszedsag "+args.get("n")+" es "+args.get("nh")+" gombafonal kozott.");
-                            return;
+                            return true;
                         }
                     }
+                    System.out.println("#Nem talalhato kozos Tecton a szomszedsag letrehozasahoz!");
+                    return false;
                 }
                 else{
                     System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" gombafonalak ugyan azok!");
-                    return;
+                    return false;
                 }
             }
             else{
                 System.out.println("#A(z) "+args.get("n")+" es "+args.get("nh")+" gombafonalak nem ugyanabba a gombafajba tartoznak!");
-                return;
+                return false;
             }
         }
         else{
             System.out.println("#A(z) -nh kapcsolo hianya miatt a muvelet meghiusult!");
+            return false;
         }
     }
 
@@ -2678,6 +2689,83 @@ public class View implements IView {
             } catch (ClassCastException ccex) {
                 // Wrong element, we do nothing and move on.
             }
+        }
+    }
+
+    public static void exec(String command){
+        String[] parts = command.trim().split("\\s+");
+        if (!parts[0].equals("/exec")) {
+            System.out.println("#Rossz fuggvenyhivas!");
+            return;
+        }
+        if (parts.length != 2) {
+            System.out.println("#Hiba a paraméterezéssel!");
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(parts[1]))) {
+            LinkedHashMap<String, Object> oldPlanet = new LinkedHashMap<>();
+            oldPlanet.putAll(planet);
+            planet = new LinkedHashMap<>();
+            String line;
+            boolean everythingGood = true;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                String select = (line.trim().split("\\s+"))[0];
+                if (select.startsWith("/")) {
+                    switch (select) {
+                        case "/addt":
+                            everythingGood = addt(line);
+                            break;
+                        case "/addf":
+                            everythingGood = addf(line);
+                            break;
+                        case "/addic":
+                            everythingGood = addic(line);
+                            break;
+                        case "/addfb":
+                            everythingGood = addfb(line);
+                            break;
+                        case "/addh":
+                            everythingGood = addh(line);
+                            break;
+                        case "/adds":
+                            everythingGood = adds(line);
+                            break;
+                        case "/addi":
+                            everythingGood = addi(line);
+                            break;
+                        case "/altt":
+                            everythingGood = altt(line);
+                            break;
+                        case "/alth":
+                            everythingGood = alth(line);
+                            break;
+                        default:
+                            System.out.println("#Nem letezo parancs: "+select);
+                            everythingGood = false;
+                            break;
+                    }
+                }
+                else{
+                    switch (select) {
+                        case "":
+                            //
+                            break;
+                    
+                        default:
+                            System.out.println("#Nem letezo parancs: "+select);
+                            everythingGood = false;
+                            break;
+                    }
+                }
+                if (!everythingGood){
+                    planet = new LinkedHashMap<>();
+                    planet.putAll(oldPlanet);
+                    System.out.println("#Hiba a vegrehajtas soran, bolygo visszaallitasa!");
+                    return;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("#Hiba a fajl olvasása kozben: " + e.getMessage());
         }
     }
 
