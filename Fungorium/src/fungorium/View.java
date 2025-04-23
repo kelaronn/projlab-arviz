@@ -1412,7 +1412,7 @@ public class View implements IView {
             System.out.println("#Nincs maximalis loves szam megadva vagy hibas (-sl): "+args.get("sl"));
             return false;
         }
-        int shotLimit = args.containsKey("sl") ? parseIntNumberMinZero(args.get("sl")) : 0;
+        int shotLimit = args.containsKey("sl") ? parseIntNumberMinZero(args.get("sl")) : 4;
         FungusBody actFungusBody = new FungusBody(tecton, fungusType, fullyDeveloped, age, isDead, sporeCount, shotLimit);
         fungusType.AddBody(actFungusBody);
         tecton.SetFungusBody(actFungusBody);
