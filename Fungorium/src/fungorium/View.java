@@ -16,16 +16,25 @@ import java.io.IOException;
 
 public class View implements IView {
     private static LinkedHashMap<String, Object> planet = new LinkedHashMap<>();
-    GameController controller = new GameController(this);
-    int icCtr = 0;
-    int fCtr = 0;
-    int fbCtr = 0;
-    int hCtr = 0;
-    int tCtr = 0;
-    int iCtr = 0;
-    int sCtr = 0;
+    private static GameController controller;
+    private static int icCtr = 0;
+    private static int fCtr = 0;
+    private static int fbCtr = 0;
+    private static int hCtr = 0;
+    private static int tCtr = 0;
+    private static int iCtr = 0;
+    private static int sCtr = 0;
+
+    public View() {
+        if (controller == null) {
+            controller = new GameController(this);
+        }
+    }
 
     public static void main(String[] args) {
+        View fungoriumView = new View();
+        System.out.println("Fungorium game (prototype):");
+        //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
          // Initialization:
          NarrowTecton T1 = new NarrowTecton();
@@ -90,34 +99,33 @@ public class View implements IView {
          planet.put("S2", S2);
          planet.put("I1", I1);
          planet.put("I2", I2);
+         //help();
+         //load("test0_in.txt");
+         save("test0_out.txt");
+         /*addt("/addt -n T5 -t b");
+         addf("/addf -n F3");
+         addic("/addic -n IC2 -nv 10");
+         addfb("/addfb -n FB3 -f F2 -t T4 -d n -a 3 -dv y -sc 10 -sl 6");
+         addh("/addh -n H5 -f F1 -ts T1 -tn T4");
+         addh("/addh -n H6 -f F1 -ts T4");
+         adds("/adds -n S3 -f F1 -tn T4 -t sd -nv 10 -ed 5");
+         addi("/addi -n I3 -ic IC2 -t T3 -sd 3 -ca y -et 0");
+         altt("/altt -n T4 -nh T5");
+         alth("/alth -n H1 -nh H5");
+         alth("/alth -n H5 -nh H6");*/
+         exec("/exec test0_array.txt");
+         /*lstt();
+         lstf();
+         lstic();
+         lstfb();
+         lsth();
+         lsts();
+         lsti();*/
+         save("test0_out.txt");
+         //rst();
+         //===============================================================================================//
         while (true) {
-            // help();
-            load("test0_in.txt");
-            //---------------------------------------------------------------------
-            // Test section:
-            save("test0_out.txt");
-            /*addt("/addt -n T5 -t b");
-            addf("/addf -n F3");
-            addic("/addic -n IC2 -nv 10");
-            addfb("/addfb -n FB3 -f F2 -t T4 -d n -a 3 -dv y -sc 10 -sl 6");
-            addh("/addh -n H5 -f F1 -ts T1 -tn T4");
-            addh("/addh -n H6 -f F1 -ts T4");
-            adds("/adds -n S3 -f F1 -tn T4 -t sd -nv 10 -ed 5");
-            addi("/addi -n I3 -ic IC2 -t T3 -sd 3 -ca y -et 0");
-            altt("/altt -n T4 -nh T5");
-            alth("/alth -n H1 -nh H5");
-            alth("/alth -n H5 -nh H6");*/
-            exec("/exec test0_array.txt");
-            /*lstt();
-            lstf();
-            lstic();
-            lstfb();
-            lsth();
-            lsts();
-            lsti();*/
-            save("test0_out.txt");
-            //---------------------------------------------------------------------
-            String command = scanner.nextLine().trim();
+            /*String command = scanner.nextLine().trim();
             String[] parts = command.split(" ");
             
             if (parts.length > 0) {
@@ -299,9 +307,9 @@ public class View implements IView {
                     default:
                         System.out.println("Ismeretlen parancs. Használd a /help parancsot a segítségért.");
                 }
-            }
+            }*/
         }
-        scanner.close();
+        //scanner.close();
     }
 
     /**
@@ -2621,11 +2629,11 @@ public class View implements IView {
         }
     }
 
-    public static void exec(String command){
+    public static boolean exec(String command){
         String[] parts = command.trim().split("\\s+");
         if (!parts[0].equals("/exec")) {
             System.out.println("#Rossz fuggvenyhivas!");
-            return;
+            return false;
         }
         if (parts.length != 2) {
             System.out.println("#Hiba a paraméterezéssel!");
@@ -2641,6 +2649,18 @@ public class View implements IView {
                 String select = (line.trim().split("\\s+"))[0];
                 if (select.startsWith("/")) {
                     switch (select) {
+                        case "/help":
+                            help();
+                            break;
+                        case "/exec":
+                            everythingGood = exec(line);
+                            break;
+                        case "/rand":
+                            // Well...
+                            break;
+                        case "/trigg":
+                            // Well...
+                            break;
                         case "/addt":
                             everythingGood = addt(line);
                             break;
@@ -2668,6 +2688,36 @@ public class View implements IView {
                         case "/alth":
                             everythingGood = alth(line);
                             break;
+                        case "/lstt":
+                            lstt();
+                            break;
+                        case "/lstf":
+                            lstf();
+                            break;
+                        case "/lstic":
+                            lstic();
+                            break;
+                        case "/lstfb":
+                            lstfb();
+                            break;
+                        case "/lsth":
+                            lsth();
+                            break;
+                        case "/lsts":
+                            lsts();
+                            break;
+                        case "/lsti":
+                            lsti();
+                            break;
+                        case "/save":
+                            save(line); // Kell true/false?
+                            break;
+                        case "/load":
+                            load(line); // Kell true/false?
+                            break;
+                        case "/rst":
+                            rst();
+                            break;
                         default:
                             System.out.println("#Nem letezo parancs: "+select);
                             everythingGood = false;
@@ -2677,7 +2727,7 @@ public class View implements IView {
                 else{
                     switch (select) {
                         case "":
-                            //
+                            // Nem per jeles parancsok helye!
                             break;
                     
                         default:
@@ -2690,12 +2740,38 @@ public class View implements IView {
                     planet = new LinkedHashMap<>();
                     planet.putAll(oldPlanet);
                     System.out.println("#Hiba a vegrehajtas soran, bolygo visszaallitasa!");
-                    return;
+                    return false;
                 }
             }
         } catch (IOException e) {
             System.out.println("#Hiba a fajl olvasása kozben: " + e.getMessage());
         }
+        System.out.println("#Sikeres script vegrehajtas.");
+        return true;
+    }
+
+    public static void rst(){
+        planet = new LinkedHashMap<>();
+        icCtr = 0;
+        fCtr = 0;
+        fbCtr = 0;
+        hCtr = 0;
+        tCtr = 0;
+        iCtr = 0;
+        sCtr = 0;
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                // Windows CMD esetén
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Linux/Unix esetén
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Fungorium game (prototype):");
     }
 
     private static int parseIntNumberMinZero(String value){
