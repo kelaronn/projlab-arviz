@@ -37,23 +37,9 @@ public class View implements IView {
         System.out.println("(Segitseg: /help)");
         //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
-         exec("/exec test0_array.txt");
-         //load("/load test0_out.txt");
-         //controller.MoveInsect((IInsectController)planet.get("I1"), (Tecton)planet.get("T4"));
-         //controller.GrowFungusBody((ITectonController)planet.get("T4"), (Fungus)planet.get("F1"));
-         //controller.GrowFungusBodyFromInsect((ITectonController)planet.get("T4"), (Fungus)planet.get("F2"));
-         //controller.BreakTecton( (ITectonController) planet.get("T2"));
-         /*controller.AbsorbHypha((ITectonController)planet.get("T4"));
-         controller.AbsorbHypha((ITectonController)planet.get("T4"));
-         controller.AbsorbHypha((ITectonController)planet.get("T4"));*/
-         //controller.ProduceSpore((IFungusBodyController)planet.get("FB1"));
-         //controller.ShootSpores((IFungusBodyController)planet.get("FB1"));
-         //controller.DieFungusBody((IFungusBodyController)planet.get("FB1"));
-         //controller.GrowHypha((Fungus)planet.get("F1"), (NarrowTecton)planet.get("T1"), (WideTecton)planet.get("T4"));
-         //controller.EatStunnedInsect((IHyphaController)planet.get("H4"), (Insect)planet.get("I1"));
-         //controller.AtrophyOfHypha((IHyphaController)planet.get("H2"));
-         controller.EatSpore((IInsectController)planet.get("I1"), (Spore)planet.get("S2"));
-         save("/save test0_out.txt");
+         exec("/exec test9_array.txt");
+         controller.AbsorbHypha((Tecton)planet.get("T1"));
+         save("/save test9_out.txt");
          //=====================================================================================================//
         while (true) {
             /*String command = scanner.nextLine().trim();

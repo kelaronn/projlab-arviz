@@ -14,6 +14,8 @@ public class GameController {
     private Object currentPlayer;
     private int playerIndex = 0;
 
+    private HashMap<Insect, Integer> InsectMovesLeft = new HashMap<Insect, Integer>();
+
     private boolean isRandom = true;
     private boolean turns = true;
 
@@ -33,6 +35,9 @@ public class GameController {
             }
             else if(entry.getKey().matches("IC\\d+")){          // InsectColony
                 players.add( (InsectColony)entry.getValue() );
+            }
+            else if(entry.getKey().matches("I\\d+")){           // insect max lepesek beallitasa
+                InsectMovesLeft.put( (Insect)entry.getValue(), ((Insect) entry.getValue()).GetSpeed() );
             }
         }
         currentPlayer = players.get(playerIndex);
@@ -83,6 +88,7 @@ public class GameController {
                     i.SetSpeed(2);
                     i.SetCutAbility(true);
                 }
+                InsectMovesLeft.put(i,i.GetSpeed());                         // visszaalitjuk a lepeseit a kor vegen
             }
         }
 
@@ -380,7 +386,12 @@ public class GameController {
 //
 //        }
 
-        boolean successful = tecton.AbsorbHyphas();
+        boolean successful = false;
+        if(!turns){
+            for (int i = 0; i <3; i++) {
+               successful = tecton.AbsorbHyphas();
+            }
+        }
         if(!successful)
             return false;
 
@@ -727,7 +738,9 @@ public class GameController {
         if(insectCountBefore != insectCountAfter){
             view.InciCtr();
             String name = "I"+view.getiCtr();
-            planet.put(name, insectView.GetTecton().GetInsects().getLast() );
+            Insect nInsect = insectView.GetTecton().GetInsects().getLast();
+            planet.put(name, nInsect );
+            InsectMovesLeft.put(nInsect, nInsect.GetSpeed());
         }
         CleanUpSpores(planet);
         return true;
@@ -747,6 +760,7 @@ public class GameController {
 //                System.err.println("Fungus kor van");
 //                return false;
 //            }
+
             IInsectView insectView = (IInsectView) insect;
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
                 System.err.println("Nem az o kore van");
@@ -754,11 +768,17 @@ public class GameController {
             }
         }
 
+        if(!InsectMovesLeft.containsKey(insect) || InsectMovesLeft.get(insect) <= 0){            // nincs ilyen rovar vagy elfogyott a lepese
+            return false;
+        }
+
         boolean success = insect.Move(tecton);
         if(!success){
             System.err.println("Nem tudott a rovar atlepni a tektonra");
             return false;
         }
+        int moves = InsectMovesLeft.get(insect);
+        InsectMovesLeft.put( (Insect)insect,moves-1);
         return true;
     }
 
