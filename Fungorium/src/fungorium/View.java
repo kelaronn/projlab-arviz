@@ -1195,6 +1195,7 @@ public class View implements IView {
             default:
                 break;
         }
+        tCtr++;
         System.out.println("#Sikeres tekton letrehozas "+name+" neven!");
         return true;
     }
@@ -1234,6 +1235,7 @@ public class View implements IView {
         Fungus actFungus = new Fungus();
         planet.put(name, actFungus);
         controller.playersInit();
+        fCtr++;
         System.out.println("#Sikeres gombafaj letrehozas "+name+" neven!");
         return true;
     }
@@ -1279,6 +1281,7 @@ public class View implements IView {
         actInsectColony.addNutrition(nutritionValue);
         planet.put(name, actInsectColony);
         controller.playersInit();
+        icCtr++;
         System.out.println("#Sikeres rovar kolonia letrehozas "+name+" neven!");
         return true;
     }
@@ -1419,6 +1422,7 @@ public class View implements IView {
         fungusType.AddBody(actFungusBody);
         tecton.SetFungusBody(actFungusBody);
         planet.put(name, actFungusBody);
+        fbCtr++;
         System.out.println("#Sikeres gombatest letrehozas "+name+" neven!");
         return true;
     }
@@ -1617,6 +1621,7 @@ public class View implements IView {
         fungusType.AddHypha(actHypha);
         tectonTS.GetHyphas().add(actHypha);
         planet.put(name, actHypha);
+        hCtr++;
         System.out.println("#Sikeres gombafonal letrehozas "+name+" neven!");
         return true;
     }
@@ -1776,6 +1781,7 @@ public class View implements IView {
             default:
                 break;
         }
+        sCtr++;
         System.out.println("#Sikeres spora letrehozas "+name+" neven!");
         return true;
     }
@@ -1918,6 +1924,7 @@ public class View implements IView {
         insectColonyType.AddInsect(actInsect);
         tecton.AddInsect(actInsect);
         planet.put(name, actInsect);
+        iCtr++;
         System.out.println("#Sikeres rovar letrehozas "+name+" neven!");
         return true;
     }
