@@ -337,6 +337,7 @@ public class GameController {
         }
 
         boolean successful = tecton.GrowFungusBodyFromInsect(fungus);
+
         if(!successful)
             return false;
 

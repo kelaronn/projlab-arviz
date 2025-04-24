@@ -37,12 +37,13 @@ public class View implements IView {
         System.out.println("(Segitseg: /help)");
         //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
-         exec("/exec test1_array.txt");
+         exec("/exec test0_array.txt");
          //load("/load test0_out.txt");
          //controller.MoveInsect((IInsectController)planet.get("I1"), (Tecton)planet.get("T4"));
-         controller.GrowFungusBody((ITectonController)planet.get("T4"), (Fungus)planet.get("F1"));
-        controller.BreakTecton( (ITectonController) planet.get("T2"));
-         save("/save test1_out.txt");
+         //controller.GrowFungusBody((ITectonController)planet.get("T4"), (Fungus)planet.get("F1"));
+         //controller.GrowFungusBodyFromInsect((ITectonController)planet.get("T4"), (Fungus)planet.get("F2"));
+         controller.BreakTecton( (ITectonController) planet.get("T2"));
+         save("/save test0_out.txt");
          //=====================================================================================================//
         while (true) {
             /*String command = scanner.nextLine().trim();
@@ -779,7 +780,7 @@ public class View implements IView {
                         }
                     }
                     String neighbourNames = "";
-                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                    /*for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
                         Object obj2 = entry2.getValue();
                         boolean isNeighbour = false;
                         try {
@@ -799,6 +800,27 @@ public class View implements IView {
                             }
                         } catch (ClassCastException ccex) {
                             // Wrong element, we do nothing and move on.
+                        }
+                    }*/
+                    for (ITectonView oneNeighbourView : tectonView.GetNeighbours()) {
+                        for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                            Object obj2 = entry2.getValue();
+                            boolean isNeighbour = false;
+                            try {
+                                ITectonView neighbourView = (ITectonView) obj2;
+                                if (oneNeighbourView.equals(neighbourView)) {
+                                    isNeighbour = true;
+                                }
+                                if (isNeighbour) {
+                                    if (neighbourNames.equals("")) {
+                                        neighbourNames = entry2.getKey();
+                                    } else {
+                                        neighbourNames += "," + entry2.getKey();
+                                    }
+                                }
+                            } catch (ClassCastException ccex) {
+                                // Wrong element, we do nothing and move on.
+                            }
                         }
                     }
                     String fungusBodyName = "";

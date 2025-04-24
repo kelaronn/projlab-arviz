@@ -195,7 +195,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
         }
         if(insectToRemove == null)
             return false;
-
+            
         insectToRemove.GetHostColony().RemoveInsect(insectToRemove);
         RemoveInsect(insectToRemove);
 
