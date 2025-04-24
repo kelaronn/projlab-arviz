@@ -120,7 +120,6 @@ public class GameController {
         CleanUpSpores(planet);
         CleanUpFungusBodies(planet);
         return true;
-
     }
 
     /**
@@ -458,6 +457,10 @@ public class GameController {
                 }
             }
         }
+
+        for(String key : keysToRemove){
+            planet.remove(key);
+        }
     }
 
     /**
@@ -706,7 +709,7 @@ public class GameController {
                 return false;
             }
         }
-
+        
         boolean success = insect.EatSpore(spore);
         if(!success){
             System.err.println("Nem tudta a rovar megenni a sporat");

@@ -267,7 +267,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
         Spore spore;
         int type;
         if(isRandom)
-            type = rand.nextInt(0, 5);
+            type = rand.nextInt(0, 6);
         else
             type = 0;
 
@@ -283,6 +283,9 @@ public abstract class Tecton implements ITectonController, ITectonView {
             break;
         case 4:
             spore = new DisarmSpore(3, 1, fungus,this);
+            break;
+        case 5:
+            spore = new SplitSpore(3,0,fungus,this);           // modositasra nyitott vagyok
             break;
         default:
             spore = new Spore(1, 0, fungus,this);
