@@ -248,6 +248,8 @@ public class Insect implements IInsectController, IInsectView {
      */
     public void SetEffectTimeLeft(int etf) {
         effectTimeLeft = etf;
+        if(etf < 0)
+            etf = 0;
     }
 
     /**

@@ -91,7 +91,7 @@ public class GameController {
             tc.AbsorbHyphas();                                              // felszivja a hifakat
 
             if(tc != null && isRandom){                                     // ha be van kapcsolva a random
-                int chance = rand.nextInt(5);
+                int chance = rand.nextInt(100);
                 if(chance < 5){                                             // dobunk a kockaval, 5% esellyel torik el a tecton
                    if( !BreakTecton(tc) ){
                        System.err.println("#Tekton me tudott szettorni");
