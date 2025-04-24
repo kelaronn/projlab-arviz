@@ -181,14 +181,14 @@ public abstract class Tecton implements ITectonController, ITectonView {
      */
     @Override
     public boolean GrowFungusBodyFromInsect(Fungus fungus) {
-        if( this.GetFungusBody() != null ) // már van fungisbody rajta
+        if( this.GetFungusBody() != null ) // már van fungusbody rajta
             return false;
         if(this.insects.isEmpty() ) // nincs rajta insect
             return false;
 
         Insect insectToRemove = null;
         for(Insect i : insects){
-            if(i.GetEatenBy().equals(fungus)) {
+            if( i.GetEatenBy() != null && i.GetEatenBy().equals(fungus)) {
                 insectToRemove = i;
                 break;
             }
