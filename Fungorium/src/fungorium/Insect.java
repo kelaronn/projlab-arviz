@@ -82,6 +82,15 @@ public class Insect implements IInsectController, IInsectView {
     }
 
     /**
+     * Konstruktor (másoló konstruktor)
+     *
+     * @param i Insect
+     */
+    public Insect(Insect i){
+        this(i.speed, i.cutAbility, i.effectTimeLeft, i.hostColony, i.tecton, i.eatenBy);
+    }
+
+    /**
      * Spóra elfogyasztása
      *
      * @param s spóra
