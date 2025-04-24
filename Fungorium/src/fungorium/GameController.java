@@ -35,6 +35,7 @@ public class GameController {
                 players.add( (InsectColony)entry.getValue() );
             }
         }
+        currentPlayer = players.get(playerIndex);
     }
 
     /**
