@@ -430,7 +430,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
 
         h.GetHostFungus().RemoveHypha(h);
         System.out.println(">[Fungus].RemoveHypha(h)");
-        hyphas.remove(h);
+        t2.hyphas.remove(h);
         System.out.println(">[Tecton].hyphas.remove(h)");
     }
 

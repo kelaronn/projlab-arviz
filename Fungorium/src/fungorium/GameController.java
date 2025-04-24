@@ -91,7 +91,7 @@ public class GameController {
             tc.AbsorbHyphas();                                              // felszivja a hifakat
 
             if(tc != null && isRandom){                                     // ha be van kapcsolva a random
-                int chance = rand.nextInt(100);
+                int chance = rand.nextInt(5);
                 if(chance < 5){                                             // dobunk a kockaval, 5% esellyel torik el a tecton
                    if( !BreakTecton(tc) ){
                        System.err.println("#Tekton me tudott szettorni");
@@ -399,12 +399,17 @@ public class GameController {
 
                 IHyphaView hypha = (IHyphaView) entry.getValue();
                 List<Tecton> tectons = hypha.GetTectons();
-
-                for(Tecton t : tectons){
-                   if( !t.hyphas.contains(hypha) &&                // a tecton szerint nem taroljuk el
-                           hypha.GetTectons().contains(t)){        // de a hifa szerint igen
-                       keysToRemove.add(entry.getKey());
-                   }
+                if(tectons.size() == 1){                        // nem res hifa
+                    if (!tectons.getFirst().hyphas.contains(hypha) &&                // a tecton szerint nem taroljuk el
+                            hypha.GetTectons().contains(tectons.getFirst())) {        // de a hifa szerint igen
+                        keysToRemove.add(entry.getKey());
+                    }
+                }
+                else{                                          // res hifa
+                    if (!tectons.getLast().hyphas.contains(hypha) &&                // a tecton szerint nem taroljuk el
+                            hypha.GetTectons().contains(tectons.getLast())) {        // de a hifa szerint igen
+                        keysToRemove.add(entry.getKey());
+                    }
                 }
             }
         }
@@ -451,7 +456,7 @@ public class GameController {
                 IFungusBodyView fb = (IFungusBodyView) entry.getValue();
                 Tecton tecton = fb.GetTecton();
 
-                if( !tecton.GetFungusBody().equals(fb) &&                // a tecton szerint nem taroljuk el
+                if( tecton.GetFungusBody() == null &&                // a tecton szerint nem taroljuk el
                         fb.GetTecton().equals(tecton)){           // de a spora szerint igen
                     keysToRemove.add(entry.getKey());
                 }
