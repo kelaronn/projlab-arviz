@@ -40,6 +40,7 @@ public class View implements IView {
          exec("/exec test0_array.txt");
          //load("/load test0_out.txt");
          //controller.MoveInsect((IInsectController)planet.get("I1"), (Tecton)planet.get("T4"));
+         controller.GrowFungusBody((ITectonController)planet.get("T4"), (Fungus)planet.get("F1"));
          save("/save test0_out.txt");
          //=====================================================================================================//
         while (true) {
