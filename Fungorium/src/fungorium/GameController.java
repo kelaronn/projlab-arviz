@@ -93,13 +93,34 @@ public class GameController {
             if(tc != null && isRandom){                                     // ha be van kapcsolva a random
                 int chance = rand.nextInt(100);
                 if(chance < 5){                                             // dobunk a kockaval, 5% esellyel torik el a tecton
-                    tc.Break();
+                   if( !BreakTecton(tc) ){
+                       System.err.println("#Tekton me tudott szettorni");
+                   }
                 }
             }
         }
 
         CleanUpHyphas(planet);
         CleanUpSpores(planet);
+        CleanUpFungusBodies(planet);
+    }
+    public boolean BreakTecton(ITectonController tc){
+        Tecton newT;
+        newT = tc.Break();
+        if(newT == null){
+            return false;
+        }
+
+        LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
+        view.InctCtr();
+        String name = "T" + view.gettCtr();
+        planet.put(name, newT);
+
+        CleanUpHyphas(planet);
+        CleanUpSpores(planet);
+        CleanUpFungusBodies(planet);
+        return true;
+
     }
 
     /**
@@ -416,6 +437,26 @@ public class GameController {
 
         for(String key : keysToRemove){
             planet.remove(key);
+        }
+    }
+    /**
+     * Kitorli a tektonrol mar kitorolt, de a planetben meg benne levo gombatesteket.
+     *
+     * @param planet View planet peldanya
+     */
+    private void CleanUpFungusBodies(LinkedHashMap<String, Object> planet){
+        List<String> keysToRemove = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : planet.entrySet()) {
+            if(entry.getKey().startsWith("FB")){                     // biztosan gombatestet talalunk
+
+                IFungusBodyView fb = (IFungusBodyView) entry.getValue();
+                Tecton tecton = fb.GetTecton();
+
+                if( !tecton.GetFungusBody().equals(fb) &&                // a tecton szerint nem taroljuk el
+                        fb.GetTecton().equals(tecton)){           // de a spora szerint igen
+                    keysToRemove.add(entry.getKey());
+                }
+            }
         }
     }
 

@@ -323,11 +323,12 @@ public abstract class Tecton implements ITectonController, ITectonView {
      */
     public void RemoveHypha(Hypha h) {
         if(h != null && hyphas.contains(h)) {
-            if(h.GetTectons().size() == 1) {
+            if(h.GetTectons().size() == 1) {                        // tektonon van
                 //System.out.println(">[Fungus].RemoveHypha(h)");
                 RemoveHyphaFromTecton(h);
             }
-            else{
+            else{                                                  // res hifa
+                h.GetHostFungus().RemoveHypha(h);
                 hyphas.remove(h);
                 //System.out.println(">[Tecton].RemoveHypha(h)");
             }
