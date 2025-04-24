@@ -231,8 +231,8 @@ public abstract class Tecton implements ITectonController, ITectonView {
         this.SetFungusBody(fungusBody);
         //System.out.println(">[Tecton].SetFungusBody(fungusBody)");
 
-        for(int i = 0; i < spores.size(); i++){
-            spores.remove(spores.get(spores.size()-1));
+        for(int i = 0; i < sporeCountToGrowFungus; i++){
+            spores.removeLast();
         }
         return true;
 
