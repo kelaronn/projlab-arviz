@@ -21,7 +21,7 @@ public class SlowSpore extends Spore{
      * @return sikeres-e a hatás kifejtése
      */
     @Override public boolean GiveEffect(Insect i){
-        i.SetSpeed(0);
+        i.SetSpeed(1);
 
         i.SetEffectTimeLeft(this.GetEffectDurr());
 
