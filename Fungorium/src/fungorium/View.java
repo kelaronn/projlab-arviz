@@ -585,11 +585,11 @@ public class View implements IView {
                             Integer.parseInt(parts[3]),
                             fungusMap.get(parts[4]),
                             tectonMap.get(parts[5])));
-                    /*case "SplitSpore" -> sporeMap.put(name, new SplitSpore(
+                    case "SplitSpore" -> sporeMap.put(name, new SplitSpore(
                             Integer.parseInt(parts[2]),
                             Integer.parseInt(parts[3]),
                             fungusMap.get(parts[4]),
-                            tectonMap.get(parts[5])));*/
+                            tectonMap.get(parts[5])));
                     case "SlowSpore" -> sporeMap.put(name, new SlowSpore(
                             Integer.parseInt(parts[2]),
                             Integer.parseInt(parts[3]),
@@ -1736,7 +1736,7 @@ public class View implements IView {
             System.out.println("#Nincs tapanyag ertek megadva vagy hibas (-nv): "+args.get("nv"));
             return false;
         }
-        int nutritionValue = args.containsKey("nv") ? parseIntNumberMinZero(args.get("nv")) : 0;
+        int nutritionValue = args.containsKey("nv") ? parseIntNumberMinZero(args.get("nv")) : 1;
         if (args.containsKey("ed") && (args.get("ed").equals("") || args.get("ed")==null || parseIntNumberMinZero(args.get("ed")) ==-1)) {
             System.out.println("#Nincs effekt hatas ideje megadva vagy hibas (-ed): "+args.get("ed"));
             return false;
@@ -1754,10 +1754,9 @@ public class View implements IView {
                 planet.put(name, actSporeSD);
                 break;
             case "st":
-                // Hiányzik a SplitSpore osztály!
-                /*SplitSpore actSporeST = new SplitSpore(nutritionValue, effectDurr, fungusType, tectonTN);
+                SplitSpore actSporeST = new SplitSpore(nutritionValue, effectDurr, fungusType, tectonTN);
                 tectonTN.GetSpores().add(actSporeST);
-                planet.put(name, actSporeST);*/
+                planet.put(name, actSporeST);
                 break;
             case "sw":
                 SlowSpore actSporeSW = new SlowSpore(nutritionValue, effectDurr, fungusType, tectonTN);
@@ -2618,6 +2617,7 @@ public class View implements IView {
             String line;
             boolean everythingGood = true;
             while ((line = reader.readLine()) != null) {
+                System.out.print(">");
                 System.out.println(line);
                 String select = (line.trim().split("\\s+"))[0];
                 if (select.startsWith("/")) {

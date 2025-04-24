@@ -26,7 +26,7 @@ public class GameController {
      */
     public void playersInit(){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-
+        players = new ArrayList<>();
         for(Map.Entry<String,Object> entry : planet.entrySet()){
             if(entry.getKey().matches("F\\d+")){                // Gomba
                 players.add( (Fungus)entry.getValue() );
@@ -91,7 +91,7 @@ public class GameController {
             tc.AbsorbHyphas();                                              // felszivja a hifakat
 
             if(tc != null && isRandom){                                     // ha be van kapcsolva a random
-                int chance = rand.nextInt(100);
+                int chance = rand.nextInt(5);
                 if(chance < 5){                                             // dobunk a kockaval, 5% esellyel torik el a tecton
                     tc.Break();
                 }
