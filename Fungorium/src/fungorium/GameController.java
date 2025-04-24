@@ -451,7 +451,7 @@ public class GameController {
                 IFungusBodyView fb = (IFungusBodyView) entry.getValue();
                 Tecton tecton = fb.GetTecton();
 
-                if( tecton.GetFungusBody() == null &&                // a tecton szerint nem taroljuk el
+                if( !tecton.GetFungusBody().equals(fb) &&                // a tecton szerint nem taroljuk el
                         fb.GetTecton().equals(tecton)){           // de a spora szerint igen
                     keysToRemove.add(entry.getKey());
                 }
