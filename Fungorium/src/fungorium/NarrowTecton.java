@@ -35,7 +35,7 @@ public class NarrowTecton extends Tecton {
     @Override
     public boolean AddHypha(Fungus fungus, Tecton t0) {
 
-        if (!hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
+        if (!t0.hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
             return false;
 
         // ha nincs megadva szomszédos tekton, csak lerak egy hifát
@@ -49,33 +49,24 @@ public class NarrowTecton extends Tecton {
             return false;
 
         Hypha hyphaBetweenTectons = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0, this)));
-        Hypha hyphaOnTecton = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));
-
-        hyphaBetweenTectons.AddNeighbour(hyphaOnTecton);
-        System.out.println(">[Hypha].AddNeighbour(hyphaOnTecton)");
+        Hypha hyphaOnTecton = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0)));
         hyphaOnTecton.AddNeighbour(hyphaBetweenTectons);
-        System.out.println(">[Hypha].AddNeighbour(hyphaBetweenTectons)");
+
         // az első fungushoz tartozó hypha szomszédjaihoz hozzáadja a tektonok közötti hifát. Leginkább WideTecton miatt kell.
-        for (Hypha h : t0.hyphas) {
+        for (Hypha h : hyphas) {
             if (h.GetHostFungus().equals(fungus)) {
-                hyphaBetweenTectons.AddNeighbour(h);
-                System.out.println(">[Hypha].AddNeighbour(h)");
-                h.AddNeighbour(hyphaBetweenTectons);
-                System.out.println(">[Hypha].AddNeighbour(hyphaBetweenTectons)");
+                //hyphaBetweenTectons.AddNeighbour(h);
+               h.AddNeighbour(hyphaBetweenTectons);
                 break;
             } else {
                 return false; // nincs hifa aminek szomszédjaihoz hozzá lehetne adni
             }
         }
 
-        hyphas.add(hyphaBetweenTectons);
-        System.out.println(">[NarrowTecton].hyphas.add(hyphaBetweenTectons)");
-        hyphas.add(hyphaOnTecton);
-        System.out.println(">[NarrowTecton].hyphas.add(hyphaOnTecton)");
-        fungus.AddHypha(hyphaOnTecton);
-        System.out.println(">[Fungus].AddHypha(hyphaOnTecton)");
+        t0.hyphas.add(hyphaBetweenTectons);
+        t0.hyphas.add(hyphaOnTecton);
         fungus.AddHypha(hyphaBetweenTectons);
-        System.out.println(">[Fungus].AddHypha(hyphaBetweenTectons)");
+        fungus.AddHypha(hyphaOnTecton);
         return true;
     }
     

@@ -638,8 +638,8 @@ public class GameController {
             List<Hypha> hyphas = f.GetMycelium();
             for(Hypha h : hyphas){
                 if( !planet.containsValue(h) ){         // a hifa benne van a Gombaban, de nincs benne a planetben
-                    view.IncfCtr();
-                    String name = "F"+view.getsCtr();
+                    view.InchCtr();
+                    String name = "H"+view.gethCtr();
                     planet.put(name,h);
                 }
             }

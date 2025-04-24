@@ -37,9 +37,9 @@ public class View implements IView {
         System.out.println("(Segitseg: /help)");
         //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
-         exec("/exec test9_array.txt");
-         controller.AbsorbHypha((Tecton)planet.get("T1"));
-         save("/save test9_out.txt");
+         exec("/exec test19_array.txt");
+         controller.GrowHypha( (Fungus)planet.get("F1"),(Tecton)planet.get("T1"), (Tecton)planet.get("T2") );
+         save("/save test19_out.txt");
          //=====================================================================================================//
         while (true) {
             /*String command = scanner.nextLine().trim();
