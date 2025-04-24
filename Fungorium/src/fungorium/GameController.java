@@ -451,7 +451,7 @@ public class GameController {
                 IFungusBodyView fb = (IFungusBodyView) entry.getValue();
                 Tecton tecton = fb.GetTecton();
 
-                if( !tecton.GetFungusBody().equals(fb) &&                // a tecton szerint nem taroljuk el
+                if( tecton.GetFungusBody() == null &&                // a tecton szerint nem taroljuk el
                         fb.GetTecton().equals(tecton)){           // de a spora szerint igen
                     keysToRemove.add(entry.getKey());
                 }
@@ -697,25 +697,31 @@ public class GameController {
      * @return Sikeres-e a muvelet.
      */
     public boolean EatSpore(IInsectController insect, Spore spore){
+        IInsectView insectView = (IInsectView) insect;
         if (turns) {
 //            if(currentTurn != Turn.Fungus1 && currentTurn != Turn.Fungus2){
 //                System.err.println("Fungus kor van");
 //                return false;
 //            }
-
-            IInsectView insectView = (IInsectView) insect;
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
                 System.err.println("Nem az o kore van");
                 return false;
             }
         }
-        
+
+        int insectCountBefore = insectView.GetTecton().insects.size();
         boolean success = insect.EatSpore(spore);
         if(!success){
             System.err.println("Nem tudta a rovar megenni a sporat");
             return false;
         }
+        int insectCountAfter = insectView.GetTecton().insects.size();
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
+        if(insectCountBefore != insectCountAfter){
+            view.InciCtr();
+            String name = "I"+view.getiCtr();
+            planet.put(name, insectView.GetTecton().GetInsects().getLast() );
+        }
         CleanUpSpores(planet);
         return true;
 
