@@ -38,9 +38,9 @@ public class View implements IView {
         //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
          exec("/exec test0_array.txt");
-         load("/load test0_out.txt");
+         //load("/load test0_out.txt");
+         //controller.MoveInsect((IInsectController)planet.get("I1"), (Tecton)planet.get("T4"));
          save("/save test0_out.txt");
-         //controller.MoveInsect((IInsectController)planet.get("I1"), (Tecton)planet.get("T1"));
          //=====================================================================================================//
         while (true) {
             /*String command = scanner.nextLine().trim();
@@ -1233,6 +1233,7 @@ public class View implements IView {
         String name = args.get("n");
         Fungus actFungus = new Fungus();
         planet.put(name, actFungus);
+        controller.playersInit();
         System.out.println("#Sikeres gombafaj letrehozas "+name+" neven!");
         return true;
     }
@@ -1277,6 +1278,7 @@ public class View implements IView {
         InsectColony actInsectColony = new InsectColony();
         actInsectColony.addNutrition(nutritionValue);
         planet.put(name, actInsectColony);
+        controller.playersInit();
         System.out.println("#Sikeres rovar kolonia letrehozas "+name+" neven!");
         return true;
     }
@@ -2765,6 +2767,7 @@ public class View implements IView {
         tCtr = 0;
         iCtr = 0;
         sCtr = 0;
+        controller.SetToDefault();
         try {
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {

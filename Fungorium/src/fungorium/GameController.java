@@ -119,9 +119,10 @@ public class GameController {
             return false;
         }
         String event = parts[1];
-        if(!turns)
+        if(!turns) {
+            System.out.println("#Hiba: kor logika ki van kapcsolva!");
             return false;
-
+        }
         if(event.equals("nr")){
             EndOfRound();
             return true;
@@ -135,7 +136,10 @@ public class GameController {
                 currentPlayer = players.get(playerIndex);
                 return true;
             }
-            else return false;
+            else {
+                System.out.println("#Nincsenek jatekosok (gombafajok és vagy rovar koloniak)!");
+                return false;
+            }
         }
         else{
             System.err.println("#Error: '" + event + "' is not a valid command in method: trigg");
@@ -732,6 +736,11 @@ public class GameController {
         return true;
     }
 
-
-
+    public void SetToDefault(){
+        players = new ArrayList<>();
+        currentPlayer = null;
+        playerIndex = 0;
+        isRandom = true;
+        turns = true;
+    }
 }
