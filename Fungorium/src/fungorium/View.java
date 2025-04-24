@@ -37,10 +37,11 @@ public class View implements IView {
         System.out.println("(Segitseg: /help)");
         //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
-         exec("/exec test0_array.txt");
+         exec("/exec test1_array.txt");
          //load("/load test0_out.txt");
          //controller.MoveInsect((IInsectController)planet.get("I1"), (Tecton)planet.get("T4"));
-         save("/save test0_out.txt");
+        controller.BreakTecton( (ITectonController) planet.get("T2"));
+         save("/save test1_out.txt");
          //=====================================================================================================//
         while (true) {
             /*String command = scanner.nextLine().trim();
