@@ -34,8 +34,12 @@ public class NarrowTecton extends Tecton {
      */
     @Override
     public boolean AddHypha(Fungus fungus, Tecton t0) {
+        if(!neighbours.contains(t0)) // nincs a két tekton egymás mellett
+        {
+            return false;
+        }
 
-        if (!t0.hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
+        if (!hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
             return false;
 
         // ha nincs megadva szomszédos tekton, csak lerak egy hifát
@@ -45,15 +49,27 @@ public class NarrowTecton extends Tecton {
             hyphas.add(hypha);
             return true;
         }
-        if(!neighbours.contains(t0)) // nincs a két tekton egymás mellett
+
+        boolean hasSameFungus = false;
+        Hypha actHypha = null;
+        for (Hypha hypha : t0.hyphas) {
+            if (hypha.GetHostFungus().equals(fungus)) {
+                actHypha = hypha;
+                hasSameFungus = true;
+                break;
+            }
+        }
+        if (!hasSameFungus) {
             return false;
+        }
 
         Hypha hyphaBetweenTectons = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0, this)));
-        Hypha hyphaOnTecton = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0)));
+        Hypha hyphaOnTecton = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));
         hyphaOnTecton.AddNeighbour(hyphaBetweenTectons);
+        actHypha.AddNeighbour(hyphaBetweenTectons);
 
         // az első fungushoz tartozó hypha szomszédjaihoz hozzáadja a tektonok közötti hifát. Leginkább WideTecton miatt kell.
-        for (Hypha h : hyphas) {
+        /*for (Hypha h : hyphas) {
             if (h.GetHostFungus().equals(fungus)) {
                 //hyphaBetweenTectons.AddNeighbour(h);
                h.AddNeighbour(hyphaBetweenTectons);
@@ -61,10 +77,10 @@ public class NarrowTecton extends Tecton {
             } else {
                 return false; // nincs hifa aminek szomszédjaihoz hozzá lehetne adni
             }
-        }
+        }*/
 
-        t0.hyphas.add(hyphaBetweenTectons);
-        t0.hyphas.add(hyphaOnTecton);
+        hyphas.add(hyphaBetweenTectons);
+        hyphas.add(hyphaOnTecton);
         fungus.AddHypha(hyphaBetweenTectons);
         fungus.AddHypha(hyphaOnTecton);
         return true;

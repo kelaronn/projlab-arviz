@@ -58,8 +58,8 @@ public class Hypha implements IHyphaView, IHyphaController {
         
             // Csak akkor adjuk hozzá, ha van közös tekton
             if (hasCommonTecton) {
-                neighbours.add(h);
-                h.AddNeighbour(this);
+                neighbours.add(h);h.AddNeighbour(this);
+                //if(!h.GetNeighbours().contains(this))h.AddNeighbour(this);
                 return true;
             }
         }
@@ -76,7 +76,7 @@ public class Hypha implements IHyphaView, IHyphaController {
     public boolean RemoveNeighbours(Hypha h) {
         if(h != null && h.GetHostFungus().equals(this.GetHostFungus()) && neighbours.contains(h)){
             neighbours.remove(h);
-            h.RemoveNeighbours(this);
+            //h.RemoveNeighbours(this);
             return true;
         }
         return false;
@@ -134,10 +134,13 @@ public class Hypha implements IHyphaView, IHyphaController {
                for (Tecton t : h.GetTectons()) {
                    if (t != null) {
                        //t.RemoveHypha(h);
+                       h.GetHostFungus().RemoveHypha(h);
                        t.GetHyphas().remove(h);
                    }
                }
            }
+           /*GetHostFungus().RemoveHypha(this);
+           tectons.getLast().GetHyphas().remove(this);*/
            return true;
        }
        // Ha van élő gombatest, nem csinálunk semmit

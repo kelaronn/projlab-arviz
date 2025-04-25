@@ -138,21 +138,34 @@ public class Insect implements IInsectController, IInsectView {
      * @return sikeres-e a vágás
      */
     @Override
-    public boolean Cut(Tecton t) {
+    public boolean Cut(Hypha h) {
         if (!cutAbility) {
             return false;
         }
+        if (h!=null && h.GetTectons().size()==2) {
+            if (h.GetTectons().get(0).equals(tecton) || h.GetTectons().get(1).equals(tecton)) {
+                h.GetHostFungus().RemoveHypha(h);
+                h.GetTectons().get(1).GetHyphas().remove(h);
+                for (Hypha actHypha : h.GetNeighbours()) {
+                    Hypha saveHypha = actHypha;
+                    actHypha.RemoveNeighbours(h);
+                    saveHypha.Atrophy();
+                    
+                }
+                return true;
+            }
+            return false;
+        }
+        return false;
 
-        Hypha h;
+        /*Hypha h;
         Tecton correctTecton;
 
         if (t.GetHypha(t, tecton) != null) {
             h = t.GetHypha(t, tecton);
-            //System.out.println(">[Tecton].GetHypha(t, tecton)");
             correctTecton = t;
         } else if (tecton.GetHypha(t, tecton) != null) {
             h = tecton.GetHypha(t, tecton);
-            //System.out.println(">[Tecton].GetHypha(t, tecton)");
             correctTecton = tecton;
         } else {
             return false;
@@ -160,17 +173,14 @@ public class Insect implements IInsectController, IInsectView {
 
         if (t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null) {
             h.GetHostFungus().RemoveHypha(h);
-            //System.out.println(">[Fungus].RemoveHypha(h)");
             correctTecton.RemoveHypha(h);
-            //System.out.println(">[Tecton].RemoveHypha(h)");
             for (Hypha n : h.GetNeighbours()) {
                 n.RemoveNeighbours(h);
-                //System.out.println(">[Hypha].RemoveNeighbours(h)");
             }
             return true;
         } else {
             return false;
-        }
+        }*/
     }
 
     /**

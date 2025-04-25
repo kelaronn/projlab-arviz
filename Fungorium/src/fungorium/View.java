@@ -32,56 +32,74 @@ public class View implements IView {
     }
 
     public static void main(String[] args) {
+        /*exec("/exec test0_array.txt");
+         save("/save test0_out.txt");*/
         View view = new View();
         System.out.println("Fungorium game (prototype):");
         System.out.println("(Segitseg: /help)");
-        //====================================================[Majd töröli Alex!]================================//
         Scanner scanner = new Scanner(System.in);
-         exec("/exec test19_array.txt");
-         controller.GrowHypha( (Fungus)planet.get("F1"),(Tecton)planet.get("T1"), (Tecton)planet.get("T2") );
-         save("/save test19_out.txt");
-         //=====================================================================================================//
         while (true) {
-            /*String command = scanner.nextLine().trim();
-            String[] parts = command.split(" ");
-            
-            if (parts.length > 0) {
-                switch (parts[0]) {
+            LinkedHashMap<String, Object> oldPlanet = new LinkedHashMap<>();
+            oldPlanet.putAll(planet);
+            boolean everythingGood = true;
+            System.out.print(">");
+            String line = scanner.nextLine();
+            if (line.equals("/exit")) {
+                break;
+            }
+            String select = (line.trim().split("\\s+"))[0];
+            if (select.startsWith("/")) {
+                switch (select) {
                     case "/help":
                         help();
                         break;
-                    case "/addf":
-                        addf(command);
+                    case "/exec":
+                        everythingGood = exec(line);
+                        break;
+                    case "/rand":
+                        everythingGood = controller.Rand(line);
+                        break;
+                    case "/trigg":
+                        everythingGood = controller.Trigg(line); // Valami gond van! (EndOfRound)
+                        break;
+                    case "/turns":
+                        everythingGood = controller.Turns(line);
                         break;
                     case "/addt":
-                        addt(command);
+                        everythingGood = addt(line);
                         break;
-                    case "/addfb":
-                        addfb(command);
-                        break;
-                    case "/addh":
-                        addh(command);
-                        break;
-                    case "/adds":
-                        adds(command);
+                    case "/addf":
+                        everythingGood = addf(line);
                         break;
                     case "/addic":
-                        addic(command);
+                        everythingGood = addic(line);
+                        break;
+                    case "/addfb":
+                        everythingGood = addfb(line);
+                        break;
+                    case "/addh":
+                        everythingGood = addh(line);
+                        break;
+                    case "/adds":
+                        everythingGood = adds(line);
                         break;
                     case "/addi":
-                        addi(command);
+                        everythingGood = addi(line);
                         break;
                     case "/altt":
-                        altt(command);
+                        everythingGood = altt(line);
                         break;
                     case "/alth":
-                        alth(command);
+                        everythingGood = alth(line);
+                        break;
+                    case "/lstt":
+                        lstt();
                         break;
                     case "/lstf":
                         lstf();
                         break;
-                    case "/lstt":
-                        lstt();
+                    case "/lstic":
+                        lstic();
                         break;
                     case "/lstfb":
                         lstfb();
@@ -89,144 +107,81 @@ public class View implements IView {
                     case "/lsth":
                         lsth();
                         break;
-                    case "/lstic":
-                        lstic();
+                    case "/lsts":
+                        lsts();
                         break;
                     case "/lsti":
                         lsti();
                         break;
-                    case "/rst":
-                        break;
                     case "/save":
-                        if (parts.length > 1) {
-                            save(parts[1]);
-                        } else {
-                            System.out.println("Hiba: A /save parancshoz meg kell adni a kimeneti fájl nevét.");
-                        }
+                        everythingGood = save(line);
                         break;
                     case "/load":
-                        if (parts.length > 1) {
-                            load(parts[1]);
-                        } else {
-                            System.out.println("Hiba: A /load parancshoz meg kell adni a mentett fájl elérési útját.");
-                        }
+                        everythingGood = load(line);
                         break;
-                    case "/breaktecton":
-                        if (parts.length > 2 && parts[1].equals("-t")) {
-                            String tectonName = parts[2];
-                            Tecton tecton = (Tecton)planet.get(tectonName);
-                            if (tecton != null) {
-                                tecton.BreakTecton();
-                            } else {
-                                System.out.println("Hiba: A megadott tekton nem található.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /breaktecton parancshoz meg kell adni a tekton nevét (-t kapcsolóval).");
-                        }
-                        break;
-                    case "/growfungusbody":
-                        if (parts.length > 4 && parts[1].equals("-f") && parts[3].equals("-t")) {
-                            String fungusName = parts[2];
-                            String tectonName = parts[4];
-                            Fungus fungus = (Fungus)planet.get(fungusName);
-                            Tecton tecton = (Tecton)planet.get(tectonName);
-                            if (fungus != null && tecton != null) {
-                                controller.GrowFungusBody(tecton, fungus);
-                            } else {
-                                System.out.println("Hiba: A megadott gombafaj vagy tekton nem található.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /growfungusbody parancshoz meg kell adni a gombafaj és tekton nevét (-f és -t kapcsolókkal).");
-                        }
-                        break;
-                    case "/absorbhypha":
-                        if (parts.length > 2 && parts[1].equals("-t")) {
-                            String tectonName = parts[2];
-                            Tecton tecton = (Tecton)planet.get(tectonName);
-                            if (tecton != null) {
-                                controller.AbsorbHypha(tecton);
-                            } else {
-                                System.out.println("Hiba: A megadott tekton nem található.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /absorbhypha parancshoz meg kell adni a tekton nevét (-t kapcsolóval).");
-                        }
-                        break;
-                    case "/producespore":
-                        if (parts.length > 2 && parts[1].equals("-fb")) {
-                            String fungusBodyName = parts[2];
-                            FungusBody fungusBody = (FungusBody)planet.get(fungusBodyName);
-                            if (fungusBody != null) {
-                                controller.ProduceSpore(fungusBody);
-                            } else {
-                                System.out.println("Hiba: A megadott gombatest nem található.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /producespore parancshoz meg kell adni a gombatest nevét (-fb kapcsolóval).");
-                        }
-                        break;
-                    case "/shootspores":
-                        if (parts.length > 2 && parts[1].equals("-fb")) {
-                            String fungusBodyName = parts[2];
-                            FungusBody fungusBody = (FungusBody)planet.get(fungusBodyName);
-                            if (fungusBody != null) {
-                                controller.ShootSpores(fungusBody);
-                            } else {
-                                System.out.println("Hiba: A megadott gombatest nem található.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /shootspores parancshoz meg kell adni a gombatest nevét (-fb kapcsolóval).");
-                        }
-                        break;
-                    case "/diefungusbody":
-                        if (parts.length > 2 && parts[1].equals("-fb")) {
-                            String fungusBodyName = parts[2];
-                            FungusBody fungusBody = (FungusBody)planet.get(fungusBodyName);
-                            if (fungusBody != null) {
-                                controller.DieFungusBody(fungusBody);
-                            } else {
-                                System.out.println("Hiba: A megadott gombatest nem található.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /diefungusbody parancshoz meg kell adni a gombatest nevét (-fb kapcsolóval).");
-                        }
-                        break;
-                    case "/growhypha":
-                        if (parts.length > 6 && parts[1].equals("-f") && parts[3].equals("-ts") && parts[5].equals("-tn")) {
-                            String fungusName = parts[2];
-                            String tectonFromName = parts[4];
-                            String tectonToName = parts[6];
-                            Fungus fungus = (Fungus)planet.get(fungusName);
-                            Tecton tectonFrom = (Tecton)planet.get(tectonFromName);
-                            Tecton tectonTo = (Tecton)planet.get(tectonToName);
-                            if (fungus != null && tectonFrom != null && tectonTo != null) {
-                                controller.GrowHypha(fungus, tectonFrom, tectonTo);
-                            } else {
-                                System.out.println("Hiba: A megadott gombafaj vagy tektonok nem találhatók.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /growhypha parancshoz meg kell adni a gombafaj és tektonok nevét (-f, -ts és -tn kapcsolókkal).");
-                        }
-                        break;
-                    case "/atrophyofhypha":
-                        if (parts.length > 2 && parts[1].equals("-h")) {
-                            String hyphaName = parts[2];
-                            Hypha hypha = (Hypha)planet.get(hyphaName);
-                            if (hypha != null) {
-                                controller.AtrophyOfHypha(hypha);
-                            } else {
-                                System.out.println("Hiba: A megadott gombafonal nem található.");
-                            }
-                        } else {
-                            System.out.println("Hiba: A /atrophyofhypha parancshoz meg kell adni a gombafonal nevét (-h kapcsolóval).");
-                        }
+                    case "/rst":
+                        rst();
                         break;
                     default:
-                        System.out.println("Ismeretlen parancs. Használd a /help parancsot a segítségért.");
+                        System.out.println("#Nem letezo parancs: "+select);
+                        everythingGood = false;
+                        break;
                 }
-            }*/
+            }
+            else{
+                switch (select) {
+                    case "breaktecton":
+                        everythingGood = controller.BreakTecton(line); // Valami gond van!
+                        break;
+                    case "growfungusbody":
+                        everythingGood = controller.GrowFungusBody(line);
+                        break;
+                    case "growfungusbodyfrominsect":
+                        everythingGood = controller.GrowFungusBodyFromInsect(line);
+                        break;
+                    case "absorbhypha":
+                        everythingGood = controller.AbsorbHypha(line); // Kellene még a hifákra egy atrophy hívás!
+                        break;
+                    case "producespore":
+                        everythingGood = controller.ProduceSpore(line);
+                        break;
+                    case "shootspores":
+                        everythingGood = controller.ShootSpores(line); // Rossz plane-hez hozzáadási sorrend!
+                        break;
+                    case "diefungusbody":
+                        everythingGood = controller.DieFungusBody(line);
+                        break;
+                    case "growhypha":
+                        everythingGood = controller.GrowHypha(line);
+                        break;
+                    case "atrophyofhypha":
+                        everythingGood = controller.AtrophyOfHypha(line);
+                        break;
+                    case "eatstunnedinsect":
+                        everythingGood = controller.EatStunnedInsect(line);
+                        break;
+                    case "eatspore":
+                        everythingGood = controller.EatSpore(line);
+                        break;
+                    case "moveinsect":
+                        everythingGood = controller.MoveInsect(line); // Kezelési hiba!
+                        break;
+                    case "cuthypha":
+                        everythingGood = controller.CutHypha(line);
+                        break;
+                    default:
+                        System.out.println("#Nem letezo parancs: "+select);
+                        everythingGood = false;
+                        break;
+                }
+            }
+            if (!everythingGood){
+                planet = new LinkedHashMap<>();
+                planet.putAll(oldPlanet);
+            }
         }
-        //scanner.close();
+        System.out.println("#Viszontlatasra és tovabbi szep napot!");
+        scanner.close();
     }
 
     /**
@@ -776,28 +731,6 @@ public class View implements IView {
                         }
                     }
                     String neighbourNames = "";
-                    /*for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                        Object obj2 = entry2.getValue();
-                        boolean isNeighbour = false;
-                        try {
-                            ITectonView neighbourView = (ITectonView) obj2;
-                            for (ITectonView oneNeighbourView : ((ITectonView) neighbourView).GetNeighbours()) {
-                                if (oneNeighbourView.equals(tectonView)) {
-                                    isNeighbour = true;
-                                    break;
-                                }
-                            }
-                            if (isNeighbour) {
-                                if (neighbourNames.equals("")) {
-                                    neighbourNames = entry2.getKey();
-                                } else {
-                                    neighbourNames += "," + entry2.getKey();
-                                }
-                            }
-                        } catch (ClassCastException ccex) {
-                            // Wrong element, we do nothing and move on.
-                        }
-                    }*/
                     for (ITectonView oneNeighbourView : tectonView.GetNeighbours()) {
                         for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
                             Object obj2 = entry2.getValue();
@@ -1023,27 +956,44 @@ public class View implements IView {
                         }
                     }
                     String tectonNames = "";
-                    int num = 0;
-                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                        Object obj2 = entry2.getValue();
-                        try {
-                            ITectonView tectonView = (ITectonView) obj2;
-                            for (ITectonView itView : hyphaView.GetTectons()) {
-                                if (tectonView.equals(itView)) {
-                                    if (tectonNames.equals("")) {
-                                        tectonNames = entry2.getKey();
-                                        num++;
+                    /*for (ITectonView oneNeighbourView : tectonView.GetNeighbours()) {
+                        for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                            Object obj2 = entry2.getValue();
+                            boolean isNeighbour = false;
+                            try {
+                                ITectonView neighbourView = (ITectonView) obj2;
+                                if (oneNeighbourView.equals(neighbourView)) {
+                                    isNeighbour = true;
+                                }
+                                if (isNeighbour) {
+                                    if (neighbourNames.equals("")) {
+                                        neighbourNames = entry2.getKey();
                                     } else {
-                                        tectonNames += "," + entry2.getKey();
-                                        num++;
+                                        neighbourNames += "," + entry2.getKey();
                                     }
                                 }
+                            } catch (ClassCastException ccex) {
+                                // Wrong element, we do nothing and move on.
                             }
-                            if (num == hyphaView.GetTectons().size()) {
-                                break;
+                        }
+                    }*/
+                    for (ITectonView oneTectonView : hyphaView.GetTectons()) {
+                        for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                            Object obj2 = entry2.getValue();
+                            try {
+                                ITectonView tectonView = (ITectonView) obj2;
+                                if (oneTectonView.equals(tectonView)) {
+                                    if (tectonNames.equals("")) {
+                                        tectonNames = entry2.getKey();
+                                        break;
+                                    } else {
+                                        tectonNames += "," + entry2.getKey();
+                                        break;
+                                    }
+                                }
+                            } catch (ClassCastException ccex) {
+                                // Wrong element, we do nothing and move on.
                             }
-                        } catch (ClassCastException ccex) {
-                            // Wrong element, we do nothing and move on.
                         }
                     }
                     writer.write(hyphaView.ToString(hyphaName + ","
@@ -2261,26 +2211,25 @@ public class View implements IView {
                     }
                 }
                 String neighbourNames = "";
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    boolean isNeighbour = false;
-                    try {
-                        ITectonView neighbourView = (ITectonView) obj2;
-                        for (ITectonView oneNeighbourView : ((ITectonView) neighbourView).GetNeighbours()) {
-                            if (oneNeighbourView.equals(tectonView)) {
+                for (ITectonView oneNeighbourView : tectonView.GetNeighbours()) {
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        boolean isNeighbour = false;
+                        try {
+                            ITectonView neighbourView = (ITectonView) obj2;
+                            if (oneNeighbourView.equals(neighbourView)) {
                                 isNeighbour = true;
-                                break;
                             }
-                        }
-                        if (isNeighbour) {
-                            if (neighbourNames.equals("")) {
-                                neighbourNames = entry2.getKey();
-                            } else {
-                                neighbourNames += "," + entry2.getKey();
+                            if (isNeighbour) {
+                                if (neighbourNames.equals("")) {
+                                    neighbourNames = entry2.getKey();
+                                } else {
+                                    neighbourNames += "," + entry2.getKey();
+                                }
                             }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
                 }
                 String fungusBodyName = "";
@@ -2297,11 +2246,11 @@ public class View implements IView {
                     }
                 }
                 System.out.println(tectonView
-                        .ToString(tectonName + "," + ((insectNames.equals("")) ? "" : "[" + insectNames + "]") + ","
-                                + ((hyphaNames.equals("")) ? "" : "[" + hyphaNames + "]") + ","
-                                + ((sporeNames.equals("")) ? "" : "[" + sporeNames + "]") + ","
-                                + ((neighbourNames.equals("")) ? "" : "[" + neighbourNames + "]") + ","
-                                + fungusBodyName));
+                .ToString(tectonName + "," + ((insectNames.equals("")) ? "" : "[" + insectNames + "]") + ","
+                        + ((hyphaNames.equals("")) ? "" : "[" + hyphaNames + "]") + ","
+                        + ((sporeNames.equals("")) ? "" : "[" + sporeNames + "]") + ","
+                        + ((neighbourNames.equals("")) ? "" : "[" + neighbourNames + "]") + ","
+                        + fungusBodyName));
             } catch (ClassCastException ccex) {
                 // Wrong element, we do nothing and move on.
             }
@@ -2499,32 +2448,28 @@ public class View implements IView {
                     }
                 }
                 String tectonNames = "";
-                int num = 0;
-                for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
-                    Object obj2 = entry2.getValue();
-                    try {
-                        ITectonView tectonView = (ITectonView) obj2;
-                        for (ITectonView itView : hyphaView.GetTectons()) {
-                            if (tectonView.equals(itView)) {
+                for (ITectonView oneTectonView : hyphaView.GetTectons()) {
+                    for (Map.Entry<String, Object> entry2 : planet.entrySet()) {
+                        Object obj2 = entry2.getValue();
+                        try {
+                            ITectonView tectonView = (ITectonView) obj2;
+                            if (oneTectonView.equals(tectonView)) {
                                 if (tectonNames.equals("")) {
                                     tectonNames = entry2.getKey();
-                                    num++;
+                                    break;
                                 } else {
                                     tectonNames += "," + entry2.getKey();
-                                    num++;
+                                    break;
                                 }
                             }
+                        } catch (ClassCastException ccex) {
+                            // Wrong element, we do nothing and move on.
                         }
-                        if (num == hyphaView.GetTectons().size()) {
-                            break;
-                        }
-                    } catch (ClassCastException ccex) {
-                        // Wrong element, we do nothing and move on.
                     }
                 }
                 System.out.println(hyphaView.ToString(hyphaName + ","
-                        + ((neighbourNames.equals("")) ? neighbourNames : "[" + neighbourNames + "]") + ","
-                        + fungusName + "," + ((tectonNames.equals("")) ? tectonNames : "[" + tectonNames + "]")));
+                + ((neighbourNames.equals("")) ? neighbourNames : "[" + neighbourNames + "]") + ","
+                + fungusName + "," + ((tectonNames.equals("")) ? tectonNames : "[" + tectonNames + "]")));
             } catch (ClassCastException ccex) {
                 // Wrong element, we do nothing and move on.
             }
@@ -2659,7 +2604,7 @@ public class View implements IView {
                             everythingGood = controller.Rand(line);
                             break;
                         case "/trigg":
-                            everythingGood = controller.Trigg(line); // Valami gond van! (EndOfRound)
+                            everythingGood = controller.Trigg(line);
                             break;
                         case "/turns":
                             everythingGood = controller.Turns(line);
@@ -2730,40 +2675,43 @@ public class View implements IView {
                 else{
                     switch (select) {
                         case "breaktecton":
-                            // Well...
+                            everythingGood = controller.BreakTecton(line);
                             break;
                         case "growfungusbody":
-                            // Well...
+                            everythingGood = controller.GrowFungusBody(line);
+                            break;
+                        case "growfungusbodyfrominsect":
+                            everythingGood = controller.GrowFungusBodyFromInsect(line);
                             break;
                         case "absorbhypha":
-                            // Well...
+                            everythingGood = controller.AbsorbHypha(line);
                             break;
                         case "producespore":
-                            // Well...
+                            everythingGood = controller.ProduceSpore(line);
                             break;
                         case "shootspores":
-                            // Well...
+                            everythingGood = controller.ShootSpores(line);
                             break;
                         case "diefungusbody":
-                            // Well...
+                            everythingGood = controller.DieFungusBody(line);
                             break;
                         case "growhypha":
-                            // Well...
+                            everythingGood = controller.GrowHypha(line);
                             break;
                         case "atrophyofhypha":
-                            // Well...
+                            everythingGood = controller.AtrophyOfHypha(line);
                             break;
                         case "eatstunnedinsect":
-                            // Well...
+                            everythingGood = controller.EatStunnedInsect(line);
                             break;
                         case "eatspore":
-                            // Well...
+                            everythingGood = controller.EatSpore(line);
                             break;
                         case "moveinsect":
-                            // Well...
+                            everythingGood = controller.MoveInsect(line);
                             break;
                         case "cuthypha":
-                            // Well...
+                            everythingGood = controller.CutHypha(line);
                             break;
                         default:
                             System.out.println("#Nem letezo parancs: "+select);

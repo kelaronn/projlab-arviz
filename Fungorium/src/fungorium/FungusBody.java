@@ -234,18 +234,17 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
 
         for(int i=0; i<neighbours.size(); ++i) {
             neighbours.get(i).AddSpore(hostFungus,isRandom,rand);
-            System.out.println(">[Tecton].AddSpore()");
         }
         if(isDeveloped){
             System.out.println("Developed shooting!");
             ArrayList<Tecton> nns = new ArrayList<>();
             for(int i=0; i<neighbours.size();++i){
                 nns=neighbours.get(i).GetNeighbours();
-                System.out.println(">[Tecton].GetNeighbours()");
-                for(int j=0; j < nns.size(); ++j) {
-                    if(!this.GetTecton().equals(nns.get(j))){
-                        nns.get(j).AddSpore(hostFungus,isRandom,rand);
-                        System.out.println("[Tecton].AddSpore()");
+                if (!nns.equals(GetTecton())) {
+                    for(int j=0; j < nns.size(); ++j) {
+                        if(!this.GetTecton().equals(nns.get(j)) && !GetTecton().GetNeighbours().contains(nns.get(j))){
+                            nns.get(j).AddSpore(hostFungus,isRandom,rand);
+                        }
                     }
                 }
             }
@@ -282,14 +281,16 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
                 sameTypeHypha.Atrophy();
                 //System.out.println(">[Hypha].Atrophy()");
             }
+            return true;
             //System.out.println(">[FungusBody].SetIsDead(true)");
             //System.out.println("Die() success.");
         }
         
         else{
             //System.out.println("Die() unsuccess, because FungusBody is already dead.");
+            return false;
         }
-        return false;
+       
     }
 
     /**

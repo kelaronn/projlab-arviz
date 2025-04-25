@@ -5,5 +5,5 @@ public interface IInsectController {
 
     boolean Move(Tecton t);
 
-    boolean Cut(Tecton t);
+    boolean Cut(Hypha h);
 }
