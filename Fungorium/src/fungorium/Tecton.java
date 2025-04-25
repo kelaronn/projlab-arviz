@@ -145,20 +145,17 @@ public abstract class Tecton implements ITectonController, ITectonView {
 //            t2.AddNeighbour(n);
 //            System.out.println(">[Tecton].AddNeighbour(n)");
 //        }
-        for (int i=0; i < hyphas.size(); i++){
-            RemoveHyphaFromTecton(hyphas.get(i));
-            System.out.println(">[Tecton].RemoveHyphaFromTecton(h)");
+        int hyphasSize = hyphas.size();
+        for (int i=0; i < hyphasSize; i++){
+            RemoveHypha(hyphas.getLast());
         }
         if(fungusBody != null){
             fungusBody.GetHostFungus().RemoveBody(fungusBody);
-            System.out.println(">[Fungus].RemoveBody(fungusBody)");
         }
         SetFungusBody(null);
-        System.out.println(">[Tecton].SetFungusBody(null)");
 
         for(int i = 0; i < spores.size(); i++){
             spores.remove(spores.get(spores.size()-1));
-            System.out.println(">[Tecton].spores.remove(spores.get(spores.size()-1))");
         }
 
         Tecton nt = this.CreateCopy();
@@ -333,6 +330,12 @@ public abstract class Tecton implements ITectonController, ITectonView {
             else{                                                  // res hifa
                 h.GetHostFungus().RemoveHypha(h);
                 hyphas.remove(h);
+                for (int i = 0; i < h.GetNeighbours().size(); i++) {
+                    if( h.GetNeighbours().get(i).GetTectons().size() == 1 &&
+                            h.GetNeighbours().get(i).GetTectons().contains(h.GetTectons().getFirst()) ) {
+                        h.GetNeighbours().get(i).Atrophy();
+                    }
+                }
                 //System.out.println(">[Tecton].RemoveHypha(h)");
             }
         }

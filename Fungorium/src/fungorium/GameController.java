@@ -6,7 +6,7 @@ import java.util.*;
 public class GameController {
     private Random rand = new Random();
     private IView view;
-    static private List<Object> players = new ArrayList<>();
+    static private HashSet<Object> players = new HashSet<>();
     private Object currentPlayer;
     private int playerIndex = 0;
     private HashMap<Insect, Integer> InsectMovesLeft = new HashMap<Insect, Integer>();
@@ -15,6 +15,15 @@ public class GameController {
 
     public GameController(IView view){
         this.view = view;
+    }
+
+    public void insectInit(){
+        LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
+        for(Map.Entry<String,Object> entry : planet.entrySet()){
+            if(entry.getKey().matches("I\\d+")){           // insect max lepesek beallitasa
+                InsectMovesLeft.put( (Insect)entry.getValue(), ((Insect) entry.getValue()).GetSpeed() );
+            }
+        }
     }
 
     /**
@@ -33,7 +42,7 @@ public class GameController {
                 InsectMovesLeft.put( (Insect)entry.getValue(), ((Insect) entry.getValue()).GetSpeed() );
             }
         }
-        currentPlayer = players.get(playerIndex);
+        currentPlayer = players.toArray()[0];       // elso player
     }
 
     /**
@@ -93,9 +102,9 @@ public class GameController {
             if(tc != null && isRandom){                                     // ha be van kapcsolva a random
                 int chance = rand.nextInt(100);
                 if(chance < 5){                                             // dobunk a kockaval, 5% esellyel torik el a tecton
-                   /*if( !BreakTecton(tc) ){
+                   if( !BreakTecton("breaktecton -t "+tKey) ){
                        System.err.println("#A tekton nem tudott szettorni!");
-                   }*/
+                   }
                 }
             }
         }
@@ -225,7 +234,7 @@ public class GameController {
                     playerIndex++;
                 else
                     playerIndex = 0;
-                currentPlayer = players.get(playerIndex);
+                currentPlayer = players.toArray()[playerIndex];
                 return true;
             }
             else {
@@ -1553,18 +1562,18 @@ public class GameController {
             }
         }
 
-        /*if(!InsectMovesLeft.containsKey(insect) || InsectMovesLeft.get(insect) <= 0){            // nincs ilyen rovar vagy elfogyott a lepese
+        if(!InsectMovesLeft.containsKey(insect) || InsectMovesLeft.get(insect) <= 0){            // nincs ilyen rovar vagy elfogyott a lepese
             System.err.println("#Nem tudott a rovar atlepni a tektonra!");
             return false;
-        }*/
+        }
 
         boolean success = insect.Move(tecton);
         if(!success){
             System.err.println("#Nem tudott a rovar atlepni a tektonra!");
             return false;
         }
-        /*int moves = InsectMovesLeft.get(insect);
-        InsectMovesLeft.put( (Insect)insect,moves-1);*/
+        int moves = InsectMovesLeft.get(insect);
+        InsectMovesLeft.put( (Insect)insect,moves-1);
         System.out.println("#Sikeres rovar lepes masik tektonra!");
         return true;
     }
@@ -1646,7 +1655,7 @@ public class GameController {
     }
 
     public void SetToDefault(){
-        players = new ArrayList<>();
+        players = new HashSet<>();
         currentPlayer = null;
         playerIndex = 0;
         isRandom = true;

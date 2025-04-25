@@ -1895,6 +1895,7 @@ public class View implements IView {
         tecton.AddInsect(actInsect);
         planet.put(name, actInsect);
         iCtr++;
+        controller.insectInit();
         System.out.println("#Sikeres rovar letrehozas "+name+" neven!");
         return true;
     }
