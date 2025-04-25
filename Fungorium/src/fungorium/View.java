@@ -146,7 +146,7 @@ public class View implements IView {
                         everythingGood = controller.ProduceSpore(line);
                         break;
                     case "shootspores":
-                        everythingGood = controller.ShootSpores(line); // Rossz plane-hez hozzáadási sorrend!
+                        everythingGood = controller.ShootSpores(line);
                         break;
                     case "diefungusbody":
                         everythingGood = controller.DieFungusBody(line);
