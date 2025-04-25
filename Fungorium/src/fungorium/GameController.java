@@ -6,7 +6,7 @@ import java.util.*;
 public class GameController {
     private Random rand = new Random();
     private IView view;
-    private List<Object> players = new ArrayList<>();
+    static private List<Object> players = new ArrayList<>();
     private Object currentPlayer;
     private int playerIndex = 0;
     private HashMap<Insect, Integer> InsectMovesLeft = new HashMap<Insect, Integer>();
@@ -22,7 +22,6 @@ public class GameController {
      */
     public void playersInit(){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-
         for(Map.Entry<String,Object> entry : planet.entrySet()){
             if(entry.getKey().matches("F\\d+")){                // Gomba
                 players.add( (Fungus)entry.getValue() );

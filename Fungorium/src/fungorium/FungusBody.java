@@ -234,6 +234,7 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
 
         for(int i=0; i<neighbours.size(); ++i) {
             neighbours.get(i).AddSpore(hostFungus,isRandom,rand);
+            sporeCount--;
         }
         if(isDeveloped){
             System.out.println("Developed shooting!");
@@ -243,13 +244,16 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
                 if (!nns.equals(GetTecton())) {
                     for(int j=0; j < nns.size(); ++j) {
                         if(!this.GetTecton().equals(nns.get(j)) && !GetTecton().GetNeighbours().contains(nns.get(j))){
+                            if(sporeCount == 0)
+                                break;
                             nns.get(j).AddSpore(hostFungus,isRandom,rand);
+                            sporeCount--;
                         }
                     }
                 }
             }
         }
-        sporeCount-=4;
+        //sporeCount-=4;
         shotsLeft--;
         System.out.println("ShootSpores success");
         return true;
