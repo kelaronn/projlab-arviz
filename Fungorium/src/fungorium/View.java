@@ -1622,6 +1622,7 @@ public class View implements IView {
             fungusType.AddHypha(actHypha);
             tectonTN.GetHyphas().add(actHypha);
             planet.put(name, actHypha);
+            hCtr++;
             System.out.println("#Sikeres gombafonal letrehozas "+name+" neven!");
             return true;
         }
