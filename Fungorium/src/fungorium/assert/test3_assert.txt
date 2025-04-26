@@ -1,0 +1,3 @@
+NarrowTecton,T1,,,[S1],,
+Fungus,F1,,
+Spore,S1,1,0,F1,T1

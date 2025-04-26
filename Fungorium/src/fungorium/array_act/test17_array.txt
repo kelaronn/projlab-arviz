@@ -1,0 +1,11 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addt -n T2 -t n
+/addt -n T3 -t n
+/altt -n T1 -nh T2
+/altt -n T2 -nh T3
+/addf -n F1
+/addfb -n FB1 -f F1 -t T1 -sc 5
+shootspores -fb FB1
+/save test17_out.txt

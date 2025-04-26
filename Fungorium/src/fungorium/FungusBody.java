@@ -227,7 +227,7 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
         ArrayList<Tecton> neighbours = new ArrayList<>(); 
         neighbours=tecton.GetNeighbours();
         System.out.println(">[Tecton].GetNeighbours()");
-        if (neighbours == null) {
+        if (neighbours.isEmpty()) {
             System.err.println("Error: The tecton of the fungus body has no neighbours.");
             return false;
         } 

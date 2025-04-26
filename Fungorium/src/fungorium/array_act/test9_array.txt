@@ -4,3 +4,5 @@
 /addt -n T1 -t b
 /addfb -n FB1 -f F1 -t T1
 /addh -n H1 -f F1 -ts T1
+absorbhypha -t T1
+/save test9_out.txt

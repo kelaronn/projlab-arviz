@@ -6,3 +6,5 @@
 /addf -n F1
 /addfb -n FB1 -f F1 -t T1
 /addh -n H1 -f F1 -ts T1
+growhypha -f F1 -ts T1 -tn T2
+/save test19_out.txt

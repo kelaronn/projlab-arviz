@@ -1,0 +1,19 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addt -n T2 -t wi
+/addt -n T3 -t n
+/altt -n T1 -nh T2
+/altt -n T2 -nh T3
+/addf -n F1
+/addf -n F2
+/addfb -n FB1 -f F1 -t T1
+/addfb -n FB2 -f F2 -t T3
+/addh -n H1 -f F1 -ts T1
+/addh -n H2 -f F2 -ts T3
+/addh -n H3 -f F2 -ts T3 -tn T2
+/addh -n H4 -f F2 -ts T2
+/alth -n H2 -nh H3
+/alth -n H3 -nh H4
+growhypha -f F1 -ts T1 -tn T2
+/save test20_out.txt

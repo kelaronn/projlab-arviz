@@ -1187,7 +1187,6 @@ public class GameController {
                 fungi.add( (Fungus)planet.get(key) );
             }
         }
-        view.InchCtr();
         for(Fungus f : fungi){
             List<Hypha> hyphas = f.GetMycelium();
             for(Hypha h : hyphas){

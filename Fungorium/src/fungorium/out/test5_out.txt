@@ -1,0 +1,5 @@
+WeakTecton,T1,,,[S1,S2,S3],,
+Fungus,F1,,
+Spore,S1,1,0,F1,T1
+Spore,S2,1,0,F1,T1
+Spore,S3,1,0,F1,T1

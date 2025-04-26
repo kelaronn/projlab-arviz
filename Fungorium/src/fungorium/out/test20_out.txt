@@ -1,0 +1,13 @@
+NarrowTecton,T1,,[H1],,[T2],FB1
+WideTecton,T2,,[H3,H4,H5,H6],,[T1,T3],
+NarrowTecton,T3,,[H2],,[T2],FB2
+Fungus,F1,[FB1],[H1,H4,H5]
+Fungus,F2,[FB2],[H2,H3,H6]
+FungusBody,FB1,false,0,false,0,4,T1,F1
+FungusBody,FB2,false,0,false,0,4,T3,F2
+Hypha,H1,[H4],F1,[T1]
+Hypha,H2,[H3],F2,[T3]
+Hypha,H3,[H2,H6],F2,[T3,T2]
+Hypha,H4,[H1,H5],F1,[T1,T2]
+Hypha,H5,[H4],F1,[T2]
+Hypha,H6,[H3],F2,[T2]
