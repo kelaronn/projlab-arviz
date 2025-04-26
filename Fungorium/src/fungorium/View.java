@@ -442,7 +442,31 @@ public class View implements IView {
         Map<String, String[]> tectonNeighbors = new LinkedHashMap<>();
         Map<String, String[]> hyphaNeighbors = new LinkedHashMap<>();
 
-        try (Scanner scanner = new Scanner(new File(cmdParts[1]))) {
+        /// A fungorium mappa elérési útja
+        String fileName = cmdParts[1];
+        File folder = new File("fungorium/out");
+
+        // Ellenőrizzük, hogy a mappa létezik-e és könyvtár-e
+        if (!folder.exists() || !folder.isDirectory()) {
+            System.err.println("#A fungorium/out mappa nem találhato vagy nem mappa: " + folder.getPath());
+            return false;
+        }
+
+        // A megadott fájl elérési útja
+        File file = new File(folder, fileName);
+
+        // Ellenőrizzük, hogy a fájl létezik-e és .txt kiterjesztésű-e
+        if (!file.exists()) {
+            System.err.println("#A fajl nem talalható: " + file.getPath());
+            return false;
+        }
+        if (!fileName.endsWith(".txt")) {
+            System.err.println("#A megadott fajl nem .txt kiterjesztesu: " + fileName);
+            return false;
+        }
+
+        // Fájl tartalmának beolvasása BufferedReader és FileReader segítségével
+        try (Scanner scanner = new Scanner(file)) {
             planet.clear();
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -664,8 +688,31 @@ public class View implements IView {
             System.out.println("#Hiba a parameterezessel!");
             return false;
         }
+        String fileName = parts[1];
+
+        // A fungorium/array mappa elérési útja
+        File folder = new File("fungorium/out");
+
+        // Ellenőrizzük, hogy a mappa létezik-e, ha nem, létrehozzuk
+        if (!folder.exists()) {
+            folder.mkdirs(); // Létrehozza a fungorium/array mappát, ha nem létezik
+        } else if (!folder.isDirectory()) {
+            System.err.println("#A fungorium/out nem mappa: " + folder.getPath());
+            return false;
+        }
+
+        // A kimeneti fájl elérési útja
+        File file = new File(folder, fileName);
+
+        // Ellenőrizzük, hogy a fájlnév .txt kiterjesztésű-e
+        if (!fileName.endsWith(".txt")) {
+            System.err.println("#A megadott fajl nem .txt kiterjesztesu: " + fileName);
+            return false;
+        }
+
+        // Fájl tartalmának kiírása BufferedWriter és FileWriter segítségével
         // Writing
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(parts[1]))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             // Tectons:
             for (Map.Entry<String, Object> entry1 : planet.entrySet()) {
                 String tectonName = entry1.getKey();
@@ -2582,11 +2629,36 @@ public class View implements IView {
         }
         if (parts.length != 2) {
             System.out.println("#Hiba a parameterezessel!");
+            return false;
         }
-        try (BufferedReader reader = new BufferedReader(new FileReader(parts[1]))) {
+        // A fungorium mappa elérési útja
+        String fileName = parts[1];
+        File folder = new File("fungorium/array_act");
+
+        // Ellenőrizzük, hogy a mappa létezik-e és könyvtár-e
+        if (!folder.exists() || !folder.isDirectory()) {
+            System.err.println("#A fungorium/array_act mappa nem találhato vagy nem mappa: " + folder.getPath());
+            return false;
+        }
+
+        // A megadott fájl elérési útja
+        File file = new File(folder, fileName);
+
+        // Ellenőrizzük, hogy a fájl létezik-e és .txt kiterjesztésű-e
+        if (!file.exists()) {
+            System.err.println("#A fajl nem talalható: " + file.getPath());
+            return false;
+        }
+        if (!fileName.endsWith(".txt")) {
+            System.err.println("#A megadott fajl nem .txt kiterjesztesu: " + fileName);
+            return false;
+        }
+
+        // Fájl tartalmának beolvasása BufferedReader és FileReader segítségével
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             LinkedHashMap<String, Object> oldPlanet = new LinkedHashMap<>();
             oldPlanet.putAll(planet);
-            planet = new LinkedHashMap<>();
+            //planet = new LinkedHashMap<>();
             String line;
             boolean everythingGood = true;
             while ((line = reader.readLine()) != null) {
