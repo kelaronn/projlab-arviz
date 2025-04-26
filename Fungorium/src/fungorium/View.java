@@ -176,10 +176,10 @@ public class View implements IView {
                         break;
                 }
             }
-            if (!everythingGood){
+            /*if (!everythingGood){
                 planet = new LinkedHashMap<>();
                 planet.putAll(oldPlanet);
-            }
+            }*/
         }
         System.out.println("#Viszontlatasra és tovabbi szep napot!");
         scanner.close();
@@ -2793,12 +2793,12 @@ public class View implements IView {
                             break;
                     }
                 }
-                if (!everythingGood){
+                /*if (!everythingGood){
                     planet = new LinkedHashMap<>();
                     planet.putAll(oldPlanet);
                     System.out.println("#Hiba a vegrehajtas soran, bolygo visszaallitasa!");
                     return false;
-                }
+                }*/
             }
         } catch (IOException e) {
             System.out.println("#Hiba a fajl olvasása kozben: " + e.getMessage());
