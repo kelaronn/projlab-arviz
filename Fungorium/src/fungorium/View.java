@@ -34,6 +34,7 @@ public class View implements IView {
     public static void main(String[] args) {
         /*exec("/exec test0_array.txt");
          save("/save test0_out.txt");*/
+        System.out.println(System.getProperty("user.dir"));
         View view = new View();
         System.out.println("Fungorium game (prototype):");
         System.out.println("(Segitseg: /help)");

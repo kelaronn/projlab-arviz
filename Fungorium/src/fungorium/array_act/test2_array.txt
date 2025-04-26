@@ -1,0 +1,7 @@
+/rand d
+/turns d
+/addf -n F1
+/addt -n T1 -t n
+/addfb -n FB1 -f F1 -t T1
+growfungusbody -f F1 -t T1 -m s
+/save test2_out.txt

@@ -1,0 +1,3 @@
+NarrowTecton,T1,,,,FB1
+Fungus,F1,[FB1],
+FungusBody,FB1,false,0,false,0,4,T1,F1

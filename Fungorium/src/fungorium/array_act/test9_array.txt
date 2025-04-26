@@ -1,0 +1,6 @@
+/rand d
+/turns d
+/addf -n F1
+/addt -n T1 -t b
+/addfb -n FB1 -f F1 -t T1
+/addh -n H1 -f F1 -ts T1
