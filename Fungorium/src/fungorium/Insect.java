@@ -103,11 +103,19 @@ public class Insect implements IInsectController, IInsectView {
             System.err.println("Insect and Spore are not on the same Tecton");
             return false;
         }
-
+        if(eatenBy != null){
+            System.err.println("Insect is dead");
+            return false;
+        }
+        if(!cutAbility && speed == 0){
+            System.err.println("Insect is stunned");
+            return false;
+        }
         s.GiveEffect(this);
         hostColony.addNutrition(s.GetNutritionValue());
         tecton.RemoveSpore(s);
         return true;
+
     }
 
     /**
@@ -118,6 +126,15 @@ public class Insect implements IInsectController, IInsectView {
      */
     @Override
     public boolean Move(Tecton t) {
+        if(eatenBy != null){
+            System.err.println("Insect is dead");
+            return false;
+        }
+        if(!cutAbility && speed == 0){
+            System.err.println("Insect is stunned");
+            return false;
+        }
+
         if (t.GetHypha(t, tecton) != null || tecton.GetHypha(t, tecton) != null) {
             t.AddInsect(this);
 
@@ -142,6 +159,11 @@ public class Insect implements IInsectController, IInsectView {
         if (!cutAbility) {
             return false;
         }
+        if(eatenBy != null){
+            System.err.println("Insect is dead");
+            return false;
+        }
+
         if (h!=null && h.GetTectons().size()==2) {
             if (h.GetTectons().get(0).equals(tecton) || h.GetTectons().get(1).equals(tecton)) {
                 h.GetHostFungus().RemoveHypha(h);
