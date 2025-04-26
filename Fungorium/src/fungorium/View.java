@@ -367,6 +367,7 @@ public class View implements IView {
                 "-tn [Name]: Tekton neve, ahol végződik.");
         System.out.println("\n/adds: Leírás: Gomba spóra (Spore) hozzáadása a játékhoz.\nOpciók:\n" +
                 "-n [Name]: Gomba spóra neve.\n" +
+                "-f [Name]: Gombafaj neve.\n" +
                 "-tn [Name]: Tekton neve.\n" +
                 "-t [Type]: Gomba spóra típusa.\nsd: Gyorsító spóra (SpeedSpore).\n" +
                 "st: Hasító spóra (SplitSpore).\nsw: Lassító spóra (SlowSpore).\n" +
@@ -393,6 +394,7 @@ public class View implements IView {
         System.out.println(
                 "\n/load: Leírás: Játék visszatöltése mentett állapotból.\nOpciók:\n[Path]: Mentett fájl elérési útja (relatív).");
         System.out.println("\n/rst: Leírás: Játék kezdeti beolvasás és végrehajtás nélküli módba állítása.");
+        System.out.println("\n/exit: Leírás: Játékból kilépés.");
         System.out.println("\nbreaktecton: Leírás: Tekton kettétörése.\nOpciók:\n-t [Name]: Tekton neve.");
         System.out.println(
                 "\ngrowfungusbody: Leírás: Gombatest növesztése a tektonon.\nOpciók:\n-f [Name]: Gombafaj neve.\n-t [Name]: Tekton neve.");
