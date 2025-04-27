@@ -1,0 +1,6 @@
+NarrowTecton,T1,[I1],[H1],,,FB1
+Fungus,F1,[FB1],[H1]
+InsectColony,IC1,[I1],0
+FungusBody,FB1,false,0,false,0,4,T1,F1
+Hypha,H1,,F1,[T1]
+Insect,I1,2,true,0,IC1,T1,null
