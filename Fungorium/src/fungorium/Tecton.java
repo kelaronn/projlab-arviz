@@ -147,7 +147,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
 //        }
         int hyphasSize = hyphas.size();
         for (int i=0; i < hyphasSize; i++){
-            RemoveHypha(hyphas.getLast());
+            RemoveHypha( hyphas.get( hyphas.size() - 1 )); //hyphas.getLast());
         }
         if(fungusBody != null){
             fungusBody.GetHostFungus().RemoveBody(fungusBody);
@@ -229,7 +229,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
         //System.out.println(">[Tecton].SetFungusBody(fungusBody)");
 
         for(int i = 0; i < sporeCountToGrowFungus; i++){
-            spores.removeLast();
+            spores.remove(spores.size()-1); //spores.removeLast();
         }
         return true;
 
@@ -332,7 +332,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
                 hyphas.remove(h);
                 for (int i = 0; i < h.GetNeighbours().size(); i++) {
                     if( h.GetNeighbours().get(i).GetTectons().size() == 1 &&
-                            h.GetNeighbours().get(i).GetTectons().contains(h.GetTectons().getFirst()) ) {
+                            h.GetNeighbours().get(i).GetTectons().contains(h.GetTectons().get(0)) ){  //getFirst()) ) {
                         h.GetNeighbours().get(i).Atrophy();
                     }
                 }

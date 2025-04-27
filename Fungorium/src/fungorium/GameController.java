@@ -462,7 +462,7 @@ public class GameController {
             return false;
         }
 
-        FungusBody fb = fungus.GetBodies().getLast();
+        FungusBody fb = fungus.GetBodies().get( fungus.GetBodies().size() - 1);//getLast();
         view.IncfbCtr();
         String name = "FB"+ view.getfbCtr();
         planet.put(name,fb);
@@ -602,7 +602,7 @@ public class GameController {
             return false;
         }
 
-        FungusBody fb = fungus.GetBodies().getLast();
+        FungusBody fb = fungus.GetBodies().get( fungus.GetBodies().size() -1 );//getLast();
         view.IncfbCtr();
         String name = "FB"+ view.getfbCtr();
         planet.put(name,fb);
@@ -727,14 +727,14 @@ public class GameController {
                 IHyphaView hypha = (IHyphaView) entry.getValue();
                 List<Tecton> tectons = hypha.GetTectons();
                 if(tectons.size() == 1){                        // nem res hifa
-                    if (!tectons.getFirst().hyphas.contains(hypha) &&                // a tecton szerint nem taroljuk el
-                            hypha.GetTectons().contains(tectons.getFirst())) {        // de a hifa szerint igen
+                    if (!tectons.get(0)/*getFirst()*/.hyphas.contains(hypha) &&                // a tecton szerint nem taroljuk el
+                            hypha.GetTectons().contains(tectons.get(0)/*getFirst()*/)) {        // de a hifa szerint igen
                         keysToRemove.add(entry.getKey());
                     }
                 }
                 else{                                          // res hifa
-                    if (!tectons.getLast().hyphas.contains(hypha) &&                // a tecton szerint nem taroljuk el
-                            hypha.GetTectons().contains(tectons.getLast())) {        // de a hifa szerint igen
+                    if (!tectons.get(tectons.size()-1)/*getLast()*/.hyphas.contains(hypha) &&                // a tecton szerint nem taroljuk el
+                            hypha.GetTectons().contains(tectons.get(tectons.size()-1)/*getLast()*/)) {        // de a hifa szerint igen
                         keysToRemove.add(entry.getKey());
                     }
                 }
@@ -1448,7 +1448,7 @@ public class GameController {
         if(insectCountBefore != insectCountAfter){
             view.InciCtr();
             String name = "I"+view.getiCtr();
-            Insect nInsect = insectView.GetTecton().GetInsects().getLast();
+            Insect nInsect = insectView.GetTecton().GetInsects().get(0);  //getLast();
             planet.put(name, nInsect );
             InsectMovesLeft.put(nInsect, nInsect.GetSpeed());
         }
