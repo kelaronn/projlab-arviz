@@ -1,0 +1,6 @@
+NarrowTecton,T1,[I1],,,,
+NarrowTecton,T2,,,[S1],,
+Fungus,F1,,
+InsectColony,IC1,[I1],0
+Spore,S1,5,0,F1,T2
+Insect,I1,2,true,0,IC1,T1,null
