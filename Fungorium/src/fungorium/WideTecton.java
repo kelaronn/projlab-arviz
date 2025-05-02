@@ -37,9 +37,6 @@ public class WideTecton extends Tecton {
      */
     @Override
     public boolean AddHypha(Fungus fungus, Tecton t0) {
-        if(!neighbours.contains(t0)){ // nincs a két tecton egymás mellett
-            return false;
-        }
         // lehet rajta más fajú hifa, de ugyanolyan fajú nem.
         for(Hypha h : GetHyphas()){
             if(h.GetHostFungus().equals(fungus)){
@@ -51,6 +48,9 @@ public class WideTecton extends Tecton {
             fungus.AddHypha(hypha);
             hyphas.add(hypha);
             return true;
+        }
+        if(!neighbours.contains(t0)){ // nincs a két tecton egymás mellett
+            return false;
         }
         boolean HasSameFungus = false;
         Hypha actHypha = null;
@@ -83,6 +83,37 @@ public class WideTecton extends Tecton {
         hyphas.add(hyphaOnTecton);
         fungus.AddHypha(hyphaBetweenTectons);
         fungus.AddHypha(hyphaOnTecton);
+        return true;
+    }
+
+    @Override
+    public boolean simpleAddHypha(Fungus fungus, Tecton t0){
+        // ha nincs megadva szomszédos tekton, csak lerak egy hifát
+        if(t0 == null){
+            // lehet rajta más fajú hifa, de ugyanolyan fajú nem.
+            for(Hypha h : GetHyphas()){
+                if(h.GetHostFungus().equals(fungus) && h.GetTectons().size()==1)
+                {
+                    return false;
+                }
+            }
+            Hypha hypha = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));
+            fungus.AddHypha(hypha);
+            hyphas.add(hypha);
+            return true;
+        }
+        if(!neighbours.contains(t0)){ // nincs a két tecton egymás mellett
+            return false;
+        }
+        for(Hypha h : GetHyphas()){
+            if(h.GetHostFungus().equals(fungus) && h.GetTectons().get(h.GetTectons().size()-1).equals(this))
+            {
+                return false;
+            }
+        }
+        Hypha hyphaBetweenTectons = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0, this)));
+        hyphas.add(hyphaBetweenTectons);
+        fungus.AddHypha(hyphaBetweenTectons);
         return true;
     }
 

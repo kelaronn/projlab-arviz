@@ -432,9 +432,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
             return;
 
         h.GetHostFungus().RemoveHypha(h);
-        System.out.println(">[Fungus].RemoveHypha(h)");
         t2.hyphas.remove(h);
-        System.out.println(">[Tecton].hyphas.remove(h)");
     }
 
     /**
@@ -460,7 +458,6 @@ public abstract class Tecton implements ITectonController, ITectonView {
         }
         for(Hypha h : t2.hyphas){
             List<Tecton> tectons = h.GetTectons();
-            System.out.println(">[Hypha].GetTectons()");
             if( (tectons.contains(t1) && tectons.contains(t2))
                 /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1))*/ ){
                 return h;

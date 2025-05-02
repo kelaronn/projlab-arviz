@@ -34,11 +34,6 @@ public class NarrowTecton extends Tecton {
      */
     @Override
     public boolean AddHypha(Fungus fungus, Tecton t0) {
-        if(!neighbours.contains(t0)) // nincs a két tekton egymás mellett
-        {
-            return false;
-        }
-
         if (!hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
             return false;
 
@@ -49,7 +44,10 @@ public class NarrowTecton extends Tecton {
             hyphas.add(hypha);
             return true;
         }
-
+        if(!neighbours.contains(t0)) // nincs a két tekton egymás mellett
+        {
+            return false;
+        }
         boolean hasSameFungus = false;
         Hypha actHypha = null;
         for (Hypha hypha : t0.hyphas) {
@@ -83,6 +81,46 @@ public class NarrowTecton extends Tecton {
         hyphas.add(hyphaOnTecton);
         fungus.AddHypha(hyphaBetweenTectons);
         fungus.AddHypha(hyphaOnTecton);
+        return true;
+    }
+
+    @Override
+    public boolean simpleAddHypha(Fungus fungus, Tecton t0){
+        if (!hyphas.isEmpty()) // csak NarrowTecton esetén, ha már van rajta akármi, nem tud nőni. @override a többiben.
+        {
+            for (Hypha hypha : hyphas) {
+                if (!hypha.GetHostFungus().equals(fungus)) {
+                    return false;
+                }
+            }
+            
+        }
+        // ha nincs megadva szomszédos tekton, csak lerak egy hifát
+        if(t0 == null){
+            for(Hypha h : GetHyphas()){
+                if(h.GetHostFungus().equals(fungus) && h.GetTectons().size()==1)
+                {
+                    return false;
+                }
+            }
+            Hypha hypha = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));
+            fungus.AddHypha(hypha);
+            hyphas.add(hypha);
+            return true;
+        }
+        if(!neighbours.contains(t0)) // nincs a két tekton egymás mellett
+        {
+            return false;
+        }
+        for(Hypha h : GetHyphas()){
+            if(h.GetHostFungus().equals(fungus) && h.GetTectons().get(h.GetTectons().size()-1).equals(this))
+            {
+                return false;
+            }
+        }
+        Hypha hyphaBetweenTectons = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(t0, this)));
+        hyphas.add(hyphaBetweenTectons);
+        fungus.AddHypha(hyphaBetweenTectons);
         return true;
     }
     

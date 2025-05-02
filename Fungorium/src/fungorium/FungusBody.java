@@ -226,7 +226,6 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
 
         ArrayList<Tecton> neighbours = new ArrayList<>(); 
         neighbours=tecton.GetNeighbours();
-        System.out.println(">[Tecton].GetNeighbours()");
         if (neighbours.isEmpty()) {
             System.err.println("Error: The tecton of the fungus body has no neighbours.");
             return false;
@@ -302,7 +301,6 @@ public class FungusBody implements IFungusBodyView, IFungusBodyController {
      */
     @Override
     public boolean ProduceSpore(){
-        System.out.println(">[FungusBody].GetIsDead()");
         if(!this.GetIsDead()){
             sporeCount++;
             //System.out.println("ProduceSpore success.");

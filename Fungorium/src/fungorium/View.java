@@ -1350,61 +1350,21 @@ public class View implements IView {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
             return false;
         }
-        Fungus fungusType = null;
+        Fungus actFungus = null;
         try {
-            fungusType = (Fungus)planet.get(args.get("f"));
+            actFungus = (Fungus)planet.get(args.get("f"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
             return false;
         }
-        fungusType = (Fungus)planet.get(args.get("f"));
+        actFungus = (Fungus)planet.get(args.get("f"));
         if (planet.get(args.get("t"))==null) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
             return false;
         }
         Tecton tecton = null;
-        boolean castError = false;
         try {
-            try {
-                tecton = (BarrenTecton)planet.get(args.get("t"));
-            } catch (ClassCastException ccex) {
-                castError = true;
-            }
-            if (castError) {
-                try {
-                    tecton = (NarrowTecton)planet.get(args.get("t"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (VitalTecton)planet.get(args.get("t"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (WeakTecton)planet.get(args.get("t"));
-                    castError = false;
-                    System.out.println("#Gyenge tektonra a gombatest novesztes nem lehetseges!");
-                    return false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (WideTecton)planet.get(args.get("t"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) tecton = (BarrenTecton)planet.get(args.get("t"));
+            tecton = (Tecton)planet.get(args.get("t"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
             return false;
@@ -1438,8 +1398,8 @@ public class View implements IView {
             return false;
         }
         int shotLimit = args.containsKey("sl") ? parseIntNumberMinZero(args.get("sl")) : 4;
-        FungusBody actFungusBody = new FungusBody(tecton, fungusType, fullyDeveloped, age, isDead, sporeCount, shotLimit);
-        fungusType.AddBody(actFungusBody);
+        FungusBody actFungusBody = new FungusBody(tecton, actFungus, fullyDeveloped, age, isDead, sporeCount, shotLimit);
+        actFungus.AddBody(actFungusBody);
         tecton.SetFungusBody(actFungusBody);
         planet.put(name, actFungusBody);
         fbCtr++;
@@ -1491,61 +1451,21 @@ public class View implements IView {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
             return false;
         }
-        Fungus fungusType = null;
+        Fungus actFungus = null;
         try {
-            fungusType = (Fungus)planet.get(args.get("f"));
+            actFungus = (Fungus)planet.get(args.get("f"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
             return false;
         }
-        fungusType = (Fungus)planet.get(args.get("f"));
+        actFungus = (Fungus)planet.get(args.get("f"));
         if (planet.get(args.get("ts"))==null) {
             System.out.println("#Nincs ilyen tekton (-ts): "+args.get("ts"));
             return false;
         }
         Tecton tectonTS = null;
-        boolean maxLimitTS = true;
-        boolean castError = false;
         try {
-            try {
-                tectonTS = (BarrenTecton)planet.get(args.get("ts"));
-            } catch (ClassCastException ccex) {
-                castError = true;
-            }
-            if (castError) {
-                try {
-                    tectonTS = (NarrowTecton)planet.get(args.get("ts"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tectonTS = (VitalTecton)planet.get(args.get("ts"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tectonTS = (WeakTecton)planet.get(args.get("ts"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tectonTS = (WideTecton)planet.get(args.get("ts"));
-                    maxLimitTS = false;
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) tectonTS = (BarrenTecton)planet.get(args.get("ts"));
+            tectonTS = (Tecton)planet.get(args.get("ts"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-ts): "+args.get("ts"));
             return false;
@@ -1560,48 +1480,8 @@ public class View implements IView {
                 return false;
             }
             Tecton tectonTN = null;
-            boolean maxLimitTN = true;
-            castError = false;
             try {
-                try {
-                    tectonTN = (BarrenTecton)planet.get(args.get("tn"));
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-                if (castError) {
-                    try {
-                        tectonTN = (NarrowTecton)planet.get(args.get("tn"));
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) {
-                    try {
-                        tectonTN = (VitalTecton)planet.get(args.get("tn"));
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) {
-                    try {
-                        tectonTN = (WeakTecton)planet.get(args.get("tn"));
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) {
-                    try {
-                        tectonTN = (WideTecton)planet.get(args.get("tn"));
-                        maxLimitTN = false;
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) tectonTN = (BarrenTecton)planet.get(args.get("tn"));
+                tectonTN = (Tecton)planet.get(args.get("tn"));
             } catch (ClassCastException ccex) {
                 System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
                 return false;
@@ -1611,38 +1491,37 @@ public class View implements IView {
                 return false;
             }
             for (Hypha hypha : tectonTN.GetHyphas()) {
-                if (maxLimitTN && !fungusType.equals(hypha.GetHostFungus())) {
-                    System.out.println("#Nincs hely a tektonon (-tn): "+args.get("tn"));
-                    return false;
-                }
-                else if (hypha.GetHostFungus().equals(fungusType) && hypha.GetTectons().size()==2) {
+                if (hypha.GetHostFungus().equals(actFungus) && hypha.GetTectons().size()==2) {
                     System.out.println("#Ennek a gombafajnak mar van gombafonala a tektonon (-tn): "+args.get("tn"));
                     return false;
                 }
             }
-            Hypha actHypha = new Hypha(new ArrayList<>(), fungusType, new ArrayList<>(List.of(tectonTS, tectonTN)));
-            fungusType.AddHypha(actHypha);
-            tectonTN.GetHyphas().add(actHypha);
-            planet.put(name, actHypha);
+            
+            boolean  success = tectonTN.simpleAddHypha(actFungus, tectonTS);
+            if(!success){
+                System.err.println("#Hifa lerakas sikertelen!");
+                return false;
+            }
+            Hypha actHypha = tectonTN.GetHyphas().get(tectonTN.GetHyphas().size()-1);
             hCtr++;
+            planet.put(name, actHypha);
             System.out.println("#Sikeres gombafonal letrehozas "+name+" neven!");
             return true;
         }
         for (Hypha hypha : tectonTS.GetHyphas()) {
-            if (maxLimitTS && !hypha.GetHostFungus().equals(fungusType)) {
-                System.out.println("#Nincs hely a tektonon (-ts): "+args.get("ts"));
-                return false;
-            }
-            else if (hypha.GetHostFungus().equals(fungusType) && hypha.GetTectons().size()==1) {
+            if (hypha.GetHostFungus().equals(actFungus) && hypha.GetTectons().size()==1) {
                 System.out.println("#Ennek a gombafajnak mar van gombafonala a tektonon (-ts): "+args.get("ts"));
                 return false;
             }
         }
-        Hypha actHypha = new Hypha(new ArrayList<>(), fungusType, new ArrayList<>(List.of(tectonTS)));
-        fungusType.AddHypha(actHypha);
-        tectonTS.GetHyphas().add(actHypha);
-        planet.put(name, actHypha);
+        boolean  success = tectonTS.simpleAddHypha(actFungus, null);
+        if(!success){
+            System.err.println("#Hifa lerakas sikertelen!");
+            return false;
+        }
+        Hypha actHypha = tectonTS.GetHyphas().get(tectonTS.GetHyphas().size()-1);
         hCtr++;
+        planet.put(name, actHypha);
         System.out.println("#Sikeres gombafonal letrehozas "+name+" neven!");
         return true;
     }
@@ -1691,14 +1570,14 @@ public class View implements IView {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
             return false;
         }
-        Fungus fungusType = null;
+        Fungus actFungus = null;
         try {
-            fungusType = (Fungus)planet.get(args.get("f"));
+            actFungus = (Fungus)planet.get(args.get("f"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
             return false;
         }
-        fungusType = (Fungus)planet.get(args.get("f"));
+        actFungus = (Fungus)planet.get(args.get("f"));
         if ((args.get("tn").equals("") || args.get("tn")==null)) {
             System.out.println("#Nincs tekton megadva (-tn): "+args.get("tn"));
             return false;
@@ -1708,46 +1587,8 @@ public class View implements IView {
             return false;
         }
         Tecton tectonTN = null;
-        boolean castError = false;
         try {
-            try {
-                tectonTN = (BarrenTecton)planet.get(args.get("tn"));
-            } catch (ClassCastException ccex) {
-                castError = true;
-            }
-            if (castError) {
-                try {
-                    tectonTN = (NarrowTecton)planet.get(args.get("tn"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tectonTN = (VitalTecton)planet.get(args.get("tn"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tectonTN = (WeakTecton)planet.get(args.get("tn"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tectonTN = (WideTecton)planet.get(args.get("tn"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) tectonTN = (BarrenTecton)planet.get(args.get("tn"));
+            tectonTN = (Tecton)planet.get(args.get("tn"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
             return false;
@@ -1770,32 +1611,32 @@ public class View implements IView {
         int effectDurr = args.containsKey("ed") ? parseIntNumberMinZero(args.get("ed")) : 0;
         switch (sporeType) {
             case "s":
-                Spore actSporeS = new Spore(nutritionValue, effectDurr, fungusType, tectonTN);
+                Spore actSporeS = new Spore(nutritionValue, effectDurr, actFungus, tectonTN);
                 tectonTN.GetSpores().add(actSporeS);
                 planet.put(name, actSporeS);
                 break;
             case "sd":
-                SpeedSpore actSporeSD = new SpeedSpore(nutritionValue, effectDurr, fungusType, tectonTN);
+                SpeedSpore actSporeSD = new SpeedSpore(nutritionValue, effectDurr, actFungus, tectonTN);
                 tectonTN.GetSpores().add(actSporeSD);
                 planet.put(name, actSporeSD);
                 break;
             case "st":
-                SplitSpore actSporeST = new SplitSpore(nutritionValue, effectDurr, fungusType, tectonTN);
+                SplitSpore actSporeST = new SplitSpore(nutritionValue, effectDurr, actFungus, tectonTN);
                 tectonTN.GetSpores().add(actSporeST);
                 planet.put(name, actSporeST);
                 break;
             case "sw":
-                SlowSpore actSporeSW = new SlowSpore(nutritionValue, effectDurr, fungusType, tectonTN);
+                SlowSpore actSporeSW = new SlowSpore(nutritionValue, effectDurr, actFungus, tectonTN);
                 tectonTN.GetSpores().add(actSporeSW);
                 planet.put(name, actSporeSW);
                 break;
             case "dm":
-                DisarmSpore actSporeDM = new DisarmSpore(nutritionValue, effectDurr, fungusType, tectonTN);
+                DisarmSpore actSporeDM = new DisarmSpore(nutritionValue, effectDurr, actFungus, tectonTN);
                 tectonTN.GetSpores().add(actSporeDM);
                 planet.put(name, actSporeDM);
                 break;
             case "sn":
-                StunSpore actSporeSN = new StunSpore(nutritionValue, effectDurr, fungusType, tectonTN);
+                StunSpore actSporeSN = new StunSpore(nutritionValue, effectDurr, actFungus, tectonTN);
                 tectonTN.GetSpores().add(actSporeSN);
                 planet.put(name, actSporeSN);
                 break;
@@ -1851,59 +1692,21 @@ public class View implements IView {
             System.out.println("#Nincs ilyen rovar kolonia (-ic): "+args.get("ic"));
             return false;
         }
-        InsectColony insectColonyType = null;
+        InsectColony actInsectColony = null;
         try {
-            insectColonyType = (InsectColony)planet.get(args.get("ic"));
+            actInsectColony = (InsectColony)planet.get(args.get("ic"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen rovar kolonia (-ic): "+args.get("ic"));
             return false;
         }
-        insectColonyType = (InsectColony)planet.get(args.get("ic"));
+        actInsectColony = (InsectColony)planet.get(args.get("ic"));
         if (planet.get(args.get("t"))==null) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
             return false;
         }
         Tecton tecton = null;
-        boolean castError = false;
         try {
-            try {
-                tecton = (BarrenTecton)planet.get(args.get("t"));
-            } catch (ClassCastException ccex) {
-                castError = true;
-            }
-            if (castError) {
-                try {
-                    tecton = (NarrowTecton)planet.get(args.get("t"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (VitalTecton)planet.get(args.get("t"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (WeakTecton)planet.get(args.get("t"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (WideTecton)planet.get(args.get("t"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) tecton = (BarrenTecton)planet.get(args.get("t"));
+            tecton = (Tecton)planet.get(args.get("t"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
             return false;
@@ -1941,8 +1744,8 @@ public class View implements IView {
         else{
             eatenBy = null;
         }
-        Insect actInsect = new Insect(speed, cutAbility, effectTimeLeft, insectColonyType, tecton, eatenBy);
-        insectColonyType.AddInsect(actInsect);
+        Insect actInsect = new Insect(speed, cutAbility, effectTimeLeft, actInsectColony, tecton, eatenBy);
+        actInsectColony.AddInsect(actInsect);
         tecton.AddInsect(actInsect);
         planet.put(name, actInsect);
         iCtr++;
@@ -1984,46 +1787,8 @@ public class View implements IView {
             return false;
         }
         Tecton tecton = null;
-        boolean castError = false;
         try {
-            try {
-                tecton = (BarrenTecton)planet.get(args.get("n"));
-            } catch (ClassCastException ccex) {
-                castError = true;
-            }
-            if (castError) {
-                try {
-                    tecton = (NarrowTecton)planet.get(args.get("n"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (VitalTecton)planet.get(args.get("n"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (WeakTecton)planet.get(args.get("n"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) {
-                try {
-                    tecton = (WideTecton)planet.get(args.get("n"));
-                    castError = false;
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-            }
-            if (castError) tecton = (BarrenTecton)planet.get(args.get("n"));
+            tecton = (Tecton)planet.get(args.get("n"));
         } catch (ClassCastException ccex) {
             System.out.println("#Nincs ilyen tekton (-n): "+args.get("n"));
             return false;
@@ -2038,46 +1803,8 @@ public class View implements IView {
                 return false;
             }
             Tecton tectonNH = null;
-            castError = false;
             try {
-                try {
-                    tectonNH = (BarrenTecton)planet.get(args.get("nh"));
-                } catch (ClassCastException ccex) {
-                    castError = true;
-                }
-                if (castError) {
-                    try {
-                        tectonNH = (NarrowTecton)planet.get(args.get("nh"));
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) {
-                    try {
-                        tectonNH = (VitalTecton)planet.get(args.get("nh"));
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) {
-                    try {
-                        tectonNH = (WeakTecton)planet.get(args.get("nh"));
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) {
-                    try {
-                        tectonNH = (WideTecton)planet.get(args.get("nh"));
-                        castError = false;
-                    } catch (ClassCastException ccex) {
-                        castError = true;
-                    }
-                }
-                if (castError) tectonNH = (BarrenTecton)planet.get(args.get("nh"));
+                tectonNH = (Tecton)planet.get(args.get("nh"));
             } catch (ClassCastException ccex) {
                 System.out.println("#Nincs ilyen tekton (-nh): "+args.get("nh"));
                 return false;

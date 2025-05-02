@@ -20,6 +20,6 @@ public interface ITectonController {
      */
     boolean AddHypha(Fungus fungus, Tecton t0);
     boolean SupplyHyphas();
-
+    boolean simpleAddHypha(Fungus fungus, Tecton t0);
     Tecton Break();
 }
