@@ -36,153 +36,15 @@ public class View implements IView {
          save("/save test0_out.txt");*/
         System.out.println(System.getProperty("user.dir"));
         View view = new View();
+        //GameGUI gui = new GameGUI(view);
         System.out.println("Fungorium game (prototype):");
         System.out.println("(Segitseg: /help)");
         Scanner scanner = new Scanner(System.in);
+        System.out.print(">");
         while (true) {
-            LinkedHashMap<String, Object> oldPlanet = new LinkedHashMap<>();
-            oldPlanet.putAll(planet);
-            boolean everythingGood = true;
-            System.out.print(">");
             String line = scanner.nextLine();
-            if (line.equals("/exit")) {
-                break;
-            }
-            String select = (line.trim().split("\\s+"))[0];
-            if (select.startsWith("/")) {
-                switch (select) {
-                    case "/help":
-                        help();
-                        break;
-                    case "/exec":
-                        everythingGood = exec(line);
-                        break;
-                    case "/rand":
-                        everythingGood = controller.Rand(line);
-                        break;
-                    case "/trigg":
-                        everythingGood = controller.Trigg(line); // Valami gond van! (EndOfRound)
-                        break;
-                    case "/turns":
-                        everythingGood = controller.Turns(line);
-                        break;
-                    case "/addt":
-                        everythingGood = addt(line);
-                        break;
-                    case "/addf":
-                        everythingGood = addf(line);
-                        break;
-                    case "/addic":
-                        everythingGood = addic(line);
-                        break;
-                    case "/addfb":
-                        everythingGood = addfb(line);
-                        break;
-                    case "/addh":
-                        everythingGood = addh(line);
-                        break;
-                    case "/adds":
-                        everythingGood = adds(line);
-                        break;
-                    case "/addi":
-                        everythingGood = addi(line);
-                        break;
-                    case "/altt":
-                        everythingGood = altt(line);
-                        break;
-                    case "/alth":
-                        everythingGood = alth(line);
-                        break;
-                    case "/lstt":
-                        lstt();
-                        break;
-                    case "/lstf":
-                        lstf();
-                        break;
-                    case "/lstic":
-                        lstic();
-                        break;
-                    case "/lstfb":
-                        lstfb();
-                        break;
-                    case "/lsth":
-                        lsth();
-                        break;
-                    case "/lsts":
-                        lsts();
-                        break;
-                    case "/lsti":
-                        lsti();
-                        break;
-                    case "/save":
-                        everythingGood = save(line);
-                        break;
-                    case "/load":
-                        everythingGood = load(line);
-                        break;
-                    case "/rst":
-                        rst();
-                        break;
-                    default:
-                        System.out.println("#Nem letezo parancs: "+select);
-                        everythingGood = false;
-                        break;
-                }
-            }
-            else{
-                switch (select) {
-                    case "breaktecton":
-                        everythingGood = controller.BreakTecton(line); // Valami gond van!
-                        break;
-                    case "growfungusbody":
-                        everythingGood = controller.GrowFungusBody(line);
-                        break;
-                    case "growfungusbodyfrominsect":
-                        everythingGood = controller.GrowFungusBodyFromInsect(line);
-                        break;
-                    case "absorbhypha":
-                        everythingGood = controller.AbsorbHypha(line); // Kellene még a hifákra egy atrophy hívás!
-                        break;
-                    case "producespore":
-                        everythingGood = controller.ProduceSpore(line);
-                        break;
-                    case "shootspores":
-                        everythingGood = controller.ShootSpores(line);
-                        break;
-                    case "diefungusbody":
-                        everythingGood = controller.DieFungusBody(line);
-                        break;
-                    case "growhypha":
-                        everythingGood = controller.GrowHypha(line);
-                        break;
-                    case "atrophyofhypha":
-                        everythingGood = controller.AtrophyOfHypha(line);
-                        break;
-                    case "eatstunnedinsect":
-                        everythingGood = controller.EatStunnedInsect(line);
-                        break;
-                    case "eatspore":
-                        everythingGood = controller.EatSpore(line);
-                        break;
-                    case "moveinsect":
-                        everythingGood = controller.MoveInsect(line); // Kezelési hiba!
-                        break;
-                    case "cuthypha":
-                        everythingGood = controller.CutHypha(line);
-                        break;
-                    default:
-                        System.out.println("#Nem letezo parancs: "+select);
-                        everythingGood = false;
-                        break;
-                }
-            }
-            /*if (!everythingGood){
-                planet = new LinkedHashMap<>();
-                planet.putAll(oldPlanet);
-            }*/
+            view.menuExec(line);
         }
-        System.out.println("#Viszontlatasra és tovabbi szep napot!");
-        scanner.close();
     }
 
     /**
@@ -2561,6 +2423,147 @@ public class View implements IView {
         }
         System.out.println("Fungorium game (prototype):");
         System.out.println("(Segitseg: /help)");
+    }
+
+    public boolean menuExec(String command){
+        String line = command;
+        LinkedHashMap<String, Object> oldPlanet = new LinkedHashMap<>();
+        oldPlanet.putAll(planet);
+        boolean everythingGood = true;
+        if (line.equals("/exit")) {
+            System.out.println("#Viszontlatasra és tovabbi szep napot!");
+            System.exit(0);
+        }
+        String select = (line.trim().split("\\s+"))[0];
+        if (select.startsWith("/")) {
+            switch (select) {
+                case "/help":
+                    help();
+                    break;
+                case "/exec":
+                    everythingGood = exec(line);
+                    break;
+                case "/rand":
+                    everythingGood = controller.Rand(line);
+                    break;
+                case "/trigg":
+                    everythingGood = controller.Trigg(line); // Valami gond van! (EndOfRound)
+                    break;
+                case "/turns":
+                    everythingGood = controller.Turns(line);
+                    break;
+                case "/addt":
+                    everythingGood = addt(line);
+                    break;
+                case "/addf":
+                    everythingGood = addf(line);
+                    break;
+                case "/addic":
+                    everythingGood = addic(line);
+                    break;
+                case "/addfb":
+                    everythingGood = addfb(line);
+                    break;
+                case "/addh":
+                    everythingGood = addh(line);
+                    break;
+                case "/adds":
+                    everythingGood = adds(line);
+                    break;
+                case "/addi":
+                    everythingGood = addi(line);
+                    break;
+                case "/altt":
+                    everythingGood = altt(line);
+                    break;
+                case "/alth":
+                    everythingGood = alth(line);
+                    break;
+                case "/lstt":
+                    lstt();
+                    break;
+                case "/lstf":
+                    lstf();
+                    break;
+                case "/lstic":
+                    lstic();
+                    break;
+                case "/lstfb":
+                    lstfb();
+                    break;
+                case "/lsth":
+                    lsth();
+                    break;
+                case "/lsts":
+                    lsts();
+                    break;
+                case "/lsti":
+                    lsti();
+                    break;
+                case "/save":
+                    everythingGood = save(line);
+                    break;
+                case "/load":
+                    everythingGood = load(line);
+                    break;
+                case "/rst":
+                    rst();
+                    break;
+                default:
+                    System.out.println("#Nem letezo parancs: "+select);
+                    everythingGood = false;
+                    break;
+            }
+        }
+        else{
+            switch (select) {
+                case "breaktecton":
+                    everythingGood = controller.BreakTecton(line); // Valami gond van!
+                    break;
+                case "growfungusbody":
+                    everythingGood = controller.GrowFungusBody(line);
+                    break;
+                case "growfungusbodyfrominsect":
+                    everythingGood = controller.GrowFungusBodyFromInsect(line);
+                    break;
+                case "absorbhypha":
+                    everythingGood = controller.AbsorbHypha(line); // Kellene még a hifákra egy atrophy hívás!
+                    break;
+                case "producespore":
+                    everythingGood = controller.ProduceSpore(line);
+                    break;
+                case "shootspores":
+                    everythingGood = controller.ShootSpores(line);
+                    break;
+                case "diefungusbody":
+                    everythingGood = controller.DieFungusBody(line);
+                    break;
+                case "growhypha":
+                    everythingGood = controller.GrowHypha(line);
+                    break;
+                case "atrophyofhypha":
+                    everythingGood = controller.AtrophyOfHypha(line);
+                    break;
+                case "eatstunnedinsect":
+                    everythingGood = controller.EatStunnedInsect(line);
+                    break;
+                case "eatspore":
+                    everythingGood = controller.EatSpore(line);
+                    break;
+                case "moveinsect":
+                    everythingGood = controller.MoveInsect(line); // Kezelési hiba!
+                    break;
+                case "cuthypha":
+                    everythingGood = controller.CutHypha(line);
+                    break;
+                default:
+                    System.out.println("#Nem letezo parancs: "+select);
+                    everythingGood = false;
+                    break;
+            }
+        }
+        System.out.print(">");
+        return everythingGood;
     }
 
     private static int parseIntNumberMinZero(String value){

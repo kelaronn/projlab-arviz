@@ -71,4 +71,6 @@ public interface IView {
     public int getsCtr();
     public void IncsCtr();
 
+    public boolean menuExec(String command);
+
 }
