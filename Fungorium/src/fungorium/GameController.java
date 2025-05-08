@@ -1,12 +1,11 @@
 package fungorium;
 
-import java.io.StringBufferInputStream;
 import java.util.*;
 
 public class GameController {
     private Random rand = new Random();
     private IView view;
-    static private HashSet<Object> players = new HashSet<>();
+    private static HashSet<Object> players = new HashSet<>();
     private Object currentPlayer;
     private int playerIndex = 0;
     private HashMap<Insect, Integer> InsectMovesLeft = new HashMap<Insect, Integer>();
@@ -102,7 +101,7 @@ public class GameController {
             if(tc != null && isRandom){                                     // ha be van kapcsolva a random
                 int chance = rand.nextInt(100);
                 if(chance < 5){                                             // dobunk a kockaval, 5% esellyel torik el a tecton
-                   if( !BreakTecton("breaktecton -t "+tKey) ){
+                   if(!BreakTecton(tc) ){
                        System.err.println("#A tekton nem tudott szettorni!");
                    }
                 }
@@ -114,43 +113,12 @@ public class GameController {
         CleanUpFungusBodies(planet);
     }
 
-    public boolean BreakTecton(String command){
+    public boolean BreakTecton(ITectonController tc){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("breaktecton")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("t")) {
-            System.out.println("#Hianyzik a -t [Name] argumentum.");
-            return false;
-        }
-        if (planet.get(args.get("t"))==null) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        Tecton tecton = null;
-        try {
-            tecton = (Tecton)planet.get(args.get("t"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        ITectonController tc = tecton;
         Tecton newT;
         newT = tc.Break();
         if(newT == null){
-            System.out.println("#A "+args.get("t")+" tekton torese sikertelen!");
+            System.out.println("#A tekton torese sikertelen!");
             return false;
         }
 
@@ -161,27 +129,17 @@ public class GameController {
         CleanUpHyphas(planet);
         CleanUpSpores(planet);
         CleanUpFungusBodies(planet);
-        System.out.println("#Sikeres a "+args.get("t")+" tekton torese.");
+        System.out.println("#Sikeres a tekton torese.");
         return true;
     }
 
     /**
      * A parameterben atadott utasitasnak megfeleloen lepteti a jatek koret.
      *
-     * @param command - String, ha = "nr", kovetkezo kor, jatekost nem valt
+     * @param event - String, ha = "nr", kovetkezo kor, jatekost nem valt
      *              -         ha = "np", kovetkezo jatekos. Utolso jatekos utan uj kor jon es visszakerul az elso jatekos.
      */
-    public boolean Trigg(String command){
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("/trigg")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        if (parts.length != 2) {
-            System.out.println("#Hiba a paraméterezéssel!");
-            return false;
-        }
-        String event = parts[1];
+    public boolean Trigg(String event){
         if(!turns) {
             System.out.println("#Hiba: kor logika ki van kapcsolva!");
             return false;
@@ -212,22 +170,9 @@ public class GameController {
 
     /**
      * A random paraméterek ki- és bekapcsolását vezérli. Alapertelmezetten be van kapcsolva.
-     * @param command --String: "enable", ha beállítjuk, "disable", ha kikapcsoljuk, ha üres akkor ellentettjére állítja.
+     * @param cmd --String: "enable", ha beállítjuk, "disable", ha kikapcsoljuk, ha üres akkor ellentettjére állítja.
      */
-    public boolean Rand(String command){
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("/rand")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        if (parts.length > 2) {
-            System.out.println("#Hiba a paraméterezéssel!");
-            return false;
-        }
-        String cmd = "";
-        if (parts.length == 2) {
-            cmd = parts[1];
-        }
+    public boolean Rand(String cmd){
         if(cmd.isEmpty() || cmd.equals("")) {
             isRandom = !isRandom;
             return true;
@@ -248,22 +193,9 @@ public class GameController {
 
     /**
      * A koroket ki- és bekapcsolo parancs. Alapértelmezetten vannak korok.
-     * @param command -- String: "enable" bekapccsolja, "disable" kikapcsolja a koroket. Ha ures ellentetjere allitja.
+     * @param cmd -- String: "enable" bekapccsolja, "disable" kikapcsolja a koroket. Ha ures ellentetjere allitja.
      */
-    public boolean Turns(String command){
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("/turns")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        if (parts.length > 2) {
-            System.out.println("#Hiba a paraméterezéssel!");
-            return false;
-        }
-        String cmd = "";
-        if (parts.length == 2) {
-            cmd = parts[1];
-        }
+    public boolean Turns(String cmd){
         if(cmd.isEmpty() || cmd.equals("")){
             turns = !turns;
             return true;
@@ -291,60 +223,8 @@ public class GameController {
      * @param fungus Fungus példány, a tekton GrowFungusBody függvényéhez kell
      * @return sikeres-e a művelet.
      */
-    public boolean GrowFungusBody(String command){
+    public boolean GrowFungusBody(ITectonController tecton, Fungus fungus){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("growfungusbody")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("f")) {
-            System.out.println("#Hianyzik a -f [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("t")) {
-            System.out.println("#Hianyzik a -t [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("f")))==null) {
-            System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return false;
-        }
-        Fungus actFungus = null;
-        try {
-            actFungus = (Fungus)planet.get(args.get("f"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return false;
-        }
-        actFungus = (Fungus)planet.get(args.get("f"));
-        if (planet.get(args.get("t"))==null) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        Tecton actTecton = null;
-        try {
-            actTecton = (Tecton)planet.get(args.get("t"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        Fungus fungus = actFungus;
-        ITectonController tecton = actTecton;
-        if (actTecton.GetFungusBody()!=null) {
-            System.out.println("#Mar van egy masik gombatest a tektonon!");
-            return false;
-        }
         if (turns) {
             if(!currentPlayer.equals(fungus)){
                 System.err.println("#Nem az o kore van!");
@@ -390,60 +270,8 @@ public class GameController {
      * @param fungus Fungus példány, a tekton GrowFungusBody függvényéhez kell
      * @return sikeres-e a művelet.
      */
-    public boolean GrowFungusBodyFromInsect(String command){
+    public boolean GrowFungusBodyFromInsect(ITectonController tecton, Fungus fungus){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("growfungusbodyfrominsect")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("f")) {
-            System.out.println("#Hianyzik a -f [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("t")) {
-            System.out.println("#Hianyzik a -t [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("f")))==null) {
-            System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return false;
-        }
-        Fungus actFungus = null;
-        try {
-            actFungus = (Fungus)planet.get(args.get("f"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return false;
-        }
-        actFungus = (Fungus)planet.get(args.get("f"));
-        if (planet.get(args.get("t"))==null) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        Tecton actTecton = null;
-        try {
-            actTecton = (Tecton)planet.get(args.get("t"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        Fungus fungus = actFungus;
-        ITectonController tecton = actTecton;
-        if (actTecton.GetFungusBody()!=null) {
-            System.out.println("#Mar van egy masik gombatest a tektonon!");
-            return false;
-        }
         if (turns) {
             if(!currentPlayer.equals(fungus)){
                 System.err.println("#Nem az o kore van!");
@@ -488,35 +316,8 @@ public class GameController {
      * @param tecton ITectonController peldany, aminek meghivja a AbsorbHyphas metodusat.
      * @return sikeres-e a muvelet.
      */
-    public boolean AbsorbHypha(String command){
+    public boolean AbsorbHypha(ITectonController tecton){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("absorbhypha")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("t")) {
-            System.out.println("#Hianyzik a -t [Name] argumentum.");
-            return false;
-        }
-        Tecton actTecton = null;
-        try {
-            actTecton = (Tecton)planet.get(args.get("t"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        ITectonController tecton = actTecton;
         boolean successful = false;
         if(!turns){
             for (int i = 0; i <3; i++) {
@@ -619,40 +420,7 @@ public class GameController {
      * @param fb IFungusBodyController peldany, amin meghivja a ProduceSpore metodust.
      * @return sikeres-e a muvelet.
      */
-    public boolean ProduceSpore(String command){
-        LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("producespore")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("fb")) {
-            System.out.println("#Hianyzik a -fb [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("fb")))==null) {
-            System.out.println("#Nincs ilyen gombatest (-fb): "+args.get("fb"));
-            return false;
-        }
-        FungusBody actFungusBody = null;
-        try {
-            actFungusBody = (FungusBody)planet.get(args.get("fb"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombatest (-fb): "+args.get("fb"));
-            return false;
-        }
-        actFungusBody = (FungusBody)planet.get(args.get("fb"));
-        IFungusBodyController fb = actFungusBody;
+    public boolean ProduceSpore(IFungusBodyController fb){
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
             if( !currentPlayer.equals( fbView.GetHostFungus() ) ){
@@ -677,40 +445,8 @@ public class GameController {
      * @param fb  IFungusBodyController peldany, aminek meghivja a ShootSpores(boolean,Random) fuggvenyet
      * @return sikeres-e a művelet
      */
-    public boolean ShootSpores(String command){
+    public boolean ShootSpores(IFungusBodyController fb){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("shootspores")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("fb")) {
-            System.out.println("#Hianyzik a -fb [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("fb")))==null) {
-            System.out.println("#Nincs ilyen gombatest (-fb): "+args.get("fb"));
-            return false;
-        }
-        FungusBody actFungusBody = null;
-        try {
-            actFungusBody = (FungusBody)planet.get(args.get("fb"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombatest (-fb): "+args.get("fb"));
-            return false;
-        }
-        actFungusBody = (FungusBody)planet.get(args.get("fb"));
-        IFungusBodyController fb = actFungusBody;
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
             if( !currentPlayer.equals( fbView.GetHostFungus() ) ){
@@ -762,40 +498,8 @@ public class GameController {
      * @param fb IFungusBodyController peldany, aminek meghivja a ShootSpores(boolean,Random) fuggvenyet
      * @return
      */
-    public boolean DieFungusBody(String command){
+    public boolean DieFungusBody(IFungusBodyController fb){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("diefungusbody")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("fb")) {
-            System.out.println("#Hianyzik a -fb [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("fb")))==null) {
-            System.out.println("#Nincs ilyen gombatest (-fb): "+args.get("fb"));
-            return false;
-        }
-        FungusBody actFungusBody = null;
-        try {
-            actFungusBody = (FungusBody)planet.get(args.get("fb"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombatest (-fb): "+args.get("fb"));
-            return false;
-        }
-        actFungusBody = (FungusBody)planet.get(args.get("fb"));
-        IFungusBodyController fb = actFungusBody;
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
             if( !currentPlayer.equals( fbView.GetHostFungus() ) ){
@@ -824,82 +528,8 @@ public class GameController {
      * @param tectonTo  Tekton amire no a hifa, lehet null is
      * @return Sikeres-e a muvelet.
      */
-    public boolean GrowHypha(String command){
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("growhypha")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("f")) {
-            System.out.println("#Hianyzik a -f [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("ts")) {
-            System.out.println("#Hianyzik a -ts [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("tn")) {
-            System.out.println("#Hianyzik a -tn [Name] argumentum.");
-            return false;
-        }
+    public boolean GrowHypha(Fungus fungus, Tecton tectonFrom, Tecton tectonTo){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        Fungus actFungus = null;
-        try {
-            actFungus = (Fungus)planet.get(args.get("f"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombafaj (-f): "+args.get("f"));
-            return false;
-        }
-        actFungus = (Fungus)planet.get(args.get("f"));
-        if (planet.get(args.get("ts"))==null) {
-            System.out.println("#Nincs ilyen tekton (-ts): "+args.get("ts"));
-            return false;
-        }
-        Tecton tectonTS = null;
-        try {
-            tectonTS = (Tecton)planet.get(args.get("ts"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen tekton (-ts): "+args.get("ts"));
-            return false;
-        }
-        if ((args.get("tn").equals("") || args.get("tn")==null)) {
-            System.out.println("#Nincs tekton megadva (-tn): "+args.get("tn"));
-            return false;
-        }
-        if (planet.get(args.get("tn"))==null) {
-            System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
-            return false;
-        }
-        Tecton tectonTN = null;
-        try {
-            tectonTN = (Tecton)planet.get(args.get("tn"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen tekton (-tn): "+args.get("tn"));
-            return false;
-        }
-        if (!tectonTS.GetNeighbours().contains(tectonTN)) {
-            System.out.println("#A(z) "+args.get("ts")+" es a(z) "+args.get("tn")+" tektonok nem szomszedosak!");
-            return false;
-        }
-        for (Hypha hypha : tectonTN.GetHyphas()) {
-            if (hypha.GetHostFungus().equals(actFungus) && hypha.GetTectons().size()==2) {
-                System.out.println("#Ennek a gombafajnak mar van gombafonala a tektonon (-tn): "+args.get("tn"));
-                return false;
-            }
-        }
-        Fungus fungus = actFungus;
-        Tecton tectonFrom = tectonTS;
-        Tecton tectonTo = tectonTN;
         if (turns) {
             if( !currentPlayer.equals( fungus ) ){
                 System.err.println("#Nem az o kore van!");
@@ -942,39 +572,8 @@ public class GameController {
      * @param hypha - IHyphaController peldany, amin meghijuk az Atrophy metodust
      * @return Sikeres-e a muvelet.
      */
-    public boolean AtrophyOfHypha(String command){
+    public boolean AtrophyOfHypha(IHyphaController hypha){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("atrophyofhypha")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("h")) {
-            System.out.println("#Hianyzik a -h [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("h")))==null) {
-            System.out.println("#Nincs ilyen gombafonal (-h): "+args.get("h"));
-            return false;
-        }
-        Hypha acHypha = null;
-        try {
-            acHypha = (Hypha)planet.get(args.get("h"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombafonal (-h): "+args.get("h"));
-            return false;
-        }
-        IHyphaController hypha = acHypha;
         if (turns) {
             IHyphaView hyphaView = (IHyphaView) hypha;
             if( !currentPlayer.equals( hyphaView.GetHostFungus() ) ){
@@ -1000,57 +599,7 @@ public class GameController {
      * @param insect - Rovar amit megeszik a hifa
      * @return Sikeres-e a muvelet
      */
-    public boolean EatStunnedInsect(String command){
-        LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("eatstunnedinsect")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("h")) {
-            System.out.println("#Hianyzik a -h [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("i")) {
-            System.out.println("#Hianyzik a -i [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("h")))==null) {
-            System.out.println("#Nincs ilyen gombafonal (-h): "+args.get("h"));
-            return false;
-        }
-        Hypha actHypha = null;
-        try {
-            actHypha = (Hypha)planet.get(args.get("h"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombafonal (-h): "+args.get("h"));
-            return false;
-        }
-        actHypha = (Hypha)planet.get(args.get("h"));
-        if ((planet.get(args.get("i")))==null) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        Insect actInsect = null;
-        try {
-            actInsect = (Insect)planet.get(args.get("i"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        actInsect = (Insect)planet.get(args.get("i"));
-        IHyphaController hypha = actHypha;
-        Insect insect = actInsect;
+    public boolean EatStunnedInsect(IHyphaController hypha, Insect insect){
         if (turns) {
             IHyphaView hyphaView = (IHyphaView) hypha;
             if( !currentPlayer.equals( hyphaView.GetHostFungus() ) ){
@@ -1075,57 +624,8 @@ public class GameController {
      * @param spore - Spora amit megeszik a rovar.
      * @return Sikeres-e a muvelet.
      */
-    public boolean EatSpore(String command){
+    public boolean EatSpore(IInsectController insect, Spore spore){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("eatspore")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("s")) {
-            System.out.println("#Hianyzik a -s [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("i")) {
-            System.out.println("#Hianyzik a -i [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("s")))==null) {
-            System.out.println("#Nincs ilyen gombafonal (-s): "+args.get("s"));
-            return false;
-        }
-        Spore actSpore = null;
-        try {
-            actSpore = (Spore)planet.get(args.get("s"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen spora (-s): "+args.get("s"));
-            return false;
-        }
-        actSpore = (Spore)planet.get(args.get("s"));
-        if ((planet.get(args.get("i")))==null) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        Insect actInsect = null;
-        try {
-            actInsect = (Insect)planet.get(args.get("i"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        actInsect = (Insect)planet.get(args.get("i"));
-        IInsectController insect = actInsect;
-        Spore spore = actSpore;
         IInsectView insectView = (IInsectView) insect;
         if (turns) {
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
@@ -1144,7 +644,7 @@ public class GameController {
         if(insectCountBefore != insectCountAfter){
             view.InciCtr();
             String name = "I"+view.getiCtr();
-            Insect nInsect = insectView.GetTecton().GetInsects().get(0);  //getLast();
+            Insect nInsect = insectView.GetTecton().GetInsects().get(0);
             planet.put(name, nInsect );
             InsectMovesLeft.put(nInsect, nInsect.GetSpeed());
         }
@@ -1161,56 +661,7 @@ public class GameController {
      * @param tecton - tekton amire lep a rovar.
      * @return Sikeres-e a muvelet
      */
-    public boolean MoveInsect(String command){
-        LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("moveinsect")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("t")) {
-            System.out.println("#Hianyzik a -s [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("i")) {
-            System.out.println("#Hianyzik a -i [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("i")))==null) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        Insect actInsect = null;
-        try {
-            actInsect = (Insect)planet.get(args.get("i"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        actInsect = (Insect)planet.get(args.get("i"));
-        if (planet.get(args.get("t"))==null) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        Tecton actTecton = null;
-        try {
-            actTecton = (Tecton)planet.get(args.get("t"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen tekton (-t): "+args.get("t"));
-            return false;
-        }
-        IInsectController insect = actInsect;
-        Tecton tecton = actTecton;
+    public boolean MoveInsect(IInsectController insect, Tecton tecton){
         if (turns) {
             IInsectView insectView = (IInsectView) insect;
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
@@ -1242,57 +693,8 @@ public class GameController {
      * @param tecton - Tekton amire meghivjak a Cut metodust.
      * @return
      */
-    public boolean CutHypha(String command){
+    public boolean CutHypha(IInsectController insect, Hypha hypha){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
-        String[] parts = command.trim().split("\\s+");
-        if (!parts[0].equals("cuthypha")) {
-            System.out.println("#Rossz fuggvenyhivas!");
-            return false;
-        }
-        LinkedHashMap<String, String> args = new LinkedHashMap<>();
-        for (int i = 1; i < parts.length; i+=2) {
-            if (i+1<parts.length && parts[i].startsWith("-")) {
-                args.put(parts[i].substring(1), parts[i+1]);
-            }
-            else{
-                System.out.println("#Hibas argumentum formatum: "+parts[i]);
-                return false;
-            }
-        }
-        if (!args.containsKey("h")) {
-            System.out.println("#Hianyzik a -h [Name] argumentum.");
-            return false;
-        }
-        if (!args.containsKey("i")) {
-            System.out.println("#Hianyzik a -i [Name] argumentum.");
-            return false;
-        }
-        if ((planet.get(args.get("h")))==null) {
-            System.out.println("#Nincs ilyen gombafonal (-h): "+args.get("h"));
-            return false;
-        }
-        Hypha actHypha = null;
-        try {
-            actHypha = (Hypha)planet.get(args.get("h"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen gombafonal (-h): "+args.get("h"));
-            return false;
-        }
-        actHypha = (Hypha)planet.get(args.get("h"));
-        if ((planet.get(args.get("i")))==null) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        Insect actInsect = null;
-        try {
-            actInsect = (Insect)planet.get(args.get("i"));
-        } catch (ClassCastException ccex) {
-            System.out.println("#Nincs ilyen rovar (-i): "+args.get("i"));
-            return false;
-        }
-        actInsect = (Insect)planet.get(args.get("i"));
-        IInsectController insect = actInsect;
-        Hypha hypha = actHypha;
         if (turns) {
             IInsectView insectView = (IInsectView) insect;
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
