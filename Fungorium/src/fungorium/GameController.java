@@ -11,6 +11,8 @@ public class GameController {
     private HashMap<Insect, Integer> InsectMovesLeft = new HashMap<Insect, Integer>();
     private boolean isRandom = true;
     private boolean turns = true;
+    private int roundsLeft = 0;
+    private boolean gameOver = false;
 
     public GameController(IView view){
         this.view = view;
@@ -53,6 +55,14 @@ public class GameController {
     private void EndOfRound(){
         if(!turns)
             return;
+
+        if(roundsLeft > 0)
+            roundsLeft--;
+        else{
+            gameOver = true;
+            return;
+        }
+
 
         List<String> fbKeys = new ArrayList<>();
         List<String> iKeys = new ArrayList<>();
@@ -111,6 +121,10 @@ public class GameController {
         CleanUpHyphas(planet);
         CleanUpSpores(planet);
         CleanUpFungusBodies(planet);
+    }
+
+    private void EndGame() {
+        //ToDo: implement
     }
 
     public boolean BreakTecton(ITectonController tc){
@@ -719,5 +733,16 @@ public class GameController {
         playerIndex = 0;
         isRandom = true;
         turns = true;
+        roundsLeft = 5;
+        gameOver = false;
+    }
+    public void SetRoundsLeft(int rounds){
+        if(rounds <= 0)
+            System.err.println("Nem lehet 0 vagy kevesebb kör!");
+        else
+            rounds = rounds;
+    }
+    public boolean IsGameOver(){
+        return gameOver;
     }
 }
