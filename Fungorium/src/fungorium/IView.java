@@ -82,4 +82,11 @@ public interface IView {
     public void lsth();
     public void lsts();
     public void lsti();
+    /**
+     * Getter metódus a View-hoz tartozó kontroller példányhoz.
+     *
+     * @return GameController
+     */
+    public GameController GetGameController();
+
 }
