@@ -3,6 +3,14 @@ package fungorium;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Scanner;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,7 +25,7 @@ import java.io.IOException;
 public class View implements IView {
     private LinkedHashMap<String, Object> planet = new LinkedHashMap<>();
     private GameController controller;
-    //private GameGUI gui;
+    private GameGUI gui;
     private int icCtr = 0;
     private int fCtr = 0;
     private int fbCtr = 0;
@@ -27,9 +35,23 @@ public class View implements IView {
     private int sCtr = 0;
 
     public View() {
-        if (controller == null) {
+        if (controller == null && gui == null) {
             controller = new GameController(this);
-            //gui = new GameGUI(this);
+            try {
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            SwingUtilities.invokeLater(() -> {
+                gui = new GameGUI(this);
+                gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                gui.setVisible(true);
+            });
         }
     }
 

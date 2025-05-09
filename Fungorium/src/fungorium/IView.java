@@ -72,5 +72,14 @@ public interface IView {
     public void IncsCtr();
 
     public boolean menuExec(String command);
-
+    public boolean addt(String name, String tectonType);
+    public boolean addf(String name);
+    public boolean addic(String name, int nutritionValue);
+    public void lstt();
+    public void lstf();
+    public void lstic();
+    public void lstfb();
+    public void lsth();
+    public void lsts();
+    public void lsti();
 }
