@@ -72,5 +72,11 @@ public interface IView {
     public void IncsCtr();
 
     public boolean menuExec(String command);
+    /**
+     * Getter metódus a View-hoz tartozó kontroller példányhoz.
+     *
+     * @return GameController
+     */
+    public GameController GetGameController();
 
 }

@@ -3079,6 +3079,11 @@ public class View implements IView {
         return everythingGood;
     }
 
+    @Override
+    public GameController GetGameController() {
+        return controller;
+    }
+
     private int parseIntNumberMinZero(String value){
         if (value == null || value.isEmpty() || !value.matches("-?\\d+")) {
             return -1;
