@@ -742,6 +742,9 @@ public class GameController {
         else
             rounds = rounds;
     }
+    public int GetRoundsLeft(){
+        return roundsLeft;
+    }
     public boolean IsGameOver(){
         return gameOver;
     }

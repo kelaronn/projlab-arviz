@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.util.HashSet;
 import java.util.Map;
 
 public interface IView {
@@ -92,5 +93,5 @@ public interface IView {
      * @return GameController
      */
     public GameController GetGameController();
-
+    public Map<String,Object> getPlanet();
 }
