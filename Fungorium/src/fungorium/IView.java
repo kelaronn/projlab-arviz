@@ -93,5 +93,4 @@ public interface IView {
      * @return GameController
      */
     public GameController GetGameController();
-    public Map<String,Object> getPlanet();
 }
