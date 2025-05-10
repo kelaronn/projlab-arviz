@@ -11,15 +11,17 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class GameGUI extends JFrame {
     private static final String MENU_CARD = "MenuCard";
     private static final String OPTIONS_CARD = "OptionsCard";
     private static final String PLAY_CARD = "PlayCard";
-    private JList<String> allSelectableEntitiesJList;
-    private JList<String> entitiesForOperationsJList;
     private JPanel gamePanel;
     private CardLayout cardLayout;
+    private JList<String> allSelectableEntitiesJList;
+    private JList<String> entitiesForOperationsJList;
     IView iview;
 
     public GameGUI() {}
@@ -1382,6 +1384,7 @@ public class GameGUI extends JFrame {
             @Override
             public String getElementAt(int i) { return values[i]; }
         });
+        allSelectableEntitiesJList.addListSelectionListener(new SelectableEntitiesListener());
         scrollPane1.setViewportView(allSelectableEntitiesJList);
         playPanel.add(scrollPane1);
         scrollPane1.setBounds(5, 75, 125, 470);
@@ -1469,6 +1472,7 @@ public class GameGUI extends JFrame {
         growFungusBodyFromSporeBt.setFocusPainted(false);
         playPanel.add(growFungusBodyFromSporeBt);
         growFungusBodyFromSporeBt.setBounds(250, 470, 199, 32);
+        growFungusBodyFromSporeBt.addActionListener(new GrowFungusBodyFromSporeListener());
 
         // growFungusBodyFromInsectBt beállításai
         growFungusBodyFromInsectBt.setText("GrowFungusBodyFromInsect");
@@ -1542,6 +1546,105 @@ public class GameGUI extends JFrame {
     }
 
     /**
+     * Visszaadja egy String tombbe a kivalasztott kulcshoz tartozo elemeket, amiken potencialisan valamilyen muveletet tud a felhasznalo vegrehajtani.
+     * @param key kivalasztott elem kulcsa
+     * @return String array - keys from planet
+     */
+    public String[] GetOperatableKeysFromPlanet(String key){
+        LinkedList<String> keys = new LinkedList<String>();
+        LinkedHashMap<String,Object> planet = (LinkedHashMap<String, Object>) iview.getPlanet();
+
+        if(key.startsWith("H")){                                                // hifa, nem lehet res hifa
+            IHyphaView ihypha = (IHyphaView) planet.get(key);
+            ITectonView itectonView = ihypha.GetTectons().get(0);
+
+            ArrayList<Tecton> tectons = itectonView.GetNeighbours();
+            ArrayList<Insect> insects = (ArrayList<Insect>) itectonView.GetInsects();
+
+            // tektonok kulcsainak megkeresese
+            for(Tecton tecton : tectons){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(tecton)){
+                        keys.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+            // rovarok kulcsainak megkeresese
+            for(Insect insect : insects){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(insect)){
+                        keys.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+        }
+        else if(key.startsWith("T")){                                           // tekton
+            ITectonView itectonView = (ITectonView) planet.get(key);
+
+            ArrayList<Spore> spores = (ArrayList<Spore>) itectonView.GetSpores();
+            ArrayList<Insect> insects = (ArrayList<Insect>) itectonView.GetInsects();
+
+            // sporar kulcsainak megkeresese
+            for(Spore spore : spores){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(spore)){
+                        keys.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+            // rovarok kulcsainak megkeresese
+            for(Insect insect : insects){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(insect)){
+                        keys.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+        }
+        else if(key.matches("I\\d+")){                                    // rovar
+            IInsectView insectView = (IInsectView) planet.get(key);
+            ITectonView tectonview = insectView.GetTecton();
+
+            ArrayList<Tecton> tectons = (ArrayList<Tecton>) tectonview.GetNeighbours();
+            ArrayList<Spore> spores = (ArrayList<Spore>) tectonview.GetSpores();
+            ArrayList<Hypha> hyphas = (ArrayList<Hypha>) tectonview.GetHyphas();
+
+            // tektonok kulcsainak megkeresese
+            for(Tecton tecton : tectons){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(tecton)){
+                        keys.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+            // sporak kulcsainak megkeresese
+            for(Spore spore : spores){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(spore)){
+                        keys.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+            // hifak kulcsainak megkeresese
+            for(Hypha hypha : hyphas){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(hypha)){
+                        keys.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+        }
+        return keys.toArray(new String[0]);
+    }
+
+    /**
      *  Frissiti a kivalaszthato elemek listajat (bal oldali lista).
      */
     private void RefreshSelectableEntities(){
@@ -1558,6 +1661,31 @@ public class GameGUI extends JFrame {
                 return values[i];
             }
         });
+    }
+
+    private class SelectableEntitiesListener implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            entitiesForOperationsJList.setModel(new AbstractListModel<String>() {
+                String[] values = GetOperatableKeysFromPlanet(allSelectableEntitiesJList.getSelectedValue());
+                @Override
+                public int getSize() {
+                    return values.length;
+                }
+                @Override
+                public String getElementAt(int i) {
+                    return values[i];
+                }
+            });
+        }
+    }
+
+    private class GrowFungusBodyFromSporeListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            RefreshSelectableEntities();
+        }
     }
 
     /*public static void main(String[] args) {
