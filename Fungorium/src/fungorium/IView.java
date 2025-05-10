@@ -79,6 +79,7 @@ public interface IView {
     public boolean addf(String name);
     public boolean addic(String name, int nutritionValue);
     public boolean addfb(String name, Tecton tecton, Fungus actFungus, boolean fullyDeveloped, int age, boolean isDead, int sporeCount, int shotLimit);
+    public boolean addh(String name, Fungus actFungus, Tecton tectonTS, Tecton tectonTN);
     public void lstt();
     public void lstf();
     public void lstic();
@@ -92,5 +93,4 @@ public interface IView {
      * @return GameController
      */
     public GameController GetGameController();
-    public Map<String,Object> getPlanet();
 }
