@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class GameGUI extends JFrame {
     private static final String MENU_CARD = "MenuCard";
@@ -250,6 +252,20 @@ public class GameGUI extends JFrame {
         optionsPanel.add(resetGameBt);
         resetGameBt.setBounds(5, 5, 92, 25);
 
+        // resetGameBt eseménykezelő
+        resetGameBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print("/rst\n");
+                iview.rst();
+                System.out.print(">");
+                maxTurnsSpinner.setValue(1);
+                maxTurnsSpinner.setEnabled(true);
+                randomBt.setText("Random: on");
+                turnsBt.setText("Turns: on");
+            }
+        });
+
         // maxTurnsLb beállításai
         maxTurnsLb.setText("Max turns:");
         optionsPanel.add(maxTurnsLb);
@@ -259,6 +275,14 @@ public class GameGUI extends JFrame {
         maxTurnsSpinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
         optionsPanel.add(maxTurnsSpinner);
         maxTurnsSpinner.setBounds(310, 5, 64, 25);
+
+        // maxTurnsSpinner eseménykezelő
+        maxTurnsSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                iview.GetGameController().SetRoundsLeft((Integer)maxTurnsSpinner.getValue());
+            }
+        });
 
         // randomBt beállításai
         randomBt.setText("Random: on");
@@ -271,9 +295,15 @@ public class GameGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (randomBt.getText().equals("Random: on")) {
+                    System.out.print("/rand d\n");
+                    iview.GetGameController().Rand("d");
+                    System.out.print(">");
                     randomBt.setText("Random: off");
                 }
                 else if (randomBt.getText().equals("Random: off")) {
+                    System.out.print("/rand e\n");
+                    iview.GetGameController().Rand("e");
+                    System.out.print(">");
                     randomBt.setText("Random: on");
                 }
             }
@@ -290,14 +320,18 @@ public class GameGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (turnsBt.getText().equals("Turns: on")) {
+                    System.out.print("/turns d\n");
+                    iview.GetGameController().Turns("d");
+                    System.out.print(">");
                     turnsBt.setText("Turns: off");
                     maxTurnsSpinner.setEnabled(false);
-                    maxTurnsLb.setEnabled(false);
                 }
                 else if (turnsBt.getText().equals("Turns: off")) {
+                    System.out.print("/turns e\n");
+                    iview.GetGameController().Turns("e");
+                    System.out.print(">");
                     turnsBt.setText("Turns: on");
                     maxTurnsSpinner.setEnabled(true);
-                    maxTurnsLb.setEnabled(true);
                 }
             }
         });
@@ -307,6 +341,28 @@ public class GameGUI extends JFrame {
         executeScriptBt.setFocusPainted(false);
         optionsPanel.add(executeScriptBt);
         executeScriptBt.setBounds(5, 140, 103, 25);
+
+        // executeScriptBt eseménykezelő
+        executeScriptBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!executeScriptTF.getText().trim().isEmpty()) {
+                    System.out.print("/exec "+executeScriptTF.getText().toString()+"\n");
+                    boolean success = iview.exec(executeScriptTF.getText().trim().toString());
+                    System.out.print(">");
+                    if (success) {
+                        executeScriptTF.setText("");
+                        JOptionPane.showMessageDialog(null, "Script execution successful.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Script execution failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please enter the name of the script file to be executed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // executeScriptLb beállításai
         executeScriptLb.setText("File name:");
@@ -325,7 +381,7 @@ public class GameGUI extends JFrame {
         listTectonsBt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.print("/lstt");
+                System.out.print("/lstt\n");
                 iview.lstt();
                 System.out.print(">");
 
@@ -371,11 +427,99 @@ public class GameGUI extends JFrame {
         optionsPanel.add(listFungiBt);
         listFungiBt.setBounds(5, 225, 80, 25);
 
+        // listFungiBt eseménykezelő
+        listFungiBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print("/lstf\n");
+                iview.lstf();
+                System.out.print(">");
+
+                // Eredeti System.out mentése
+                PrintStream originalOut = System.out;
+
+                // Kimenet átirányítása egy ByteArrayOutputStream-be
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream ps = new PrintStream(baos);
+                System.setOut(ps);
+
+                // A konzolra író függvény meghívása
+                iview.lstf();
+
+                // Kimenet visszaállítása
+                System.setOut(originalOut);
+
+                 // Rögzített kimenet String-ként
+                String fullOutput = baos.toString();
+
+                // Sorok szétválasztása
+                String[] lines = fullOutput.split("\\r?\\n");
+
+                // Első sor elkülönítése és módosítása (biztosan létezik)
+                String firstLine = lines[0];
+                String modifiedFirstLine = firstLine.length() > 2 ? firstLine.substring(1, firstLine.length() - 1) : firstLine;
+
+                // A többi sor összefűzése (első sor nélkül)
+                StringBuilder consoleOutput = new StringBuilder();
+                for (int i = 1; i < lines.length; i++) {
+                    consoleOutput.append(lines[i]).append("\n");
+                }
+
+                // Kimenet megjelenítése JOptionPane-ben, az első sor mint cím
+                String outputToShow = consoleOutput.length() > 0 ? consoleOutput.toString() : "The list is empty.";
+                JOptionPane.showMessageDialog(null, outputToShow, modifiedFirstLine, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         // listInsectColoniesBt beállításai
         listInsectColoniesBt.setText("List Insect Colonies");
         listInsectColoniesBt.setFocusPainted(false);
         optionsPanel.add(listInsectColoniesBt);
         listInsectColoniesBt.setBounds(5, 265, 130, 25);
+
+        // listInsectColoniesBt eseménykezelő
+        listInsectColoniesBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print("/lstic\n");
+                iview.lstic();
+                System.out.print(">");
+
+                // Eredeti System.out mentése
+                PrintStream originalOut = System.out;
+
+                // Kimenet átirányítása egy ByteArrayOutputStream-be
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream ps = new PrintStream(baos);
+                System.setOut(ps);
+
+                // A konzolra író függvény meghívása
+                iview.lstic();
+
+                // Kimenet visszaállítása
+                System.setOut(originalOut);
+
+                 // Rögzített kimenet String-ként
+                String fullOutput = baos.toString();
+
+                // Sorok szétválasztása
+                String[] lines = fullOutput.split("\\r?\\n");
+
+                // Első sor elkülönítése és módosítása (biztosan létezik)
+                String firstLine = lines[0];
+                String modifiedFirstLine = firstLine.length() > 2 ? firstLine.substring(1, firstLine.length() - 1) : firstLine;
+
+                // A többi sor összefűzése (első sor nélkül)
+                StringBuilder consoleOutput = new StringBuilder();
+                for (int i = 1; i < lines.length; i++) {
+                    consoleOutput.append(lines[i]).append("\n");
+                }
+
+                // Kimenet megjelenítése JOptionPane-ben, az első sor mint cím
+                String outputToShow = consoleOutput.length() > 0 ? consoleOutput.toString() : "The list is empty.";
+                JOptionPane.showMessageDialog(null, outputToShow, modifiedFirstLine, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
         // listFungusBodiesBt beállításai
         listFungusBodiesBt.setText("List Fungus Bodies");
@@ -383,11 +527,99 @@ public class GameGUI extends JFrame {
         optionsPanel.add(listFungusBodiesBt);
         listFungusBodiesBt.setBounds(5, 305, 127, 25);
 
+        // listFungusBodiesBt eseménykezelő
+        listFungusBodiesBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print("/lstfb\n");
+                iview.lstfb();
+                System.out.print(">");
+
+                // Eredeti System.out mentése
+                PrintStream originalOut = System.out;
+
+                // Kimenet átirányítása egy ByteArrayOutputStream-be
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream ps = new PrintStream(baos);
+                System.setOut(ps);
+
+                // A konzolra író függvény meghívása
+                iview.lstfb();
+
+                // Kimenet visszaállítása
+                System.setOut(originalOut);
+
+                 // Rögzített kimenet String-ként
+                String fullOutput = baos.toString();
+
+                // Sorok szétválasztása
+                String[] lines = fullOutput.split("\\r?\\n");
+
+                // Első sor elkülönítése és módosítása (biztosan létezik)
+                String firstLine = lines[0];
+                String modifiedFirstLine = firstLine.length() > 2 ? firstLine.substring(1, firstLine.length() - 1) : firstLine;
+
+                // A többi sor összefűzése (első sor nélkül)
+                StringBuilder consoleOutput = new StringBuilder();
+                for (int i = 1; i < lines.length; i++) {
+                    consoleOutput.append(lines[i]).append("\n");
+                }
+
+                // Kimenet megjelenítése JOptionPane-ben, az első sor mint cím
+                String outputToShow = consoleOutput.length() > 0 ? consoleOutput.toString() : "The list is empty.";
+                JOptionPane.showMessageDialog(null, outputToShow, modifiedFirstLine, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         // listHyphaeBt beállításai
         listHyphaeBt.setText("List Hyphae");
         listHyphaeBt.setFocusPainted(false);
         optionsPanel.add(listHyphaeBt);
         listHyphaeBt.setBounds(5, 345, 92, 25);
+
+        // listHyphaeBt eseménykezelő
+        listHyphaeBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print("/lsth\n");
+                iview.lsth();
+                System.out.print(">");
+
+                // Eredeti System.out mentése
+                PrintStream originalOut = System.out;
+
+                // Kimenet átirányítása egy ByteArrayOutputStream-be
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream ps = new PrintStream(baos);
+                System.setOut(ps);
+
+                // A konzolra író függvény meghívása
+                iview.lsth();
+
+                // Kimenet visszaállítása
+                System.setOut(originalOut);
+
+                 // Rögzített kimenet String-ként
+                String fullOutput = baos.toString();
+
+                // Sorok szétválasztása
+                String[] lines = fullOutput.split("\\r?\\n");
+
+                // Első sor elkülönítése és módosítása (biztosan létezik)
+                String firstLine = lines[0];
+                String modifiedFirstLine = firstLine.length() > 2 ? firstLine.substring(1, firstLine.length() - 1) : firstLine;
+
+                // A többi sor összefűzése (első sor nélkül)
+                StringBuilder consoleOutput = new StringBuilder();
+                for (int i = 1; i < lines.length; i++) {
+                    consoleOutput.append(lines[i]).append("\n");
+                }
+
+                // Kimenet megjelenítése JOptionPane-ben, az első sor mint cím
+                String outputToShow = consoleOutput.length() > 0 ? consoleOutput.toString() : "The list is empty.";
+                JOptionPane.showMessageDialog(null, outputToShow, modifiedFirstLine, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
         // listSporesBt beállításai
         listSporesBt.setText("List Spores");
@@ -395,11 +627,99 @@ public class GameGUI extends JFrame {
         optionsPanel.add(listSporesBt);
         listSporesBt.setBounds(5, 385, 87, 25);
 
+        // listSporesBt eseménykezelő
+        listSporesBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print("/lsts\n");
+                iview.lsts();
+                System.out.print(">");
+
+                // Eredeti System.out mentése
+                PrintStream originalOut = System.out;
+
+                // Kimenet átirányítása egy ByteArrayOutputStream-be
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream ps = new PrintStream(baos);
+                System.setOut(ps);
+
+                // A konzolra író függvény meghívása
+                iview.lsts();
+
+                // Kimenet visszaállítása
+                System.setOut(originalOut);
+
+                 // Rögzített kimenet String-ként
+                String fullOutput = baos.toString();
+
+                // Sorok szétválasztása
+                String[] lines = fullOutput.split("\\r?\\n");
+
+                // Első sor elkülönítése és módosítása (biztosan létezik)
+                String firstLine = lines[0];
+                String modifiedFirstLine = firstLine.length() > 2 ? firstLine.substring(1, firstLine.length() - 1) : firstLine;
+
+                // A többi sor összefűzése (első sor nélkül)
+                StringBuilder consoleOutput = new StringBuilder();
+                for (int i = 1; i < lines.length; i++) {
+                    consoleOutput.append(lines[i]).append("\n");
+                }
+
+                // Kimenet megjelenítése JOptionPane-ben, az első sor mint cím
+                String outputToShow = consoleOutput.length() > 0 ? consoleOutput.toString() : "The list is empty.";
+                JOptionPane.showMessageDialog(null, outputToShow, modifiedFirstLine, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         // listInsectsBt beállításai
         listInsectsBt.setText("List Insects");
         listInsectsBt.setFocusPainted(false);
         optionsPanel.add(listInsectsBt);
         listInsectsBt.setBounds(5, 425, 86, 25);
+
+        // listInsectsBt eseménykezelő
+        listInsectsBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print("/lsti\n");
+                iview.lsti();
+                System.out.print(">");
+
+                // Eredeti System.out mentése
+                PrintStream originalOut = System.out;
+
+                // Kimenet átirányítása egy ByteArrayOutputStream-be
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream ps = new PrintStream(baos);
+                System.setOut(ps);
+
+                // A konzolra író függvény meghívása
+                iview.lsti();
+
+                // Kimenet visszaállítása
+                System.setOut(originalOut);
+
+                 // Rögzített kimenet String-ként
+                String fullOutput = baos.toString();
+
+                // Sorok szétválasztása
+                String[] lines = fullOutput.split("\\r?\\n");
+
+                // Első sor elkülönítése és módosítása (biztosan létezik)
+                String firstLine = lines[0];
+                String modifiedFirstLine = firstLine.length() > 2 ? firstLine.substring(1, firstLine.length() - 1) : firstLine;
+
+                // A többi sor összefűzése (első sor nélkül)
+                StringBuilder consoleOutput = new StringBuilder();
+                for (int i = 1; i < lines.length; i++) {
+                    consoleOutput.append(lines[i]).append("\n");
+                }
+
+                // Kimenet megjelenítése JOptionPane-ben, az első sor mint cím
+                String outputToShow = consoleOutput.length() > 0 ? consoleOutput.toString() : "The list is empty.";
+                JOptionPane.showMessageDialog(null, outputToShow, modifiedFirstLine, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
         // separator1 beállításai
         separator1.setOrientation(SwingConstants.VERTICAL);
@@ -415,20 +735,25 @@ public class GameGUI extends JFrame {
         // addTectonBt eseménykezelő
         addTectonBt.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {//BarrenTecton
+            public void actionPerformed(ActionEvent e) {
                 if (!addtTectonNameTF.getText().trim().isEmpty() && addtTectonNameTF.getText().trim().matches("^T\\d+$")) {
                     String tectonType = addtTectonTypeCB.getSelectedItem().toString().equals("NarrowTecton")?"n":
                     addtTectonTypeCB.getSelectedItem().toString().equals("WideTecton")?"wi":
                     addtTectonTypeCB.getSelectedItem().toString().equals("VitalTecton")?"v":
                     addtTectonTypeCB.getSelectedItem().toString().equals("WeakTecton")?"we":
                     addtTectonTypeCB.getSelectedItem().toString().equals("BarrenTecton")?"b":"n";
-                    System.out.print("/addt -n "+addtTectonNameTF.getText().trim().toString()+" -t "+tectonType+"\n");
-                    boolean success = iview.addt(addtTectonNameTF.getText().trim().toString(), tectonType);
-                    System.out.print(">");
-                    if (success) {
-                        addtTectonNameTF.setText("");
-                        addtTectonTypeCB.setSelectedIndex(0);
-                        JOptionPane.showMessageDialog(null, "Tecton successfully created.");
+                    if ((Tecton)iview.getPlanet().get(addtTectonNameTF.getText().trim().toString())==null) {
+                        System.out.print("/addt -n "+addtTectonNameTF.getText().trim().toString()+" -t "+tectonType+"\n");
+                        boolean success = iview.addt(addtTectonNameTF.getText().trim().toString(), tectonType);
+                        System.out.print(">");
+                        if (success) {
+                            addtTectonNameTF.setText("");
+                            addtTectonTypeCB.setSelectedIndex(0);
+                            JOptionPane.showMessageDialog(null, "Tecton successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else{
@@ -477,11 +802,11 @@ public class GameGUI extends JFrame {
                     System.out.print(">");
                     if (success) {
                         addfFungusNameTF.setText("");
-                        JOptionPane.showMessageDialog(null, "Fungus successfully created.");
+                        JOptionPane.showMessageDialog(null, "Fungus successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!");
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -503,18 +828,18 @@ public class GameGUI extends JFrame {
         addInsectColonyBt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!addicInsectColonyNameTF.getText().trim().isEmpty() && addicInsectColonyNameTF.getText().trim().matches("^IC\\d+$") && (Integer)addicAmoutOfNutrientsSpinner.getValue()>= 0) {
+                if (!addicInsectColonyNameTF.getText().trim().isEmpty() && addicInsectColonyNameTF.getText().trim().matches("^IC\\d+$")) {
                     System.out.print("/addic -n "+addicInsectColonyNameTF.getText().trim().toString()+" -nv "+(Integer)addicAmoutOfNutrientsSpinner.getValue()+"\n");
                     boolean success = iview.addic(addicInsectColonyNameTF.getText().trim().toString(), (Integer)addicAmoutOfNutrientsSpinner.getValue());
                     System.out.print(">");
                     if (success) {
                         addicInsectColonyNameTF.setText("");
                         addicAmoutOfNutrientsSpinner.setValue(0);
-                        JOptionPane.showMessageDialog(null, "Insect Colony successfully created.");
+                        JOptionPane.showMessageDialog(null, "Insect Colony successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!");
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -541,6 +866,36 @@ public class GameGUI extends JFrame {
         addFugusBodyBt.setFocusPainted(false);
         optionsPanel.add(addFugusBodyBt);
         addFugusBodyBt.setBounds(410, 110, 123, 25);
+
+        // addFugusBodyBt eseménykezelő
+        addFugusBodyBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!addfbFungusBodyNameTF.getText().trim().isEmpty() && addfbFungusBodyNameTF.getText().trim().matches("^FB\\d+$") && 
+                    !addfbFungusNameTF.getText().trim().isEmpty() && addfbFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addfbFungusNameTF.getText().trim().toString()) != null &&
+                    !addfbTectonNameTF.getText().trim().isEmpty() && addfbTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addfbTectonNameTF.getText().trim().toString())!= null) {
+                    System.out.print("/addfb -n "+addfbFungusBodyNameTF.getText().trim().toString()+" -f "+addfbFungusNameTF.getText().trim().toString()+" -t "+addfbTectonNameTF.getText().trim().toString()+" -d "+(addfbIsDeadBt.getText().toString().equals("IsDead: no")?"n":"y")
+                    +" -a "+(Integer)addfbAgeSpinner.getValue()+" -dv "+(addfbIsDevelopedBt.getText().toString().equals("IsDeveloped: no")?"n":"y")+" -sc "+(Integer)addfbSporeCountSpinner.getValue()+" -sl "+(Integer)addfbMaxShootSpinner.getValue()+"\n");
+                    boolean success = iview.addfb(addfbFungusBodyNameTF.getText().trim().toString(), (Tecton)iview.getPlanet().get(addfbTectonNameTF.getText().trim().toString()), (Fungus)iview.getPlanet().get(addfbFungusNameTF.getText().trim().toString()), 
+                    addfbIsDevelopedBt.getText().toString().equals("IsDeveloped: no")?false:true, (Integer)addfbAgeSpinner.getValue(), addfbIsDeadBt.getText().toString().equals("IsDead: no")?false:true, (Integer)addfbSporeCountSpinner.getValue(), (Integer)addfbMaxShootSpinner.getValue());
+                    System.out.print(">");
+                    if (success) {
+                        addfbFungusBodyNameTF.setText("");
+                        addfbTectonNameTF.setText("");
+                        addfbFungusNameTF.setText("");
+                        addfbIsDevelopedBt.setText("IsDeveloped: no");
+                        addfbAgeSpinner.setValue(0);
+                        addfbIsDeadBt.setText("IsDead: no");
+                        addfbSporeCountSpinner.setValue(0);
+                        addfbMaxShootSpinner.setValue(4);
+                        JOptionPane.showMessageDialog(null, "Fungus Body successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // addfbFungusBodyNameLb beállításai
         addfbFungusBodyNameLb.setText("Fungus Body name:");
@@ -572,7 +927,8 @@ public class GameGUI extends JFrame {
         addfbIsDeadBt.setText("IsDead: no");
         addfbIsDeadBt.setFocusPainted(false);
         optionsPanel.add(addfbIsDeadBt);
-        addfbIsDeadBt.setBounds(715, 145, 86, 25);
+        addfbIsDeadBt.setBounds(715, 145, 89, 25);
+        addfbIsDeadBt.setEnabled(false);
 
         // addfbAgeLb beállításai
         addfbAgeLb.setText(", age:");
@@ -584,6 +940,27 @@ public class GameGUI extends JFrame {
         optionsPanel.add(addfbAgeSpinner);
         addfbAgeSpinner.setBounds(845, 145, 64, 25);
 
+        // addfbAgeSpinner eseménykezelő
+        addfbAgeSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Integer ageValue = (Integer)addfbAgeSpinner.getValue();
+                Integer maxShootValue = (Integer)addfbMaxShootSpinner.getValue();
+                if (ageValue>=5) {
+                    addfbIsDevelopedBt.setText("IsDeveloped: yes");
+                }
+                else{
+                    addfbIsDevelopedBt.setText("IsDeveloped: no");
+                }
+                if (ageValue>5 || maxShootValue == 0) {
+                    addfbIsDeadBt.setText("IsDead: yes");
+                }
+                else{
+                    addfbIsDeadBt.setText("IsDead: no");
+                }
+            }
+        });
+
         // addfbIsDevelopedLb beállításai
         addfbIsDevelopedLb.setText(", ");
         optionsPanel.add(addfbIsDevelopedLb);
@@ -593,7 +970,8 @@ public class GameGUI extends JFrame {
         addfbIsDevelopedBt.setText("IsDeveloped: no");
         addfbIsDevelopedBt.setFocusPainted(false);
         optionsPanel.add(addfbIsDevelopedBt);
-        addfbIsDevelopedBt.setBounds(540, 180, 116, 25);
+        addfbIsDevelopedBt.setBounds(540, 180, 119, 25);
+        addfbIsDevelopedBt.setEnabled(false);
 
         // addfbSporeCountLb beállításai
         addfbSporeCountLb.setText(", spore count:");
@@ -615,11 +993,45 @@ public class GameGUI extends JFrame {
         optionsPanel.add(addfbMaxShootSpinner);
         addfbMaxShootSpinner.setBounds(895, 180, 64, 25);
 
+        // addfbMaxShootSpinner eseménykezelő
+        addfbMaxShootSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                Integer ageValue = (Integer)addfbAgeSpinner.getValue();
+                Integer maxShootValue = (Integer)addfbMaxShootSpinner.getValue();
+                if (ageValue>5 || maxShootValue == 0) {
+                    addfbIsDeadBt.setText("IsDead: yes");
+                }
+                else{
+                    addfbIsDeadBt.setText("IsDead: no");
+                }
+            }
+        });
+
         // addHyphaBt beállításai
         addHyphaBt.setText("Add Hypha");
         addHyphaBt.setFocusPainted(false);
         optionsPanel.add(addHyphaBt);
         addHyphaBt.setBounds(410, 215, 90, 25);
+
+        // addHyphaBt eseménykezelő
+        addHyphaBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!addhHyphaNameTF.getText().trim().isEmpty() && addhHyphaNameTF.getText().trim().matches("^H\\d+$")) {
+                    System.out.print("/addf -n "+addfFungusNameTF.getText().trim().toString()+"\n");
+                    boolean success = iview.addf(addfFungusNameTF.getText().trim().toString());
+                    System.out.print(">");
+                    if (success) {
+                        addfFungusNameTF.setText("");
+                        JOptionPane.showMessageDialog(null, "Fungus successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // addhHyphaNameLb beállításai
         addhHyphaNameLb.setText("Hypha name:");

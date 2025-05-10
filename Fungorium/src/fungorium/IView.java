@@ -72,9 +72,12 @@ public interface IView {
     public void IncsCtr();
 
     public boolean menuExec(String command);
+    public void rst();
+    public boolean exec(String fileName);
     public boolean addt(String name, String tectonType);
     public boolean addf(String name);
     public boolean addic(String name, int nutritionValue);
+    public boolean addfb(String name, Tecton tecton, Fungus actFungus, boolean fullyDeveloped, int age, boolean isDead, int sporeCount, int shotLimit);
     public void lstt();
     public void lstf();
     public void lstic();
