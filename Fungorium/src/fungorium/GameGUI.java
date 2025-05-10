@@ -1,13 +1,12 @@
 package fungorium;
 
-import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.*;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -17,6 +16,8 @@ public class GameGUI extends JFrame {
     private static final String MENU_CARD = "MenuCard";
     private static final String OPTIONS_CARD = "OptionsCard";
     private static final String PLAY_CARD = "PlayCard";
+    private JList<String> allSelectableEntitiesJList;
+    private JList<String> entitiesForOperationsJList;
     private JPanel gamePanel;
     private CardLayout cardLayout;
     IView iview;
@@ -1323,7 +1324,7 @@ public class GameGUI extends JFrame {
         JSeparator separator2 = new JSeparator();
         JLabel allSelectableEntitiesLb = new JLabel();
         JScrollPane scrollPane1 = new JScrollPane();
-        JList<String> allSelectableEntitiesJList = new JList<>();
+        allSelectableEntitiesJList = new JList<>();
         JLabel gameMapLb = new JLabel();
         JPanel gameMapJPanel = new JPanel();
         JLabel insectImageIconLb = new JLabel();
@@ -1333,7 +1334,7 @@ public class GameGUI extends JFrame {
         JLabel tectonImageIconLb = new JLabel();
         JLabel entitiesForOperationsLb = new JLabel();
         JScrollPane scrollPane2 = new JScrollPane();
-        JList<String> entitiesForOperationsJList = new JList<>();
+        entitiesForOperationsJList = new JList<>();
         JButton growHyphaBt = new JButton();
         JButton growFungusBodyFromSporeBt = new JButton();
         JButton growFungusBodyFromInsectBt = new JButton();
@@ -1416,16 +1417,7 @@ public class GameGUI extends JFrame {
 
         // scrollPane1 és allSelectableEntitiesJList beállításai
         allSelectableEntitiesJList.setModel(new AbstractListModel<String>() {
-            String[] values = {
-                    "T1",
-                    "T2",
-                    "T3",
-                    "FB1",
-                    "H1",
-                    "H3",
-                    "H5",
-                    "I1"
-            };
+            String[] values = GetKeysFromPlanet();
             @Override
             public int getSize() { return values.length; }
             @Override
@@ -1564,14 +1556,50 @@ public class GameGUI extends JFrame {
         return playPanel;
     }
 
-//    /**
-//     * Visszatér a View planet nem rés-hifa kulcsainak listájával.
-//     * @return String List - Keys form View.planet
-//     */
-//    public List<String> GetKeysFromPlanet(){
-//        List keys = new LinkedList<String>();
-//
-//    }
+    /**
+     * Visszatér a View planet nem res-hifa kulcsainak tombjével.
+     *
+     * @return String array - Keys form View.planet
+     */
+    public String[] GetKeysFromPlanet(){
+        LinkedList<String> keys = new LinkedList<String>();
+        LinkedHashMap<String,Object> planet = (LinkedHashMap<String, Object>) iview.getPlanet();
+
+        for (Map.Entry<String, Object> entry : planet.entrySet()) {
+            // ha az entry hifa
+            if(entry.getKey().startsWith("H")){
+                Hypha hypha = (Hypha) entry.getValue();
+                // es nem res hifa
+                if(hypha.GetTectons().size() < 2){
+                    keys.add(entry.getKey());
+                }
+            }
+            else {
+                keys.add(entry.getKey());
+            }
+        }
+
+        return keys.toArray(new String[0]);
+    }
+
+    /**
+     *  Frissiti a kivalaszthato elemek listajat (bal oldali lista).
+     */
+    private void RefreshSelectableEntities(){
+        String[] values = GetKeysFromPlanet(); // now returns String[]
+
+        allSelectableEntitiesJList.setModel(new AbstractListModel<String>() {
+            @Override
+            public int getSize() {
+                return values.length;
+            }
+
+            @Override
+            public String getElementAt(int i) {
+                return values[i];
+            }
+        });
+    }
 
     /*public static void main(String[] args) {
         try {
