@@ -272,7 +272,7 @@ public class GameGUI extends JFrame {
         maxTurnsLb.setBounds(250, 10, 54, 16);
 
         // maxTurnsSpinner beállításai
-        maxTurnsSpinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
+        maxTurnsSpinner.setModel(new SpinnerNumberModel(0, 0, null, 1));
         optionsPanel.add(maxTurnsSpinner);
         maxTurnsSpinner.setBounds(310, 5, 64, 25);
 
@@ -738,22 +738,25 @@ public class GameGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (!addtTectonNameTF.getText().trim().isEmpty() && addtTectonNameTF.getText().trim().matches("^T\\d+$")) {
                     String tectonType = addtTectonTypeCB.getSelectedItem().toString().equals("NarrowTecton")?"n":
-                    addtTectonTypeCB.getSelectedItem().toString().equals("WideTecton")?"wi":
-                    addtTectonTypeCB.getSelectedItem().toString().equals("VitalTecton")?"v":
-                    addtTectonTypeCB.getSelectedItem().toString().equals("WeakTecton")?"we":
-                    addtTectonTypeCB.getSelectedItem().toString().equals("BarrenTecton")?"b":"n";
-                    if ((Tecton)iview.getPlanet().get(addtTectonNameTF.getText().trim().toString())==null) {
-                        System.out.print("/addt -n "+addtTectonNameTF.getText().trim().toString()+" -t "+tectonType+"\n");
-                        boolean success = iview.addt(addtTectonNameTF.getText().trim().toString(), tectonType);
-                        System.out.print(">");
-                        if (success) {
-                            addtTectonNameTF.setText("");
-                            addtTectonTypeCB.setSelectedIndex(0);
-                            JOptionPane.showMessageDialog(null, "Tecton successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
-                        }
+                    addtTectonTypeCB.getSelectedItem().equals("WideTecton")?"wi":
+                    addtTectonTypeCB.getSelectedItem().equals("VitalTecton")?"v":
+                    addtTectonTypeCB.getSelectedItem().equals("WeakTecton")?"we":
+                    addtTectonTypeCB.getSelectedItem().equals("BarrenTecton")?"b":"n";
+                    System.out.print("/addt -n "+addtTectonNameTF.getText().trim()+" -t "+tectonType+"\n");
+                    boolean success = iview.addt(addtTectonNameTF.getText().trim(), tectonType);
+                    System.out.print(">");
+                    if (success) {
+                        addtTectonNameTF.setText("");
+                        addtTectonTypeCB.setSelectedIndex(0);
+                        JOptionPane.showMessageDialog(null, "Tecton successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else{
-                        JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        if ((Tecton)iview.getPlanet().get(addtTectonNameTF.getText().trim())!=null) {
+                            JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 else{
@@ -797,12 +800,20 @@ public class GameGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!addfFungusNameTF.getText().trim().isEmpty() && addfFungusNameTF.getText().trim().matches("^F\\d+$")) {
-                    System.out.print("/addf -n "+addfFungusNameTF.getText().trim().toString()+"\n");
-                    boolean success = iview.addf(addfFungusNameTF.getText().trim().toString());
+                    System.out.print("/addf -n "+addfFungusNameTF.getText().trim()+"\n");
+                    boolean success = iview.addf(addfFungusNameTF.getText().trim());
                     System.out.print(">");
                     if (success) {
                         addfFungusNameTF.setText("");
                         JOptionPane.showMessageDialog(null, "Fungus successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if ((Fungus)iview.getPlanet().get(addfFungusNameTF.getText().trim())!=null) {
+                            JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 else{
@@ -829,13 +840,21 @@ public class GameGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!addicInsectColonyNameTF.getText().trim().isEmpty() && addicInsectColonyNameTF.getText().trim().matches("^IC\\d+$")) {
-                    System.out.print("/addic -n "+addicInsectColonyNameTF.getText().trim().toString()+" -nv "+(Integer)addicAmoutOfNutrientsSpinner.getValue()+"\n");
-                    boolean success = iview.addic(addicInsectColonyNameTF.getText().trim().toString(), (Integer)addicAmoutOfNutrientsSpinner.getValue());
+                    System.out.print("/addic -n "+addicInsectColonyNameTF.getText().trim()+" -nv "+(Integer)addicAmoutOfNutrientsSpinner.getValue()+"\n");
+                    boolean success = iview.addic(addicInsectColonyNameTF.getText().trim(), (Integer)addicAmoutOfNutrientsSpinner.getValue());
                     System.out.print(">");
                     if (success) {
                         addicInsectColonyNameTF.setText("");
                         addicAmoutOfNutrientsSpinner.setValue(0);
                         JOptionPane.showMessageDialog(null, "Insect Colony successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if ((InsectColony)iview.getPlanet().get(addicInsectColonyNameTF.getText().trim())!=null) {
+                            JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 else{
@@ -872,12 +891,12 @@ public class GameGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!addfbFungusBodyNameTF.getText().trim().isEmpty() && addfbFungusBodyNameTF.getText().trim().matches("^FB\\d+$") && 
-                    !addfbFungusNameTF.getText().trim().isEmpty() && addfbFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addfbFungusNameTF.getText().trim().toString()) != null &&
-                    !addfbTectonNameTF.getText().trim().isEmpty() && addfbTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addfbTectonNameTF.getText().trim().toString())!= null) {
-                    System.out.print("/addfb -n "+addfbFungusBodyNameTF.getText().trim().toString()+" -f "+addfbFungusNameTF.getText().trim().toString()+" -t "+addfbTectonNameTF.getText().trim().toString()+" -d "+(addfbIsDeadBt.getText().toString().equals("IsDead: no")?"n":"y")
-                    +" -a "+(Integer)addfbAgeSpinner.getValue()+" -dv "+(addfbIsDevelopedBt.getText().toString().equals("IsDeveloped: no")?"n":"y")+" -sc "+(Integer)addfbSporeCountSpinner.getValue()+" -sl "+(Integer)addfbMaxShootSpinner.getValue()+"\n");
-                    boolean success = iview.addfb(addfbFungusBodyNameTF.getText().trim().toString(), (Tecton)iview.getPlanet().get(addfbTectonNameTF.getText().trim().toString()), (Fungus)iview.getPlanet().get(addfbFungusNameTF.getText().trim().toString()), 
-                    addfbIsDevelopedBt.getText().toString().equals("IsDeveloped: no")?false:true, (Integer)addfbAgeSpinner.getValue(), addfbIsDeadBt.getText().toString().equals("IsDead: no")?false:true, (Integer)addfbSporeCountSpinner.getValue(), (Integer)addfbMaxShootSpinner.getValue());
+                    !addfbFungusNameTF.getText().trim().isEmpty() && addfbFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addfbFungusNameTF.getText().trim()) != null &&
+                    !addfbTectonNameTF.getText().trim().isEmpty() && addfbTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addfbTectonNameTF.getText().trim())!= null) {
+                    System.out.print("/addfb -n "+addfbFungusBodyNameTF.getText().trim()+" -f "+addfbFungusNameTF.getText().trim()+" -t "+addfbTectonNameTF.getText().trim()+" -d "+(addfbIsDeadBt.getText().equals("IsDead: no")?"n":"y")
+                    +" -a "+(Integer)addfbAgeSpinner.getValue()+" -dv "+(addfbIsDevelopedBt.getText().equals("IsDeveloped: no")?"n":"y")+" -sc "+(Integer)addfbSporeCountSpinner.getValue()+" -sl "+(Integer)addfbMaxShootSpinner.getValue()+"\n");
+                    boolean success = iview.addfb(addfbFungusBodyNameTF.getText().trim(), (Tecton)iview.getPlanet().get(addfbTectonNameTF.getText().trim()), (Fungus)iview.getPlanet().get(addfbFungusNameTF.getText().trim()), 
+                    addfbIsDevelopedBt.getText().equals("IsDeveloped: no")?false:true, (Integer)addfbAgeSpinner.getValue(), addfbIsDeadBt.getText().equals("IsDead: no")?false:true, (Integer)addfbSporeCountSpinner.getValue(), (Integer)addfbMaxShootSpinner.getValue());
                     System.out.print(">");
                     if (success) {
                         addfbFungusBodyNameTF.setText("");
@@ -889,6 +908,14 @@ public class GameGUI extends JFrame {
                         addfbSporeCountSpinner.setValue(0);
                         addfbMaxShootSpinner.setValue(4);
                         JOptionPane.showMessageDialog(null, "Fungus Body successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if ((FungusBody)iview.getPlanet().get(addfbFungusBodyNameTF.getText().trim())!=null) {
+                            JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 else{
@@ -1018,13 +1045,27 @@ public class GameGUI extends JFrame {
         addHyphaBt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!addhHyphaNameTF.getText().trim().isEmpty() && addhHyphaNameTF.getText().trim().matches("^H\\d+$")) {
-                    System.out.print("/addf -n "+addfFungusNameTF.getText().trim().toString()+"\n");
-                    boolean success = iview.addf(addfFungusNameTF.getText().trim().toString());
+                if (!addhHyphaNameTF.getText().trim().isEmpty() && addhHyphaNameTF.getText().trim().matches("^H\\d+$") &&
+                    !addhFungusNameTF.getText().trim().isEmpty() && addhFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addhFungusNameTF.getText().trim())!=null &&
+                    !addhTectonNameStartTF.getText().trim().isEmpty() && addhTectonNameStartTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addhTectonNameStartTF.getText().trim())!=null &&
+                    (addhTectonNameEndTF.getText().trim().isEmpty()?true:addhTectonNameEndTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addhTectonNameEndTF.getText().trim())!=null)) {
+                    System.out.print("/addh -n "+addhHyphaNameTF.getText().trim()+" -f "+addhFungusNameTF.getText().trim()+" -ts "+addhTectonNameStartTF.getText().trim()+(addhTectonNameEndTF.getText().trim().isEmpty()?"":" -tn "+addhTectonNameEndTF.getText().trim())+"\n");
+                    boolean success = iview.addh(addhHyphaNameTF.getText().trim(), (Fungus)iview.getPlanet().get(addhFungusNameTF.getText().trim()), (Tecton)iview.getPlanet().get(addhTectonNameStartTF.getText().trim()), (addhTectonNameEndTF.getText().trim().isEmpty()?null:(Tecton)iview.getPlanet().get(addhTectonNameEndTF.getText().trim())));
                     System.out.print(">");
                     if (success) {
-                        addfFungusNameTF.setText("");
-                        JOptionPane.showMessageDialog(null, "Fungus successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                        addhHyphaNameTF.setText("");
+                        addhFungusNameTF.setText("");
+                        addhTectonNameStartTF.setText("");
+                        addhTectonNameEndTF.setText("");
+                        JOptionPane.showMessageDialog(null, "Hypha successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if ((Hypha)iview.getPlanet().get(addhHyphaNameTF.getText().trim())!=null) {
+                            JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
                 else{
@@ -1521,21 +1562,4 @@ public class GameGUI extends JFrame {
         return playPanel;
     }
 
-    /*public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        SwingUtilities.invokeLater(() -> {
-            GameGUI frame = new GameGUI();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setVisible(true);
-        });
-    }*/
 }
