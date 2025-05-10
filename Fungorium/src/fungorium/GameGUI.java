@@ -1301,12 +1301,12 @@ public class GameGUI extends JFrame {
                 if (!addiInsectNameTF.getText().trim().isEmpty() && addiInsectNameTF.getText().trim().matches("^I\\d+$") &&
                     !addiInsectColonyNameTF.getText().trim().isEmpty() && addiInsectColonyNameTF.getText().trim().matches("^IC\\d+$") && (InsectColony)iview.getPlanet().get(addiInsectColonyNameTF.getText().trim())!=null &&
                     !addiTectonNameTF.getText().trim().isEmpty() && addiTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addiTectonNameTF.getText().trim())!=null &&
-                    (addsFungusNameTF.getText().trim().isEmpty()?true:addsFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim())!=null)) {
+                    (addiEatenByTF.getText().trim().isEmpty()?true:addiEatenByTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addiEatenByTF.getText().trim())!=null)) {
                     System.out.print("/addi -n "+addiInsectNameTF.getText().trim()+" -ic "+addiInsectColonyNameTF.getText().trim()+" -t "+addiTectonNameTF.getText().trim()+" -sd "+(Integer)addiInsectMaxMoveSpinner.getValue()+" -ca "+(addiCutAbilityBt.getText().equals("CutAbility: yes")?"y":"n")+
-                    " -et "+(Integer)addiEffectTimeLeftSpinner.getValue()+(addsFungusNameTF.getText().trim().isEmpty()?"":" -eb "+addsFungusNameTF.getText().trim())+"\n");
+                    " -et "+(Integer)addiEffectTimeLeftSpinner.getValue()+(addiEatenByTF.getText().trim().isEmpty()?"":" -eb "+addiEatenByTF.getText().trim())+"\n");
                     boolean success = iview.addi(addiInsectNameTF.getText().trim(), (Integer)addiInsectMaxMoveSpinner.getValue(), (addiCutAbilityBt.getText().equals("CutAbility: yes")?true:false), 
                     (Integer)addiEffectTimeLeftSpinner.getValue(), (InsectColony)iview.getPlanet().get(addiInsectColonyNameTF.getText().trim()), (Tecton)iview.getPlanet().get(addiTectonNameTF.getText().trim()), 
-                    ((Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim())!=null?(Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim()):null));
+                    ((Fungus)iview.getPlanet().get(addiEatenByTF.getText().trim())!=null?(Fungus)iview.getPlanet().get(addiEatenByTF.getText().trim()):null));
                     System.out.print(">");
                     if (success) {
                         addiInsectNameTF.setText("");
@@ -1374,6 +1374,19 @@ public class GameGUI extends JFrame {
         addiCutAbilityBt.setFocusPainted(false);
         optionsPanel.add(addiCutAbilityBt);
         addiCutAbilityBt.setBounds(690, 390, 104, 25);
+
+        // addiCutAbilityBt eseménykezelő
+        addiCutAbilityBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (addiCutAbilityBt.getText().equals("CutAbility: yes")) {
+                    addiCutAbilityBt.setText("CutAbility: no");
+                }
+                else{
+                    addiCutAbilityBt.setText("CutAbility: yes");
+                }
+            }
+        });
 
         // addiEffectTimeLeftLb beállításai
         addiEffectTimeLeftLb.setText(", effect time left:");
