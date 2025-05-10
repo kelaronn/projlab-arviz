@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -1520,6 +1522,15 @@ public class GameGUI extends JFrame {
 
         return playPanel;
     }
+
+//    /**
+//     * Visszatér a View planet nem rés-hifa kulcsainak listájával.
+//     * @return String List - Keys form View.planet
+//     */
+//    public List<String> GetKeysFromPlanet(){
+//        List keys = new LinkedList<String>();
+//
+//    }
 
     /*public static void main(String[] args) {
         try {
