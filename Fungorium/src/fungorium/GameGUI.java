@@ -101,6 +101,7 @@ public class GameGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Váltás a játék kártyára
                 cardLayout.show(GameGUI.this.gamePanel, PLAY_CARD);
+                RefreshSelectableEntities();
             }
         });
 
@@ -1695,11 +1696,7 @@ public class GameGUI extends JFrame {
 
         // scrollPane2 és entitiesForOperationsJList beállításai
         entitiesForOperationsJList.setModel(new AbstractListModel<String>() {
-            String[] values = {
-                    "T2",
-                    "H2",
-                    "S1"
-            };
+            String[] values = {};
             @Override
             public int getSize() { return values.length; }
             @Override
@@ -1715,6 +1712,7 @@ public class GameGUI extends JFrame {
         growHyphaBt.setFocusPainted(false);
         playPanel.add(growHyphaBt);
         growHyphaBt.setBounds(140, 470, 100, 32);
+        growHyphaBt.addActionListener( new GrowHyphaListener());
 
         // growFungusBodyFromSporeBt beállításai
         growFungusBodyFromSporeBt.setText("GrowFungusBodyFromSpore");
@@ -1728,24 +1726,28 @@ public class GameGUI extends JFrame {
         growFungusBodyFromInsectBt.setFocusPainted(false);
         playPanel.add(growFungusBodyFromInsectBt);
         growFungusBodyFromInsectBt.setBounds(460, 470, 199, 32);
+        growFungusBodyFromInsectBt.addActionListener(new GrowFungusBodyFromInsectListener());
 
         // produceSporeBt beállításai
         produceSporeBt.setText("ProduceSpore");
         produceSporeBt.setFocusPainted(false);
         playPanel.add(produceSporeBt);
         produceSporeBt.setBounds(670, 470, 116, 32);
+        produceSporeBt.addActionListener(new ProduceSporeListener());
 
         // shootSporeBt beállításai
         shootSporeBt.setText("ShootSpore");
         shootSporeBt.setFocusPainted(false);
         playPanel.add(shootSporeBt);
         shootSporeBt.setBounds(140, 510, 102, 32);
+        shootSporeBt.addActionListener( new ShootSporeListener());
 
         // eatStunnedInsectBt beállításai
         eatStunnedInsectBt.setText("EatStunnedInsect");
         eatStunnedInsectBt.setFocusPainted(false);
         playPanel.add(eatStunnedInsectBt);
         eatStunnedInsectBt.setBounds(250, 510, 135, 32);
+        eatStunnedInsectBt.addActionListener( new EatStunnedInsectListener());
 
         // eatSporeBt beállításai
         eatSporeBt.setText("EatSpore");
@@ -1800,6 +1802,9 @@ public class GameGUI extends JFrame {
      * @return String array - keys from planet
      */
     public String[] GetOperatableKeysFromPlanet(String key){
+        if(key == null){
+            return new String[0];
+        }
         LinkedList<String> keys = new LinkedList<String>();
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String, Object>) iview.getPlanet();
 
@@ -1916,6 +1921,9 @@ public class GameGUI extends JFrame {
 
         @Override
         public void valueChanged(ListSelectionEvent e) {
+            String[] values = GetKeysFromPlanet();
+            if(values.length == 0)
+                return;
             entitiesForOperationsJList.setModel(new AbstractListModel<String>() {
                 String[] values = GetOperatableKeysFromPlanet(allSelectableEntitiesJList.getSelectedValue());
                 @Override
@@ -1946,10 +1954,127 @@ public class GameGUI extends JFrame {
             }
             GameController controller = iview.GetGameController();
             controller.GrowFungusBody(tectonController, (Fungus)controller.GetCurrentPlayer());
+            //ToDo: felugró ablakok error esetén
             RefreshSelectableEntities();
             
         }
     }
+    private class GrowFungusBodyFromInsectListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ITectonController tectonController;
+            try {
+                tectonController = (ITectonController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.GrowFungusBodyFromInsect(tectonController, (Fungus)controller.GetCurrentPlayer());
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+
+        }
+    }
+
+    private class GrowHyphaListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            IHyphaView hyphaView;
+            Tecton tectonTo;
+            Tecton tectonFrom;
+            try {
+                hyphaView = (IHyphaView) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+                tectonFrom = hyphaView.GetTectons().get(0);
+                tectonTo = (Tecton) iview.getPlanet().get(entitiesForOperationsJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+
+            if(tectonTo == null)
+                return;
+            GameController controller = iview.GetGameController();
+            controller.GrowHypha( (Fungus)controller.GetCurrentPlayer(),tectonFrom,tectonTo );
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+        }
+    }
+
+    private class ProduceSporeListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            IFungusBodyController fbController;
+            try {
+                fbController = (IFungusBodyController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.ProduceSpore(fbController);
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+
+        }
+    }
+
+    private class ShootSporeListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            IFungusBodyController fbController;
+            try {
+                fbController = (IFungusBodyController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.ShootSpores(fbController);
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+        }
+    }
+
+    private class EatStunnedInsectListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            IHyphaController hyphaController;
+            Insect insect;
+            try {
+                hyphaController = (IHyphaController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+                insect = (Insect) iview.getPlanet().get(entitiesForOperationsJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.EatStunnedInsect(hyphaController, insect);
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+        }
+    }
+
 
     /*public static void main(String[] args) {
         try {
