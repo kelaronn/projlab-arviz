@@ -123,10 +123,6 @@ public class GameController {
         CleanUpFungusBodies(planet);
     }
 
-    private void EndGame() {
-        //ToDo: implement
-    }
-
     public boolean BreakTecton(ITectonController tc){
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         Tecton newT;
