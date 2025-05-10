@@ -83,6 +83,7 @@ public interface IView {
     public boolean addfb(String name, Tecton tecton, Fungus actFungus, boolean fullyDeveloped, int age, boolean isDead, int sporeCount, int shotLimit);
     public boolean addh(String name, Fungus actFungus, Tecton tectonTS, Tecton tectonTN);
     public boolean adds(String name, String sporeType, int nutritionValue, int effectDurr, Fungus actFungus, Tecton tectonTN);
+    public boolean addi(String name, int speed, boolean cutAbility, int effectTimeLeft, InsectColony actInsectColony, Tecton tecton, Fungus eatenBy);
     public boolean altt(Tecton tecton, Tecton tectonNH);
     public boolean alth(Hypha hypha, Hypha hyphaNH);
     public void lstt();

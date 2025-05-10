@@ -1060,7 +1060,7 @@ public class GameGUI extends JFrame {
                 else{
                     addfbIsDevelopedBt.setText("IsDeveloped: no");
                 }
-                if (ageValue>5 || maxShootValue == 0) {
+                if (maxShootValue == 0) {
                     addfbIsDeadBt.setText("IsDead: yes");
                 }
                 else{
@@ -1105,9 +1105,8 @@ public class GameGUI extends JFrame {
         addfbMaxShootSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Integer ageValue = (Integer)addfbAgeSpinner.getValue();
                 Integer maxShootValue = (Integer)addfbMaxShootSpinner.getValue();
-                if (ageValue>5 || maxShootValue == 0) {
+                if (maxShootValue == 0) {
                     addfbIsDeadBt.setText("IsDead: yes");
                 }
                 else{
@@ -1299,19 +1298,24 @@ public class GameGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!addiInsectNameTF.getText().trim().isEmpty() && addiInsectNameTF.getText().trim().matches("^I\\d+$") &&
-                    !addsFungusNameTF.getText().trim().isEmpty() && addsFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim())!=null &&
-                    !addiTectonNameTF.getText().trim().isEmpty() && addiTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addiTectonNameTF.getText().trim())!=null) {
-                    System.out.print("/adds -n "+addsSporeNameTF.getText().trim()+" -f "+addsFungusNameTF.getText().trim()+" -tn "+addsTectonNameTF.getText().trim()+" -t "+"sporeType"+" -nv "+(Integer)addsNutritionalValueSpinner.getValue()+" -ed "+(Integer)addsEffectDurationSpinner.getValue()+"\n");
-                    boolean success = iview.adds(addsSporeNameTF.getText().trim(), "sporeType", (Integer)addsNutritionalValueSpinner.getValue(), (Integer)addsEffectDurationSpinner.getValue(), (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim()), (Tecton)iview.getPlanet().get(addsTectonNameTF.getText().trim()));
+                    !addiInsectColonyNameTF.getText().trim().isEmpty() && addiInsectColonyNameTF.getText().trim().matches("^IC\\d+$") && (InsectColony)iview.getPlanet().get(addiInsectColonyNameTF.getText().trim())!=null &&
+                    !addiTectonNameTF.getText().trim().isEmpty() && addiTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addiTectonNameTF.getText().trim())!=null &&
+                    (addsFungusNameTF.getText().trim().isEmpty()?true:addsFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim())!=null)) {
+                    System.out.print("/addi -n "+addiInsectNameTF.getText().trim()+" -ic "+addiInsectColonyNameTF.getText().trim()+" -t "+addiTectonNameTF.getText().trim()+" -sd "+(Integer)addiInsectMaxMoveSpinner.getValue()+" -ca "+(addiCutAbilityBt.getText().equals("CutAbility: yes")?"y":"n")+
+                    " -et "+(Integer)addiEffectTimeLeftSpinner.getValue()+(addsFungusNameTF.getText().trim().isEmpty()?"":" -eb "+addsFungusNameTF.getText().trim())+"\n");
+                    boolean success = iview.addi(addiInsectNameTF.getText().trim(), (Integer)addiInsectMaxMoveSpinner.getValue(), (addiCutAbilityBt.getText().equals("CutAbility: yes")?true:false), 
+                    (Integer)addiEffectTimeLeftSpinner.getValue(), (InsectColony)iview.getPlanet().get(addiInsectColonyNameTF.getText().trim()), (Tecton)iview.getPlanet().get(addiTectonNameTF.getText().trim()), 
+                    ((Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim())!=null?(Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim()):null));
                     System.out.print(">");
                     if (success) {
-                        addsSporeNameTF.setText("");
-                        addsFungusNameTF.setText("");
-                        addsTectonNameTF.setText("");
-                        addsSporeTypeCB.setSelectedIndex(0);
-                        addsNutritionalValueSpinner.setValue(5);
-                        addsEffectDurationSpinner.setValue(0);
-                        JOptionPane.showMessageDialog(null, "Spore successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                        addiInsectNameTF.setText("");
+                        addicInsectColonyNameTF.setText("");
+                        addiTectonNameTF.setText("");
+                        addiEatenByTF.setText("");
+                        addiInsectMaxMoveSpinner.setValue(2);
+                        addiEffectTimeLeftSpinner.setValue(0);
+                        addiCutAbilityBt.setText("CutAbility: yes");
+                        JOptionPane.showMessageDialog(null, "Insect successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else{
                         if ((Hypha)iview.getPlanet().get(addhHyphaNameTF.getText().trim())!=null) {
