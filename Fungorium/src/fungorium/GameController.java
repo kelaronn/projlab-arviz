@@ -654,7 +654,7 @@ public class GameController {
         if(insectCountBefore != insectCountAfter){
             view.InciCtr();
             String name = "I"+view.getiCtr();
-            Insect nInsect = insectView.GetTecton().GetInsects().get(0);
+            Insect nInsect = insectView.GetTecton().GetInsects().get( insectCountAfter - 1);
             planet.put(name, nInsect );
             InsectMovesLeft.put(nInsect, nInsect.GetSpeed());
         }

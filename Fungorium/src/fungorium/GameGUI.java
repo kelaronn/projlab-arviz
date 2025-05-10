@@ -1758,18 +1758,21 @@ public class GameGUI extends JFrame {
         eatSporeBt.setFocusPainted(false);
         playPanel.add(eatSporeBt);
         eatSporeBt.setBounds(395, 510, 87, 32);
+        eatSporeBt.addActionListener(new EatSporeListener());
 
         // moveInsectBt beállításai
         moveInsectBt.setText("MoveInsect");
         moveInsectBt.setFocusPainted(false);
         playPanel.add(moveInsectBt);
         moveInsectBt.setBounds(490, 510, 100, 32);
+        moveInsectBt.addActionListener( new MoveInsectListener());
 
         // cutHyphaBt beállításai
         cutHyphaBt.setText("CutHypha");
         cutHyphaBt.setFocusPainted(false);
         playPanel.add(cutHyphaBt);
         cutHyphaBt.setBounds(600, 510, 97, 32);
+        cutHyphaBt.addActionListener(new CutHyphaListener());
 
         return playPanel;
     }
@@ -1844,7 +1847,7 @@ public class GameGUI extends JFrame {
             ArrayList<Spore> spores = (ArrayList<Spore>) itectonView.GetSpores();
             ArrayList<Insect> insects = (ArrayList<Insect>) itectonView.GetInsects();
 
-            // sporar kulcsainak megkeresese
+            // sporak kulcsainak megkeresese
             for(Spore spore : spores){
                 for(Map.Entry<String,Object> entry : planet.entrySet()){
                     if(entry.getValue().equals(spore)){
@@ -1893,13 +1896,15 @@ public class GameGUI extends JFrame {
             for(Hypha hypha : hyphas){
                 for(Map.Entry<String,Object> entry : planet.entrySet()){
                     if(entry.getValue().equals(hypha)){
-                        keys.add(entry.getKey());
-                        break;
+                        if(hypha.GetTectons().size() > 1){                  // res hifak kellenek, csak azokat tudja elvagni
+                            keys.add(entry.getKey());
+                            break;
+                        }
                     }
                 }
             }
         }
-        return keys.toArray(new String[0]);
+        return keys.toArray(new String[keys.size()]);
     }
 
     /**
@@ -1928,8 +1933,9 @@ public class GameGUI extends JFrame {
             String[] values = GetKeysFromPlanet();
             if(values.length == 0)
                 return;
-            entitiesForOperationsJList.setModel(new AbstractListModel<String>() {
-                String[] values = GetOperatableKeysFromPlanet(allSelectableEntitiesJList.getSelectedValue());
+            String key = allSelectableEntitiesJList.getSelectedValue();
+                entitiesForOperationsJList.setModel(new AbstractListModel<String>() {
+                String[] values = GetOperatableKeysFromPlanet(key);
                 @Override
                 public int getSize() {
                     return values.length;
@@ -2074,6 +2080,76 @@ public class GameGUI extends JFrame {
             }
             GameController controller = iview.GetGameController();
             controller.EatStunnedInsect(hyphaController, insect);
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+        }
+    }
+
+    private class EatSporeListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            IInsectController insectController;
+            Spore spore;
+            try {
+                insectController = (IInsectController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+                spore = (Spore) iview.getPlanet().get(entitiesForOperationsJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.EatSpore(insectController,spore);
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+        }
+    }
+
+    private class MoveInsectListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            IInsectController insectController;
+            Tecton tecton;
+            try {
+                insectController = (IInsectController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+                tecton = (Tecton) iview.getPlanet().get(entitiesForOperationsJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.MoveInsect(insectController,tecton);
+            //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+        }
+
+    }
+
+    private class CutHyphaListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            IInsectController insectController;
+            Hypha hypha;
+            try {
+                insectController = (IInsectController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+                hypha = (Hypha) iview.getPlanet().get(entitiesForOperationsJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.CutHypha(insectController,hypha);
             //ToDo: felugró ablakok error esetén
             RefreshSelectableEntities();
         }
