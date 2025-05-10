@@ -1937,7 +1937,21 @@ public class GameGUI extends JFrame {
     private class GrowFungusBodyFromSporeListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            ITectonController tectonController;
+            try {
+                 tectonController = (ITectonController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
+            } catch (NullPointerException ne) {
+                System.err.println("Kulcs nem talalhato");
+                return;
+            }
+            catch (ClassCastException cce) {
+                System.err.println("Nem megfelelo tipus lett kivalasztva");
+                return;
+            }
+            GameController controller = iview.GetGameController();
+            controller.GrowFungusBody(tectonController, (Fungus)controller.GetCurrentPlayer());
             RefreshSelectableEntities();
+            
         }
     }
 

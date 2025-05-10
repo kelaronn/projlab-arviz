@@ -748,4 +748,7 @@ public class GameController {
     public boolean IsGameOver(){
         return gameOver;
     }
+    public Object GetCurrentPlayer(){
+        return currentPlayer;
+    }
 }
