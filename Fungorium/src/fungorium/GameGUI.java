@@ -1309,7 +1309,7 @@ public class GameGUI extends JFrame {
                     System.out.print(">");
                     if (success) {
                         addiInsectNameTF.setText("");
-                        addicInsectColonyNameTF.setText("");
+                        addiInsectColonyNameTF.setText("");
                         addiTectonNameTF.setText("");
                         addiEatenByTF.setText("");
                         addiInsectMaxMoveSpinner.setValue(2);
