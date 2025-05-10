@@ -19,6 +19,9 @@ public class GameGUI extends JFrame {
     private static final String OPTIONS_CARD = "OptionsCard";
     private static final String PLAY_CARD = "PlayCard";
     private JPanel gamePanel;
+    private JPanel playPanel;
+    private JPanel optionsPanel;
+    private JPanel menuPanel;
     private CardLayout cardLayout;
     private JList<String> allSelectableEntitiesJList;
     private JList<String> entitiesForOperationsJList;
@@ -42,15 +45,15 @@ public class GameGUI extends JFrame {
         gamePanel = new JPanel(cardLayout);
 
         // Menu panel hozzáadása
-        JPanel menuPanel = createMenuPanel();
+        menuPanel = createMenuPanel();
         gamePanel.add(menuPanel, MENU_CARD);
 
         // Options panel hozzáadása
-        JPanel optionsPanel = createOptionsPanel();
+        optionsPanel = createOptionsPanel();
         gamePanel.add(optionsPanel, OPTIONS_CARD);
 
         // Play panel hozzáadása
-        JPanel playPanel = createPlayPanel();
+        playPanel = createPlayPanel();
         gamePanel.add(playPanel, PLAY_CARD);
 
         // gamePanel hozzáadása a contentPane-hez
@@ -362,7 +365,7 @@ public class GameGUI extends JFrame {
         maxTurnsSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                iview.GetGameController().SetRoundsLeft((Integer)maxTurnsSpinner.getValue());
+                iview.GetGameController().SetMaxRounds((Integer)maxTurnsSpinner.getValue());
             }
         });
 
@@ -1573,7 +1576,7 @@ public class GameGUI extends JFrame {
         JButton moveInsectBt = new JButton();
         JButton cutHyphaBt = new JButton();
 
-        // menuBt beállításai
+        // menuBt beállításai   0.
         menuBt.setText("Menu");
         menuBt.setFocusPainted(false);
         playPanel.add(menuBt);
@@ -1588,62 +1591,64 @@ public class GameGUI extends JFrame {
             }
         });
 
-        // separator3 beállításai
+        // separator3 beállításai   1.
         separator3.setOrientation(SwingConstants.VERTICAL);
         playPanel.add(separator3);
         separator3.setBounds(120, 0, 25, 46);
 
-        // currentPlayerLb beállításai
+        // currentPlayerLb beállításai  2.
         currentPlayerLb.setText("Current player: IC1");
         currentPlayerLb.setFont(new Font("Segoe UI", Font.BOLD, 18));
         playPanel.add(currentPlayerLb);
         currentPlayerLb.setBounds(130, 10, 159, 25);
 
-        // amountOfNutrientsLb beállításai
+        // amountOfNutrientsLb beállításai  3.
         amountOfNutrientsLb.setText("Amount of nutrients collected: 0");
         amountOfNutrientsLb.setFont(new Font("Segoe UI", Font.BOLD, 18));
         playPanel.add(amountOfNutrientsLb);
         amountOfNutrientsLb.setBounds(325, 10, 279, 25);
 
-        // separator5 beállításai
+        // separator5 beállításai   4.
         separator5.setOrientation(SwingConstants.VERTICAL);
         playPanel.add(separator5);
         separator5.setBounds(685, 0, 25, 46);
 
-        // roundLb beállításai
+        // roundLb beállításai  5.
         roundLb.setText("Round: 1");
         roundLb.setBorder(null);
         roundLb.setFont(new Font("Segoe UI", Font.BOLD, 18));
         playPanel.add(roundLb);
         roundLb.setBounds(695, 10, 77, 25);
 
-        // separator4 beállításai
+        // separator4 beállításai   6.
         separator4.setOrientation(SwingConstants.VERTICAL);
         playPanel.add(separator4);
         separator4.setBounds(800, 0, 25, 46);
 
-        // nextRoundBt beállításai
+        // nextRoundBt beállításai  7.
         nextRoundBt.setText("Next round");
         nextRoundBt.setFocusPainted(false);
         playPanel.add(nextRoundBt);
         nextRoundBt.setBounds(810, 5, 97, 32);
+        nextRoundBt.addActionListener(new NextRoundButtonListener());
 
-        // nextPlayerBt beállításai
+        // nextPlayerBt beállításai 8.
         nextPlayerBt.setText("Next player");
         nextPlayerBt.setFocusPainted(false);
         playPanel.add(nextPlayerBt);
         nextPlayerBt.setBounds(915, 5, 98, 32);
+        nextPlayerBt.addActionListener(new NextPlayerButtonListener());
 
-        // separator2 beállításai
+        // separator2 beállításai   9.
         playPanel.add(separator2);
         separator2.setBounds(0, 45, 1020, 20);
 
-        // allSelectableEntitiesLb beállításai
+        // allSelectableEntitiesLb beállításai  10.
         allSelectableEntitiesLb.setText("All selectable entities:");
         playPanel.add(allSelectableEntitiesLb);
         allSelectableEntitiesLb.setBounds(5, 55, 115, 16);
 
-        // scrollPane1 és allSelectableEntitiesJList beállításai
+        // scrollPane1 és allSelectableEntitiesJList beállításai    11.
         allSelectableEntitiesJList.setModel(new AbstractListModel<String>() {
             String[] values = GetKeysFromPlanet();
             @Override
@@ -1656,7 +1661,7 @@ public class GameGUI extends JFrame {
         playPanel.add(scrollPane1);
         scrollPane1.setBounds(5, 75, 125, 470);
 
-        // gameMapLb beállításai
+        // gameMapLb beállításai    12.
         gameMapLb.setText("Game map:");
         playPanel.add(gameMapLb);
         gameMapLb.setBounds(475, 55, 61, 16);
@@ -1690,7 +1695,7 @@ public class GameGUI extends JFrame {
         gameMapJPanel.add(tectonImageIconLb);
         tectonImageIconLb.setBounds(new Rectangle(new Point(75, 5), tectonImageIconLb.getPreferredSize()));
 
-        // gameMapJPanel méretének kiszámítása
+        // gameMapJPanel méretének kiszámítása  13.
         Dimension preferredSize = new Dimension();
         for (int i = 0; i < gameMapJPanel.getComponentCount(); i++) {
             Rectangle bounds = gameMapJPanel.getComponent(i).getBounds();
@@ -1706,12 +1711,12 @@ public class GameGUI extends JFrame {
         playPanel.add(gameMapJPanel);
         gameMapJPanel.setBounds(140, 75, 730, 385);
 
-        // entitiesForOperationsLb beállításai
+        // entitiesForOperationsLb beállításai  14.
         entitiesForOperationsLb.setText("Entities for operations:");
         playPanel.add(entitiesForOperationsLb);
         entitiesForOperationsLb.setBounds(880, 55, 119, 16);
 
-        // scrollPane2 és entitiesForOperationsJList beállításai
+        // scrollPane2 és entitiesForOperationsJList beállításai    15.
         entitiesForOperationsJList.setModel(new AbstractListModel<String>() {
             String[] values = {};
             @Override
@@ -1724,63 +1729,63 @@ public class GameGUI extends JFrame {
         playPanel.add(scrollPane2);
         scrollPane2.setBounds(880, 75, 135, 470);
 
-        // growHyphaBt beállításai
+        // growHyphaBt beállításai  16.
         growHyphaBt.setText("GrowHypha");
         growHyphaBt.setFocusPainted(false);
         playPanel.add(growHyphaBt);
         growHyphaBt.setBounds(140, 470, 100, 32);
         growHyphaBt.addActionListener( new GrowHyphaListener());
 
-        // growFungusBodyFromSporeBt beállításai
+        // growFungusBodyFromSporeBt beállításai    17.
         growFungusBodyFromSporeBt.setText("GrowFungusBodyFromSpore");
         growFungusBodyFromSporeBt.setFocusPainted(false);
         playPanel.add(growFungusBodyFromSporeBt);
         growFungusBodyFromSporeBt.setBounds(250, 470, 199, 32);
         growFungusBodyFromSporeBt.addActionListener(new GrowFungusBodyFromSporeListener());
 
-        // growFungusBodyFromInsectBt beállításai
+        // growFungusBodyFromInsectBt beállításai   18.
         growFungusBodyFromInsectBt.setText("GrowFungusBodyFromInsect");
         growFungusBodyFromInsectBt.setFocusPainted(false);
         playPanel.add(growFungusBodyFromInsectBt);
         growFungusBodyFromInsectBt.setBounds(460, 470, 199, 32);
         growFungusBodyFromInsectBt.addActionListener(new GrowFungusBodyFromInsectListener());
 
-        // produceSporeBt beállításai
+        // produceSporeBt beállításai   19.
         produceSporeBt.setText("ProduceSpore");
         produceSporeBt.setFocusPainted(false);
         playPanel.add(produceSporeBt);
         produceSporeBt.setBounds(670, 470, 116, 32);
         produceSporeBt.addActionListener(new ProduceSporeListener());
 
-        // shootSporeBt beállításai
+        // shootSporeBt beállításai 20.
         shootSporeBt.setText("ShootSpore");
         shootSporeBt.setFocusPainted(false);
         playPanel.add(shootSporeBt);
         shootSporeBt.setBounds(140, 510, 102, 32);
         shootSporeBt.addActionListener( new ShootSporeListener());
 
-        // eatStunnedInsectBt beállításai
+        // eatStunnedInsectBt beállításai   21.
         eatStunnedInsectBt.setText("EatStunnedInsect");
         eatStunnedInsectBt.setFocusPainted(false);
         playPanel.add(eatStunnedInsectBt);
         eatStunnedInsectBt.setBounds(250, 510, 135, 32);
         eatStunnedInsectBt.addActionListener( new EatStunnedInsectListener());
 
-        // eatSporeBt beállításai
+        // eatSporeBt beállításai   22.
         eatSporeBt.setText("EatSpore");
         eatSporeBt.setFocusPainted(false);
         playPanel.add(eatSporeBt);
         eatSporeBt.setBounds(395, 510, 87, 32);
         eatSporeBt.addActionListener(new EatSporeListener());
 
-        // moveInsectBt beállításai
+        // moveInsectBt beállításai 23.
         moveInsectBt.setText("MoveInsect");
         moveInsectBt.setFocusPainted(false);
         playPanel.add(moveInsectBt);
         moveInsectBt.setBounds(490, 510, 100, 32);
         moveInsectBt.addActionListener( new MoveInsectListener());
 
-        // cutHyphaBt beállításai
+        // cutHyphaBt beállításai   24.
         cutHyphaBt.setText("CutHypha");
         cutHyphaBt.setFocusPainted(false);
         playPanel.add(cutHyphaBt);
@@ -1917,6 +1922,37 @@ public class GameGUI extends JFrame {
                 }
             }
         }
+        else if(key.matches("IC\\d+")){                                         // rovar kolonia
+            IInsectColonyView icView = (IInsectColonyView) planet.get(key);
+            ArrayList<Insect> insects = (ArrayList<Insect>) icView.getInsects();
+            for(Insect insect : insects){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(insect)){
+                        keys.add(entry.getKey());
+                    }
+                }
+            }
+        }
+        else if(key.matches("F\\d+")){
+            IFungusView fungusView = (IFungusView) planet.get(key);
+            ArrayList<FungusBody> fbS = (ArrayList<FungusBody>) fungusView.GetBodies();
+            ArrayList<Hypha> mycelium = (ArrayList<Hypha>) fungusView.GetMycelium();
+            for(FungusBody fb : fbS){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(fb)){
+                        keys.add(entry.getKey());
+                    }
+                }
+            }
+            for(Hypha hypha : mycelium){
+                for(Map.Entry<String,Object> entry : planet.entrySet()){
+                    if(entry.getValue().equals(hypha)){
+                        keys.add(entry.getKey());
+                    }
+                }
+            }
+        }
+
         return keys.toArray(new String[keys.size()]);
     }
 
@@ -1947,6 +1983,9 @@ public class GameGUI extends JFrame {
             if(values.length == 0)
                 return;
             String key = allSelectableEntitiesJList.getSelectedValue();
+            if(key == null){
+                return;
+            }
                 entitiesForOperationsJList.setModel(new AbstractListModel<String>() {
                 String[] values = GetOperatableKeysFromPlanet(key);
                 @Override
@@ -1958,6 +1997,74 @@ public class GameGUI extends JFrame {
                     return values[i];
                 }
             });
+                //          button visibility beallitasa
+            JButton growHyphaBt = (JButton)playPanel.getComponent(16);
+            JButton growFungusBodyFromSporeBt = (JButton)playPanel.getComponent(17);
+            JButton growFungusBodyFromInsectBt = (JButton)playPanel.getComponent(18);
+            JButton produceSporeBt = (JButton)playPanel.getComponent(19);
+            JButton shootSporeBt = (JButton)playPanel.getComponent(20);
+            JButton eatStunnedInsectBt = (JButton)playPanel.getComponent(21);
+            JButton eatSporeBt = (JButton)playPanel.getComponent(22);
+            JButton moveInsectBt = (JButton)playPanel.getComponent(23);
+            JButton cutHyphaBt = (JButton)playPanel.getComponent(24);
+
+
+            if(key.startsWith("H")){                                                // hifa,
+                growHyphaBt.setEnabled(true);
+                growFungusBodyFromSporeBt.setEnabled(false);
+                growFungusBodyFromInsectBt.setEnabled(false);
+                produceSporeBt.setEnabled(false);
+                shootSporeBt.setEnabled(false);
+                eatStunnedInsectBt.setEnabled(true);
+                eatSporeBt.setEnabled(false);
+                moveInsectBt.setEnabled(false);
+                cutHyphaBt.setEnabled(false);
+            }
+            else if(key.startsWith("T")){                                           // tekton
+                growHyphaBt.setEnabled(false);
+                growFungusBodyFromSporeBt.setEnabled(true);
+                growFungusBodyFromInsectBt.setEnabled(true);
+                produceSporeBt.setEnabled(false);
+                shootSporeBt.setEnabled(false);
+                eatStunnedInsectBt.setEnabled(false);
+                eatSporeBt.setEnabled(false);
+                moveInsectBt.setEnabled(false);
+                cutHyphaBt.setEnabled(false);
+            }
+            else if(key.matches("I\\d+")){                      // rovar
+                growHyphaBt.setEnabled(false);
+                growFungusBodyFromSporeBt.setEnabled(false);
+                growFungusBodyFromInsectBt.setEnabled(false);
+                produceSporeBt.setEnabled(false);
+                shootSporeBt.setEnabled(false);
+                eatStunnedInsectBt.setEnabled(false);
+                eatSporeBt.setEnabled(true);
+                moveInsectBt.setEnabled(true);
+                cutHyphaBt.setEnabled(true);
+            }
+            else if (key.startsWith("FB")){                         // gombatest
+                growHyphaBt.setEnabled(false);
+                growFungusBodyFromSporeBt.setEnabled(false);
+                growFungusBodyFromInsectBt.setEnabled(false);
+                produceSporeBt.setEnabled(true);
+                shootSporeBt.setEnabled(true);
+                eatStunnedInsectBt.setEnabled(false);
+                eatSporeBt.setEnabled(false);
+                moveInsectBt.setEnabled(false);
+                cutHyphaBt.setEnabled(false);
+            }
+            else{
+                growHyphaBt.setEnabled(false);
+                growFungusBodyFromSporeBt.setEnabled(false);
+                growFungusBodyFromInsectBt.setEnabled(false);
+                produceSporeBt.setEnabled(false);
+                shootSporeBt.setEnabled(false);
+                eatStunnedInsectBt.setEnabled(false);
+                eatSporeBt.setEnabled(false);
+                moveInsectBt.setEnabled(false);
+                cutHyphaBt.setEnabled(false);
+            }
+
         }
     }
 
@@ -1982,6 +2089,7 @@ public class GameGUI extends JFrame {
             
         }
     }
+
     private class GrowFungusBodyFromInsectListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -2164,6 +2272,44 @@ public class GameGUI extends JFrame {
             GameController controller = iview.GetGameController();
             controller.CutHypha(insectController,hypha);
             //ToDo: felugró ablakok error esetén
+            RefreshSelectableEntities();
+        }
+    }
+
+    private class NextRoundButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            iview.GetGameController().Trigg("nr");
+            RoundDisplay();
+        }
+    }
+
+    private void RoundDisplay() {
+        if(iview.GetGameController().IsGameOver())
+        {
+         JOptionPane.showMessageDialog(null,"Game Over!","Game Over",JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        JLabel roundLabel = (JLabel)playPanel.getComponent(5);
+        String currentRound = "0";
+        roundLabel.setText("Round: " + iview.GetGameController().GetCurrentRound());
+        RefreshSelectableEntities();
+    }
+
+    private class NextPlayerButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            iview.GetGameController().Trigg("np");
+            JLabel playerLabel = (JLabel)playPanel.getComponent(2);
+            String currentPlayer = "default";
+            for(Map.Entry<String,Object> entry : iview.getPlanet().entrySet()){
+                if(entry.getValue().equals(iview.GetGameController().GetCurrentPlayer())){
+                    currentPlayer = entry.getKey();
+                }
+            }
+
+            playerLabel.setText("Current player: " + currentPlayer);
+            RoundDisplay();
             RefreshSelectableEntities();
         }
     }

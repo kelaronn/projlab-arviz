@@ -11,8 +11,9 @@ public class GameController {
     private HashMap<Insect, Integer> InsectMovesLeft = new HashMap<Insect, Integer>();
     private boolean isRandom = true;
     private boolean turns = true;
-    private int roundsLeft = 0;
+    private int maxRounds = 5;
     private boolean gameOver = false;
+    private int currentRound = 1;
 
     public GameController(IView view){
         this.view = view;
@@ -56,8 +57,8 @@ public class GameController {
         if(!turns)
             return;
 
-        if(roundsLeft > 0)
-            roundsLeft--;
+        if(currentRound < maxRounds)
+            currentRound++;
         else{
             gameOver = true;
             return;
@@ -160,10 +161,12 @@ public class GameController {
         }
         else if(event.equals("np")){
             if (!players.isEmpty()) {
-                if(playerIndex < players.size())
+                if(playerIndex < players.size()-1)
                     playerIndex++;
-                else
+                else{
                     playerIndex = 0;
+                    EndOfRound();
+                }
                 currentPlayer = players.toArray()[playerIndex];
                 return true;
             }
@@ -729,17 +732,17 @@ public class GameController {
         playerIndex = 0;
         isRandom = true;
         turns = true;
-        roundsLeft = 5;
+        maxRounds = 5;
         gameOver = false;
     }
-    public void SetRoundsLeft(int rounds){
+    public void SetMaxRounds(int rounds){
         if(rounds <= 0)
             System.err.println("Nem lehet 0 vagy kevesebb kör!");
         else
-            rounds = rounds;
+            maxRounds = rounds;
     }
-    public int GetRoundsLeft(){
-        return roundsLeft;
+    public int GetCurrentRound(){
+        return currentRound;
     }
     public boolean IsGameOver(){
         return gameOver;
