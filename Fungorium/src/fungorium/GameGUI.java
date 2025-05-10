@@ -109,12 +109,84 @@ public class GameGUI extends JFrame {
         menuPanel.add(loadBt);
         loadBt.setBounds(365, 210, 295, 40);
 
+        // loadBt eseménykezelő
+        loadBt.addActionListener(e -> {
+            // JTextField a fájlnévhez
+            JTextField fileNameField = new JTextField(20);
+            JPanel inputPanel = new JPanel();
+            inputPanel.add(new JLabel("File name (.txt):"));
+            inputPanel.add(fileNameField);
+
+            // JOptionPane megjelenítése
+            int result = JOptionPane.showConfirmDialog(
+                null,
+                inputPanel,
+                "Load game",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+            );
+
+            // Ha az OK gombra kattintottak, mentsük el a szöveget
+            if (result == JOptionPane.OK_OPTION) {
+                String fileName = fileNameField.getText();
+                if (!fileName.trim().isEmpty()) {
+                    System.out.print("/load "+fileName.trim()+"\n");
+                    boolean success = iview.load(fileName.trim());
+                    System.out.print(">");
+                    if (success) {
+                        JOptionPane.showMessageDialog(null, "Load game successful.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Load game failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Empty filename!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         // saveBt beállításai
         saveBt.setText("Save");
         saveBt.setFont(new Font("Segoe UI", Font.BOLD, 22));
         saveBt.setFocusPainted(false);
         menuPanel.add(saveBt);
         saveBt.setBounds(365, 260, 295, 40);
+
+        // saveBt eseménykezelő
+        saveBt.addActionListener(e -> {
+            // JTextField a fájlnévhez
+            JTextField fileNameField = new JTextField(20);
+            JPanel inputPanel = new JPanel();
+            inputPanel.add(new JLabel("File name (.txt):"));
+            inputPanel.add(fileNameField);
+
+            // JOptionPane megjelenítése
+            int result = JOptionPane.showConfirmDialog(
+                null,
+                inputPanel,
+                "Save game",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+            );
+
+            // Ha az OK gombra kattintottak, mentsük el a szöveget
+            if (result == JOptionPane.OK_OPTION) {
+                String fileName = fileNameField.getText();
+                if (!fileName.trim().isEmpty()) {
+                    System.out.print("/save "+fileName.trim()+"\n");
+                    boolean success = iview.save(fileName.trim());
+                    System.out.print(">");
+                    if (success) {
+                        JOptionPane.showMessageDialog(null, "Save game successful.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Save game failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Empty filename!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // optionsBt beállításai
         optionsBt.setText("Options...");
@@ -140,7 +212,11 @@ public class GameGUI extends JFrame {
         quitGameBt.setBounds(515, 340, 145, 40);
 
         // quitGameBt eseménykezelő
-        quitGameBt.addActionListener(e -> System.exit(0));
+        quitGameBt.addActionListener(e ->{
+            System.out.print("/exit\n");
+            System.out.println("#See you later and have a nice day!");
+            System.exit(0);
+        });
 
         return menuPanel;
     }
@@ -1110,6 +1186,46 @@ public class GameGUI extends JFrame {
         addSporeBt.setFocusPainted(false);
         optionsPanel.add(addSporeBt);
         addSporeBt.setBounds(410, 285, 87, 25);
+        
+        // addSporeBt eseménykezelő
+        addSporeBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!addsSporeNameTF.getText().trim().isEmpty() && addsSporeNameTF.getText().trim().matches("^S\\d+$") &&
+                    !addsFungusNameTF.getText().trim().isEmpty() && addsFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim())!=null &&
+                    !addsTectonNameTF.getText().trim().isEmpty() && addsTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addsTectonNameTF.getText().trim())!=null) {
+                    String sporeType = addsSporeTypeCB.getSelectedItem().toString().equals("Spore")?"s":
+                    addsSporeTypeCB.getSelectedItem().equals("SpeedSpore")?"sd":
+                    addsSporeTypeCB.getSelectedItem().equals("SplitSpore")?"st":
+                    addsSporeTypeCB.getSelectedItem().equals("SlowSpore")?"sw":
+                    addsSporeTypeCB.getSelectedItem().equals("DisarmSpore")?"dm":
+                    addsSporeTypeCB.getSelectedItem().equals("StunSpore")?"sn":"s";
+                    System.out.print("/adds -n "+addsSporeNameTF.getText().trim()+" -f "+addsFungusNameTF.getText().trim()+" -tn "+addsTectonNameTF.getText().trim()+" -t "+sporeType+" -nv "+(Integer)addsNutritionalValueSpinner.getValue()+" -ed "+(Integer)addsEffectDurationSpinner.getValue()+"\n");
+                    boolean success = iview.adds(addsSporeNameTF.getText().trim(), sporeType, (Integer)addsNutritionalValueSpinner.getValue(), (Integer)addsEffectDurationSpinner.getValue(), (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim()), (Tecton)iview.getPlanet().get(addsTectonNameTF.getText().trim()));
+                    System.out.print(">");
+                    if (success) {
+                        addsSporeNameTF.setText("");
+                        addsFungusNameTF.setText("");
+                        addsTectonNameTF.setText("");
+                        addsSporeTypeCB.setSelectedIndex(0);
+                        addsNutritionalValueSpinner.setValue(5);
+                        addsEffectDurationSpinner.setValue(0);
+                        JOptionPane.showMessageDialog(null, "Spore successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if ((Hypha)iview.getPlanet().get(addhHyphaNameTF.getText().trim())!=null) {
+                            JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // addsSporeNameLb beállításai
         addsSporeNameLb.setText("Spore name:");
@@ -1175,6 +1291,40 @@ public class GameGUI extends JFrame {
         addInsectBt.setFocusPainted(false);
         optionsPanel.add(addInsectBt);
         addInsectBt.setBounds(410, 355, 86, 25);
+
+        // addInsectBt eseménykezelő
+        addInsectBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!addiInsectNameTF.getText().trim().isEmpty() && addiInsectNameTF.getText().trim().matches("^I\\d+$") &&
+                    !addsFungusNameTF.getText().trim().isEmpty() && addsFungusNameTF.getText().trim().matches("^F\\d+$") && (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim())!=null &&
+                    !addiTectonNameTF.getText().trim().isEmpty() && addiTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(addiTectonNameTF.getText().trim())!=null) {
+                    System.out.print("/adds -n "+addsSporeNameTF.getText().trim()+" -f "+addsFungusNameTF.getText().trim()+" -tn "+addsTectonNameTF.getText().trim()+" -t "+"sporeType"+" -nv "+(Integer)addsNutritionalValueSpinner.getValue()+" -ed "+(Integer)addsEffectDurationSpinner.getValue()+"\n");
+                    boolean success = iview.adds(addsSporeNameTF.getText().trim(), "sporeType", (Integer)addsNutritionalValueSpinner.getValue(), (Integer)addsEffectDurationSpinner.getValue(), (Fungus)iview.getPlanet().get(addsFungusNameTF.getText().trim()), (Tecton)iview.getPlanet().get(addsTectonNameTF.getText().trim()));
+                    System.out.print(">");
+                    if (success) {
+                        addsSporeNameTF.setText("");
+                        addsFungusNameTF.setText("");
+                        addsTectonNameTF.setText("");
+                        addsSporeTypeCB.setSelectedIndex(0);
+                        addsNutritionalValueSpinner.setValue(5);
+                        addsEffectDurationSpinner.setValue(0);
+                        JOptionPane.showMessageDialog(null, "Spore successfully created.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if ((Hypha)iview.getPlanet().get(addhHyphaNameTF.getText().trim())!=null) {
+                            JOptionPane.showMessageDialog(null, "This name is already taken!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // addiInsectNameLb beállításai
         addiInsectNameLb.setText("Insect name:");
@@ -1245,6 +1395,35 @@ public class GameGUI extends JFrame {
         optionsPanel.add(altTectonBt);
         altTectonBt.setBounds(15, 475, 95, 25);
 
+        // altTectonBt eseménykezelő
+        altTectonBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!alttTectonNameTF.getText().trim().isEmpty() && alttTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get(alttTectonNameTF.getText().trim())!=null &&
+                    ! alttNewNeighbourTectonNameTF.getText().trim().isEmpty() && alttNewNeighbourTectonNameTF.getText().trim().matches("^T\\d+$") && (Tecton)iview.getPlanet().get( alttNewNeighbourTectonNameTF.getText().trim())!=null) {
+                    System.out.print("/altt -n "+alttTectonNameTF.getText().trim()+" -nh "+ alttNewNeighbourTectonNameTF.getText().trim()+"\n");
+                    boolean success = iview.altt((Tecton)iview.getPlanet().get(alttTectonNameTF.getText().trim()), (Tecton)iview.getPlanet().get( alttNewNeighbourTectonNameTF.getText().trim()));
+                    System.out.print(">");
+                    if (success) {
+                        alttTectonNameTF.setText("");
+                        alttNewNeighbourTectonNameTF.setText("");
+                        JOptionPane.showMessageDialog(null, "Tecton neighborhood successfully established.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if (((Tecton)iview.getPlanet().get(alttTectonNameTF.getText().trim())).GetNeighbours().contains((Tecton)iview.getPlanet().get( alttNewNeighbourTectonNameTF.getText().trim()))) {
+                            JOptionPane.showMessageDialog(null, "The two tectons are neighbors already!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         // alttTectonNameLb beállításai
         alttTectonNameLb.setText("Tecton name:");
         optionsPanel.add(alttTectonNameLb);
@@ -1269,6 +1448,35 @@ public class GameGUI extends JFrame {
         altHyphaBt.setFocusPainted(false);
         optionsPanel.add(altHyphaBt);
         altHyphaBt.setBounds(525, 475, 93, 25);
+
+        // altHyphaBt eseménykezelő
+        altHyphaBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!althHyphaNameTF.getText().trim().isEmpty() && althHyphaNameTF.getText().trim().matches("^H\\d+$") && (Hypha)iview.getPlanet().get(althHyphaNameTF.getText().trim())!=null &&
+                    !althNewNeighbourHyphaNameTF.getText().trim().isEmpty() && althNewNeighbourHyphaNameTF.getText().trim().matches("^H\\d+$") && (Hypha)iview.getPlanet().get(althNewNeighbourHyphaNameTF.getText().trim())!=null) {
+                    System.out.print("/alth -n "+althHyphaNameTF.getText().trim()+" -nh "+althNewNeighbourHyphaNameTF.getText().trim()+"\n");
+                    boolean success = iview.alth((Hypha)iview.getPlanet().get(althHyphaNameTF.getText().trim()), (Hypha)iview.getPlanet().get(althNewNeighbourHyphaNameTF.getText().trim()));
+                    System.out.print(">");
+                    if (success) {
+                        althHyphaNameTF.setText("");
+                        althNewNeighbourHyphaNameTF.setText("");
+                        JOptionPane.showMessageDialog(null, "Hypha neighborhood successfully established.", "Successful execution message", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        if (((Hypha)iview.getPlanet().get(althHyphaNameTF.getText().trim())).GetNeighbours().contains((Hypha)iview.getPlanet().get(althNewNeighbourHyphaNameTF.getText().trim()))) {
+                            JOptionPane.showMessageDialog(null, "The two hyphae are neighbors already!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "The operation failed!", "Error message", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please enter the required information correctly!", "Error message", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // althHyphaNameLb beállításai
         althHyphaNameLb.setText("Hypha name:");
