@@ -1375,6 +1375,19 @@ public class GameGUI extends JFrame {
         optionsPanel.add(addiCutAbilityBt);
         addiCutAbilityBt.setBounds(690, 390, 104, 25);
 
+        // addiCutAbilityBt eseménykezelő
+        addiCutAbilityBt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (addiCutAbilityBt.getText().equals("CutAbility: yes")) {
+                    addiCutAbilityBt.setText("CutAbility: no");
+                }
+                else{
+                    addiCutAbilityBt.setText("CutAbility: yes");
+                }
+            }
+        });
+
         // addiEffectTimeLeftLb beállításai
         addiEffectTimeLeftLb.setText(", effect time left:");
         optionsPanel.add(addiEffectTimeLeftLb);
