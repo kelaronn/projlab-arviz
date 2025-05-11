@@ -9,8 +9,11 @@ public class WideTecton extends Tecton {
     public WideTecton() {
         super();
     }
+
     /**
-     * Létrehoz egy új Wide tektont, amibe átmásolja az eredeti tekton szomszédjait, minden más default.
+     * Létrehoz egy új Wide tektont, amibe átmásolja az eredeti tekton szomszédjait,
+     * minden más default.
+     * 
      * @param t másolni kívánt Wide tekton
      */
     public WideTecton(WideTecton t) {
@@ -19,6 +22,7 @@ public class WideTecton extends Tecton {
 
     /**
      * Meghívja a saját másoló konstruktorját.
+     * 
      * @return új Wide Tekton
      */
     @Override
@@ -26,30 +30,29 @@ public class WideTecton extends Tecton {
         return new WideTecton(this);
     }
 
-
-
-
     /**
      * ősosztályban definiált fv. felüldefiniálása
+     * 
      * @param fungus a gombafonalhoz tartozó gombafaj
-     * @param t0 a gombafonalhoz tartozó előző tekton 
+     * @param t0     a gombafonalhoz tartozó előző tekton
      * @return true, ha sikeresen hozzáadható a hifa, egyébként false
      */
     @Override
     public boolean AddHypha(Fungus fungus, Tecton t0) {
         // lehet rajta más fajú hifa, de ugyanolyan fajú nem.
-        for(Hypha h : GetHyphas()){
-            if(h.GetHostFungus().equals(fungus)){
-                return false;}
+        for (Hypha h : GetHyphas()) {
+            if (h.GetHostFungus().equals(fungus)) {
+                return false;
+            }
         }
         // ha nincs megadva szomszédos tekton, csak lerak egy hifát
-        if(t0 == null){
+        if (t0 == null) {
             Hypha hypha = new Hypha(new LinkedList<Hypha>(), fungus, new ArrayList<>(List.of(this)));
             fungus.AddHypha(hypha);
             hyphas.add(hypha);
             return true;
         }
-        if(!neighbours.contains(t0)){ // nincs a két tecton egymás mellett
+        if (!neighbours.contains(t0)) { // nincs a két tecton egymás mellett
             return false;
         }
         boolean HasSameFungus = false;
@@ -69,15 +72,18 @@ public class WideTecton extends Tecton {
         hyphaBetweenTectons.AddNeighbour(hyphaOnTecton);
         actHypha.AddNeighbour(hyphaBetweenTectons);
 
-        // az első fungushoz tartozó hypha szomszédjaihoz hozzáadja a tektonok közötti hifát. Leginkább WideTecton miatt kell.
-        /*for (Hypha h : hyphas) {
-            if (h.GetHostFungus().equals(fungus)) {
-                hyphaBetweenTectons.AddNeighbour(h);
-                break;
-            } else {
-                return false; // nincs hifa aminek szomszédjaihoz hozzá lehetne adni
-            }
-        }*/
+        // az első fungushoz tartozó hypha szomszédjaihoz hozzáadja a tektonok közötti
+        // hifát. Leginkább WideTecton miatt kell.
+        /*
+         * for (Hypha h : hyphas) {
+         * if (h.GetHostFungus().equals(fungus)) {
+         * hyphaBetweenTectons.AddNeighbour(h);
+         * break;
+         * } else {
+         * return false; // nincs hifa aminek szomszédjaihoz hozzá lehetne adni
+         * }
+         * }
+         */
 
         hyphas.add(hyphaBetweenTectons);
         hyphas.add(hyphaOnTecton);
@@ -87,13 +93,12 @@ public class WideTecton extends Tecton {
     }
 
     @Override
-    public boolean simpleAddHypha(Fungus fungus, Tecton t0){
+    public boolean simpleAddHypha(Fungus fungus, Tecton t0) {
         // ha nincs megadva szomszédos tekton, csak lerak egy hifát
-        if(t0 == null){
+        if (t0 == null) {
             // lehet rajta más fajú hifa, de ugyanolyan fajú nem.
-            for(Hypha h : GetHyphas()){
-                if(h.GetHostFungus().equals(fungus) && h.GetTectons().size()==1)
-                {
+            for (Hypha h : GetHyphas()) {
+                if (h.GetHostFungus().equals(fungus) && h.GetTectons().size() == 1) {
                     return false;
                 }
             }
@@ -102,12 +107,11 @@ public class WideTecton extends Tecton {
             hyphas.add(hypha);
             return true;
         }
-        if(!neighbours.contains(t0)){ // nincs a két tecton egymás mellett
+        if (!neighbours.contains(t0)) { // nincs a két tecton egymás mellett
             return false;
         }
-        for(Hypha h : GetHyphas()){
-            if(h.GetHostFungus().equals(fungus) && h.GetTectons().get(h.GetTectons().size()-1).equals(this))
-            {
+        for (Hypha h : GetHyphas()) {
+            if (h.GetHostFungus().equals(fungus) && h.GetTectons().get(h.GetTectons().size() - 1).equals(this)) {
                 return false;
             }
         }
@@ -118,7 +122,17 @@ public class WideTecton extends Tecton {
     }
 
     @Override
-    public String ToString(String data){
-        return "WideTecton,"+data;
+    public String ToString(String data) {
+        return "WideTecton," + data;
+    }
+
+    /*
+     * A TectonVisitor osztály acceptálásához szükséges metódus.
+     * 
+     * @param visitor a látogató, aki végrehajtja a műveletet
+     */
+    @Override
+    public void accept(TectonVisitor visitor) {
+        visitor.visit(this);
     }
 }

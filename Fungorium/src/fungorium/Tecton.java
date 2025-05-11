@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class Tecton implements ITectonController, ITectonView {
-    //protected Random rand = new Random();
+    // protected Random rand = new Random();
     protected final int sporeCountToGrowFungus = 3;
     protected final int defaultFbShotsLeft = 4;
     protected List<Insect> insects;
@@ -13,6 +13,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
     protected List<Spore> spores;
     protected ArrayList<Tecton> neighbours;
     protected FungusBody fungusBody;
+
     /**
      * Default konstruktor a tekton létrehozásához.
      */
@@ -30,15 +31,17 @@ public abstract class Tecton implements ITectonController, ITectonView {
      *
      * @param t másolni kívánt tekton
      */
-    public Tecton(Tecton t ) {
+    public Tecton(Tecton t) {
         insects = new ArrayList<>();
         hyphas = new ArrayList<>();
         spores = new ArrayList<>();
         neighbours = new ArrayList<>(t.neighbours);
         fungusBody = null;
     }
+
     /**
      * Konstruktor a tekton létrehozásához.
+     * 
      * @param insects
      * @param hyphas
      * @param spores
@@ -80,15 +83,15 @@ public abstract class Tecton implements ITectonController, ITectonView {
      *
      * @return véletlenszerűen generált leszármazott
      */
-//    protected Tecton GetRandomChild(){
-//        int r = rand.nextInt(0,3);
-//        switch(r){
-//            case 1: return new WideTecton();
-//            case 2: return new WeakTecton();
-//            case 3: return new BarrenTecton();
-//            default: return new NarrowTecton();
-//        }
-//    }
+    // protected Tecton GetRandomChild(){
+    // int r = rand.nextInt(0,3);
+    // switch(r){
+    // case 1: return new WideTecton();
+    // case 2: return new WeakTecton();
+    // case 3: return new BarrenTecton();
+    // default: return new NarrowTecton();
+    // }
+    // }
 
     /**
      * Segédfüggvény a hifák törlésére.
@@ -100,16 +103,18 @@ public abstract class Tecton implements ITectonController, ITectonView {
     protected void RemoveHyphaFromTecton(Hypha h) {
         h.GetHostFungus().RemoveHypha(h);
         System.out.println(">[Fungus].RemoveHypha(h)");
-        //var hNeighbours = (ArrayList<Hypha>) h.GetNeighbours();
+        // var hNeighbours = (ArrayList<Hypha>) h.GetNeighbours();
         List<Hypha> hNeighbours = h.GetNeighbours();
-        // A paraméter hifa szomszédjait is töröljük a fungusból, mert azok mind résen vannak és így már nincs mihez kötődniük.
-        for(Hypha n : hNeighbours){
+        // A paraméter hifa szomszédjait is töröljük a fungusból, mert azok mind résen
+        // vannak és így már nincs mihez kötődniük.
+        for (Hypha n : hNeighbours) {
             n.GetHostFungus().RemoveHypha(n);
             System.out.println(">[Fungus].RemoveHypha(n)");
         }
-        // nem csak a fungusból kell törölni, hanem a szomszédos tectonokon is meg kell keresni és törölni.
-        for( Tecton n : neighbours){
-            RemoveHypha(this,n);
+        // nem csak a fungusból kell törölni, hanem a szomszédos tectonokon is meg kell
+        // keresni és törölni.
+        for (Tecton n : neighbours) {
+            RemoveHypha(this, n);
             System.out.println(">[Tecton].RemoveHypha(this,n)");
         }
         // majd végül a paraméterben kapott hifát is törölni kell
@@ -123,44 +128,44 @@ public abstract class Tecton implements ITectonController, ITectonView {
      * vannak) maradnak az eredeti tektonon.
      */
     @Override
-    public Tecton Break(){
+    public Tecton Break() {
 
-//        Tecton t1 = GetRandomChild();
-//        System.out.println(">[Tecton].GetRandomChild()");
-//        Tecton t2 = GetRandomChild();
-//        System.out.println(">[Tecton].GetRandomChild()");
+        // Tecton t1 = GetRandomChild();
+        // System.out.println(">[Tecton].GetRandomChild()");
+        // Tecton t2 = GetRandomChild();
+        // System.out.println(">[Tecton].GetRandomChild()");
 
-//        if( !insects.isEmpty() ){
-//            for(Insect i : insects){
-//                t2.AddInsect(i);
-//                System.out.println(">[Tecton].AddInsect(i)");
-//                i.SetTecton(t2);
-//                System.out.println(">[Insect].SetTecton(t2)");
-//            }
-//        }
+        // if( !insects.isEmpty() ){
+        // for(Insect i : insects){
+        // t2.AddInsect(i);
+        // System.out.println(">[Tecton].AddInsect(i)");
+        // i.SetTecton(t2);
+        // System.out.println(">[Insect].SetTecton(t2)");
+        // }
+        // }
 
-//        for(Tecton n : neighbours){
-//            t1.AddNeighbour(n);
-//            System.out.println(">[Tecton].AddNeighbour(n)");
-//            t2.AddNeighbour(n);
-//            System.out.println(">[Tecton].AddNeighbour(n)");
-//        }
+        // for(Tecton n : neighbours){
+        // t1.AddNeighbour(n);
+        // System.out.println(">[Tecton].AddNeighbour(n)");
+        // t2.AddNeighbour(n);
+        // System.out.println(">[Tecton].AddNeighbour(n)");
+        // }
         int hyphasSize = hyphas.size();
-        for (int i=0; i < hyphasSize; i++){
-            RemoveHypha( hyphas.get( hyphas.size() - 1 )); //hyphas.getLast());
+        for (int i = 0; i < hyphasSize; i++) {
+            RemoveHypha(hyphas.get(hyphas.size() - 1)); // hyphas.getLast());
         }
-        if(fungusBody != null){
+        if (fungusBody != null) {
             fungusBody.GetHostFungus().RemoveBody(fungusBody);
         }
         SetFungusBody(null);
 
-        for(int i = 0; i < spores.size(); i++){
-            spores.remove(spores.get(spores.size()-1));
+        for (int i = 0; i < spores.size(); i++) {
+            spores.remove(spores.get(spores.size() - 1));
         }
 
         Tecton nt = this.CreateCopy();
 
-        for(Tecton n : this.neighbours ){
+        for (Tecton n : this.neighbours) {
             n.AddNeighbour(nt);
         }
         this.AddNeighbour(nt);
@@ -168,35 +173,38 @@ public abstract class Tecton implements ITectonController, ITectonView {
 
         return nt;
     }
+
     /**
      * egy gombatestet növeszt egy halott insectből az adott tektonon, és a
-     * SetFungusBody setter függvénnyel beállítja a rajta lévő gombatestet. Igaz értékkel tér
+     * SetFungusBody setter függvénnyel beállítja a rajta lévő gombatestet. Igaz
+     * értékkel tér
      * vissza.
      * Override a leszármazottakban!
+     * 
      * @param fungus
      * @return
      */
     @Override
     public boolean GrowFungusBodyFromInsect(Fungus fungus) {
-        if( this.GetFungusBody() != null ) // már van fungusbody rajta
+        if (this.GetFungusBody() != null) // már van fungusbody rajta
             return false;
-        if(this.insects.isEmpty() ) // nincs rajta insect
+        if (this.insects.isEmpty()) // nincs rajta insect
             return false;
 
         Insect insectToRemove = null;
-        for(Insect i : insects){
-            if( i.GetEatenBy() != null && i.GetEatenBy().equals(fungus)) {
+        for (Insect i : insects) {
+            if (i.GetEatenBy() != null && i.GetEatenBy().equals(fungus)) {
                 insectToRemove = i;
                 break;
             }
         }
-        if(insectToRemove == null)
+        if (insectToRemove == null)
             return false;
-            
+
         insectToRemove.GetHostColony().RemoveInsect(insectToRemove);
         RemoveInsect(insectToRemove);
 
-        fungusBody = new FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft);
+        fungusBody = new FungusBody(this, fungus, false, 0, false, 0, defaultFbShotsLeft);
         System.out.println(">[FungusBody].FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft)");
         fungus.AddBody(fungusBody);
         System.out.println(">[Fungus].AddBody(fungusBody)");
@@ -205,9 +213,11 @@ public abstract class Tecton implements ITectonController, ITectonView {
         return true;
 
     }
+
     /**
      * egy gombatestet növeszt az adott tektonon, és a
-     * SetFungusBody setter függvénnyel beállítja a rajta lévő gombatestet. Igaz értékkel tér
+     * SetFungusBody setter függvénnyel beállítja a rajta lévő gombatestet. Igaz
+     * értékkel tér
      * vissza.
      * Override a leszármazottakban!
      *
@@ -216,37 +226,40 @@ public abstract class Tecton implements ITectonController, ITectonView {
      */
     @Override
     public boolean GrowFungusBody(Fungus fungus) {
-        if(spores.size() < sporeCountToGrowFungus) // nem elég spóra
+        if (spores.size() < sporeCountToGrowFungus) // nem elég spóra
             return false;
-        if( this.GetFungusBody() != null ) // már van fungisbody rajta
+        if (this.GetFungusBody() != null) // már van fungisbody rajta
             return false;
 
-        fungusBody = new FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft);
-        //System.out.println(">[FungusBody].FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft)");
+        fungusBody = new FungusBody(this, fungus, false, 0, false, 0, defaultFbShotsLeft);
+        // System.out.println(">[FungusBody].FungusBody(this,fungus,false,0,false,0,defaultFbShotsLeft)");
         fungus.AddBody(fungusBody);
-        //System.out.println(">[Fungus].AddBody(fungusBody)");
+        // System.out.println(">[Fungus].AddBody(fungusBody)");
         this.SetFungusBody(fungusBody);
-        //System.out.println(">[Tecton].SetFungusBody(fungusBody)");
+        // System.out.println(">[Tecton].SetFungusBody(fungusBody)");
 
-        for(int i = 0; i < sporeCountToGrowFungus; i++){
-            spores.remove(spores.size()-1); //spores.removeLast();
+        for (int i = 0; i < sporeCountToGrowFungus; i++) {
+            spores.remove(spores.size() - 1); // spores.removeLast();
         }
         return true;
 
     }
 
     /**
-     * Abszorpciós függvény (hifa felszívódás), hamis értékkel tér vissza alapesetben.
+     * Abszorpciós függvény (hifa felszívódás), hamis értékkel tér vissza
+     * alapesetben.
+     * 
      * @return false
      */
     @Override
-    public boolean AbsorbHyphas(){
+    public boolean AbsorbHyphas() {
         return false;
     }
 
     /**
      * visszatér a neighbours nevű Tecton lista attribútum
      * referenciájával.
+     * 
      * @return Tecton.neighbours
      */
     @Override
@@ -257,39 +270,40 @@ public abstract class Tecton implements ITectonController, ITectonView {
     /**
      * létrehoz egy véletlenszerű spórát a paraméterként kapott gombához
      * rendelve, és hozzáadja a saját spores nevű Spore lista attribútumhoz.
+     * 
      * @param fungus
      */
     @Override
     public void AddSpore(Fungus fungus, boolean isRandom, Random rand) {
         Spore spore;
         int type;
-        if(isRandom)
+        if (isRandom)
             type = rand.nextInt(0, 6);
         else
             type = 0;
 
         switch (type) { // 0 is normal spore/default
-        case 1:
-            spore = new StunSpore(3, 1, fungus,this);
-            break;
-        case 2:
-            spore = new SpeedSpore(2, 2, fungus,this);
-            break;
-        case 3:
-            spore = new SlowSpore(2, 2, fungus,this);
-            break;
-        case 4:
-            spore = new DisarmSpore(3, 1, fungus,this);
-            break;
-        case 5:
-            spore = new SplitSpore(3,0,fungus,this);           // modositasra nyitott vagyok
-            break;
-        default:
-            spore = new Spore(1, 0, fungus,this);
-            break;
+            case 1:
+                spore = new StunSpore(3, 1, fungus, this);
+                break;
+            case 2:
+                spore = new SpeedSpore(2, 2, fungus, this);
+                break;
+            case 3:
+                spore = new SlowSpore(2, 2, fungus, this);
+                break;
+            case 4:
+                spore = new DisarmSpore(3, 1, fungus, this);
+                break;
+            case 5:
+                spore = new SplitSpore(3, 0, fungus, this); // modositasra nyitott vagyok
+                break;
+            default:
+                spore = new Spore(1, 0, fungus, this);
+                break;
         }
         spores.add(spore);
-        //System.out.println(">[Tecton].spores.add(spore)");
+        // System.out.println(">[Tecton].spores.add(spore)");
     }
 
     /**
@@ -299,7 +313,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
      * @param spore spóra
      */
     public void RemoveSpore(Spore spore) {
-        if( !spores.remove(spore) ){
+        if (!spores.remove(spore)) {
             System.out.println("Spore not found");
             return;
         }
@@ -308,6 +322,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
 
     /**
      * Visszaadja Spore listáját a tektonnak.
+     * 
      * @return spores
      */
     @Override
@@ -317,29 +332,29 @@ public abstract class Tecton implements ITectonController, ITectonView {
 
     /**
      * eltávolítja a paraméterként kapott hifát a hyphas nevű
-     * Hypha lista attribútumból és a Fungusból is meghívva a RemoveHyphaFromTectont().
+     * Hypha lista attribútumból és a Fungusból is meghívva a
+     * RemoveHyphaFromTectont().
      * Ha rés hifa, csak ezt törli, ha tektonon van, a szomszédait is.
+     * 
      * @param h eltávolítandó hifa
      */
     public void RemoveHypha(Hypha h) {
-        if(h != null && hyphas.contains(h)) {
-            if(h.GetTectons().size() == 1) {                        // tektonon van
-                //System.out.println(">[Fungus].RemoveHypha(h)");
+        if (h != null && hyphas.contains(h)) {
+            if (h.GetTectons().size() == 1) { // tektonon van
+                // System.out.println(">[Fungus].RemoveHypha(h)");
                 RemoveHyphaFromTecton(h);
-            }
-            else{                                                  // res hifa
+            } else { // res hifa
                 h.GetHostFungus().RemoveHypha(h);
                 hyphas.remove(h);
                 for (int i = 0; i < h.GetNeighbours().size(); i++) {
-                    if( h.GetNeighbours().get(i).GetTectons().size() == 1 &&
-                            h.GetNeighbours().get(i).GetTectons().contains(h.GetTectons().get(0)) ){  //getFirst()) ) {
+                    if (h.GetNeighbours().get(i).GetTectons().size() == 1 &&
+                            h.GetNeighbours().get(i).GetTectons().contains(h.GetTectons().get(0))) { // getFirst()) ) {
                         h.GetNeighbours().get(i).Atrophy();
                     }
                 }
-                //System.out.println(">[Tecton].RemoveHypha(h)");
+                // System.out.println(">[Tecton].RemoveHypha(h)");
             }
-        }
-        else
+        } else
             System.err.println("Hypha not found");
     }
 
@@ -365,7 +380,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
      * @param insect eltávolítandó insect
      */
     public void RemoveInsect(Insect insect) {
-        if( !insects.remove(insect) ){
+        if (!insects.remove(insect)) {
             System.out.println("insect not found");
             return;
         }
@@ -379,7 +394,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
      * @param fb fungusbody paraméter
      */
     @Override
-    public void SetFungusBody(FungusBody fb){
+    public void SetFungusBody(FungusBody fb) {
         fungusBody = fb;
     }
 
@@ -390,7 +405,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
      * @return tecton.fungusBody
      */
     @Override
-    public FungusBody GetFungusBody(){
+    public FungusBody GetFungusBody() {
         return fungusBody;
     }
 
@@ -403,7 +418,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
     @Override
     public void AddNeighbour(Tecton neighbour) {
         neighbours.add(neighbour);
-        //System.out.println(">[Tecton].neighbours.add(neighbour)");
+        // System.out.println(">[Tecton].neighbours.add(neighbour)");
     }
 
     /**
@@ -428,7 +443,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
     public void RemoveHypha(Tecton t1, Tecton t2) {
         Hypha h = GetHypha(t1, t2);
         System.out.println(">[Tecton].RemoveHypha(t1,t2)");
-        if(h == null)
+        if (h == null)
             return;
 
         h.GetHostFungus().RemoveHypha(h);
@@ -447,19 +462,19 @@ public abstract class Tecton implements ITectonController, ITectonView {
      * @param t2 másik Tecton
      * @return Hypha h, ha van, egyébként null
      */
-    public Hypha GetHypha(Tecton t1, Tecton t2){
+    public Hypha GetHypha(Tecton t1, Tecton t2) {
 
-        for(Hypha h : t1.hyphas){
+        for (Hypha h : t1.hyphas) {
             List<Tecton> tectons = h.GetTectons();
-            if( (tectons.contains(t1) && tectons.contains(t2))
-                   /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1))*/ ){
+            if ((tectons.contains(t1) && tectons.contains(t2))
+            /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1)) */ ) {
                 return h;
             }
         }
-        for(Hypha h : t2.hyphas){
+        for (Hypha h : t2.hyphas) {
             List<Tecton> tectons = h.GetTectons();
-            if( (tectons.contains(t1) && tectons.contains(t2))
-                /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1))*/ ){
+            if ((tectons.contains(t1) && tectons.contains(t2))
+            /* || (tectons.get(0).equals(t2) && tectons.get(1).equals(t1)) */ ) {
                 return h;
             }
         }
@@ -472,7 +487,7 @@ public abstract class Tecton implements ITectonController, ITectonView {
      * @return hyphas
      */
     @Override
-    public List<Hypha> GetHyphas(){
+    public List<Hypha> GetHyphas() {
         return hyphas;
     }
 
@@ -481,11 +496,13 @@ public abstract class Tecton implements ITectonController, ITectonView {
      *
      * @return
      */
-    public boolean SupplyHyphas(){
+    public boolean SupplyHyphas() {
         return false;
     }
 
     public String ToString(String data) {
         return "Tecton," + data;
     }
+
+    public abstract void accept(TectonVisitor visitor);
 }

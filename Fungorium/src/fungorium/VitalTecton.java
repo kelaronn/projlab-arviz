@@ -1,11 +1,14 @@
 package fungorium;
 
-public class VitalTecton extends NarrowTecton{
+public class VitalTecton extends NarrowTecton {
     public VitalTecton() {
         super();
     }
+
     /**
-     * Létrehoz egy új Vital tektont, amibe átmásolja az eredeti tekton szomszédjait, minden más default.
+     * Létrehoz egy új Vital tektont, amibe átmásolja az eredeti tekton
+     * szomszédjait, minden más default.
+     * 
      * @param t másolni kívánt Vital tekton
      */
     public VitalTecton(VitalTecton t) {
@@ -14,6 +17,7 @@ public class VitalTecton extends NarrowTecton{
 
     /**
      * Meghívja a saját másoló konstruktorját.
+     * 
      * @return új Vital Tekton
      */
     @Override
@@ -22,12 +26,22 @@ public class VitalTecton extends NarrowTecton{
     }
 
     @Override
-    public boolean SupplyHyphas(){
+    public boolean SupplyHyphas() {
         return true;
     }
 
     @Override
-    public String ToString(String data){
-        return "VitalTecton,"+data;
+    public String ToString(String data) {
+        return "VitalTecton," + data;
+    }
+
+    /*
+     * A TectonVisitor osztály acceptálásához szükséges metódus.
+     * 
+     * @param visitor a látogató, aki végrehajtja a műveletet
+     */
+    @Override
+    public void accept(TectonVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -8,7 +8,7 @@ public interface ITectonView {
 
     ArrayList<Tecton> GetNeighbours();
 
-    void AddSpore(Fungus fungus,boolean isRandom, Random rand);
+    void AddSpore(Fungus fungus, boolean isRandom, Random rand);
 
     List<Spore> GetSpores();
 
@@ -25,4 +25,6 @@ public interface ITectonView {
     List<Insect> GetInsects();
 
     String ToString(String data);
+
+    void accept(TectonVisitor visitor);
 }
