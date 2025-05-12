@@ -2019,7 +2019,7 @@ public class GameGUI extends JFrame {
         LinkedList<String> keys = new LinkedList<String>();
         LinkedHashMap<String, Object> planet = (LinkedHashMap<String, Object>) iview.getPlanet();
 
-        if (key.startsWith("H")) { // hifa, nem lehet res hifa
+        if (key.startsWith("H")) {                              // hifa, nem lehet res hifa
             IHyphaView ihypha = (IHyphaView) planet.get(key);
             ITectonView itectonView = ihypha.GetTectons().get(0);
 
@@ -2044,7 +2044,7 @@ public class GameGUI extends JFrame {
                     }
                 }
             }
-        } else if (key.startsWith("T")) { // tekton
+        } else if (key.startsWith("T")) {                                       // tekton
             ITectonView itectonView = (ITectonView) planet.get(key);
 
             ArrayList<Spore> spores = (ArrayList<Spore>) itectonView.GetSpores();
@@ -2068,7 +2068,7 @@ public class GameGUI extends JFrame {
                     }
                 }
             }
-        } else if (key.matches("I\\d+")) { // rovar
+        } else if (key.matches("I\\d+")) {                                  // rovar
             IInsectView insectView = (IInsectView) planet.get(key);
             ITectonView tectonview = insectView.GetTecton();
 
@@ -2105,7 +2105,7 @@ public class GameGUI extends JFrame {
                     }
                 }
             }
-        } else if (key.matches("IC\\d+")) { // rovar kolonia
+        } else if (key.matches("IC\\d+")) {                                         // rovar kolonia
             IInsectColonyView icView = (IInsectColonyView) planet.get(key);
             ArrayList<Insect> insects = (ArrayList<Insect>) icView.getInsects();
             for (Insect insect : insects) {
@@ -2115,7 +2115,7 @@ public class GameGUI extends JFrame {
                     }
                 }
             }
-        } else if (key.matches("F\\d+")) {
+        } else if (key.matches("F\\d+")) {                                          // gomba
             IFungusView fungusView = (IFungusView) planet.get(key);
             ArrayList<FungusBody> fbS = (ArrayList<FungusBody>) fungusView.GetBodies();
             ArrayList<Hypha> mycelium = (ArrayList<Hypha>) fungusView.GetMycelium();
