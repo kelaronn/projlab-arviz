@@ -2563,9 +2563,9 @@ public class GameGUI extends JFrame {
         JLabel[] ilabels = { insectImageIconLb1, insectImageIconLb2, insectImageIconLb3, insectImageIconLb4 };
         JLabel[] hlabels = { hyphaImageIconLb1, hyphaImageIconLb2, hyphaImageIconLb3, hyphaImageIconLb4 };
         JLabel[] slabels = { sporeImageIconLb1, sporeImageIconLb2, sporeImageIconLb3, sporeImageIconLb4 };
-        visHelper(ilabels, sporeCount);
+        visHelper(ilabels, insectCount);
         visHelper(hlabels, hyphaCount);
-        visHelper(slabels, insectCount);
+        visHelper(slabels, sporeCount);
         if (view.GetFungusBody() != null) {
             fungusBodyImageIconLb.setVisible(true);
         } else {
