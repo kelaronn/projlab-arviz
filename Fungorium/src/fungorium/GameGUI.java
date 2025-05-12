@@ -2236,71 +2236,61 @@ public class GameGUI extends JFrame {
                 Draw(tecton);
             }
 
-            // button visibility beallitasa
-            JButton growHyphaBt = (JButton) playPanel.getComponent(16);
-            JButton growFungusBodyFromSporeBt = (JButton) playPanel.getComponent(17);
-            JButton growFungusBodyFromInsectBt = (JButton) playPanel.getComponent(18);
-            JButton produceSporeBt = (JButton) playPanel.getComponent(19);
-            JButton shootSporeBt = (JButton) playPanel.getComponent(20);
-            JButton eatStunnedInsectBt = (JButton) playPanel.getComponent(21);
-            JButton eatSporeBt = (JButton) playPanel.getComponent(22);
-            JButton moveInsectBt = (JButton) playPanel.getComponent(23);
-            JButton cutHyphaBt = (JButton) playPanel.getComponent(24);
 
-            if (key.startsWith("H")) { // hifa,
-                growHyphaBt.setEnabled(true);
-                growFungusBodyFromSporeBt.setEnabled(false);
-                growFungusBodyFromInsectBt.setEnabled(false);
-                produceSporeBt.setEnabled(false);
-                shootSporeBt.setEnabled(false);
-                eatStunnedInsectBt.setEnabled(true);
-                eatSporeBt.setEnabled(false);
-                moveInsectBt.setEnabled(false);
-                cutHyphaBt.setEnabled(false);
-            } else if (key.startsWith("T")) { // tekton
-                growHyphaBt.setEnabled(false);
-                growFungusBodyFromSporeBt.setEnabled(true);
-                growFungusBodyFromInsectBt.setEnabled(true);
-                produceSporeBt.setEnabled(false);
-                shootSporeBt.setEnabled(false);
-                eatStunnedInsectBt.setEnabled(false);
-                eatSporeBt.setEnabled(false);
-                moveInsectBt.setEnabled(false);
-                cutHyphaBt.setEnabled(false);
-            } else if (key.matches("I\\d+")) { // rovar
-                growHyphaBt.setEnabled(false);
-                growFungusBodyFromSporeBt.setEnabled(false);
-                growFungusBodyFromInsectBt.setEnabled(false);
-                produceSporeBt.setEnabled(false);
-                shootSporeBt.setEnabled(false);
-                eatStunnedInsectBt.setEnabled(false);
-                eatSporeBt.setEnabled(true);
-                moveInsectBt.setEnabled(true);
-                cutHyphaBt.setEnabled(true);
-            } else if (key.startsWith("FB")) { // gombatest
-                growHyphaBt.setEnabled(false);
-                growFungusBodyFromSporeBt.setEnabled(false);
-                growFungusBodyFromInsectBt.setEnabled(false);
-                produceSporeBt.setEnabled(true);
-                shootSporeBt.setEnabled(true);
-                eatStunnedInsectBt.setEnabled(false);
-                eatSporeBt.setEnabled(false);
-                moveInsectBt.setEnabled(false);
-                cutHyphaBt.setEnabled(false);
+            if (key.startsWith("H")) {                  // hifa,
+                SetButtonsVisible(true,false,false,false,false,true,false,false,false);
+
+            } else if (key.startsWith("T")) {           // tekton
+                SetButtonsVisible(false,true,true,false,false,false,false,false,false);
+
+            } else if (key.matches("I\\d+")) {    // rovar
+                SetButtonsVisible(false,false,false,false,false,false,true,true,true);
+
+            } else if (key.startsWith("FB")) {          // gombatest
+                SetButtonsVisible(false,false,false,true,true,false,false,false,false);
+
             } else {
-                growHyphaBt.setEnabled(false);
-                growFungusBodyFromSporeBt.setEnabled(false);
-                growFungusBodyFromInsectBt.setEnabled(false);
-                produceSporeBt.setEnabled(false);
-                shootSporeBt.setEnabled(false);
-                eatStunnedInsectBt.setEnabled(false);
-                eatSporeBt.setEnabled(false);
-                moveInsectBt.setEnabled(false);
-                cutHyphaBt.setEnabled(false);
+                SetButtonsVisible(false,false,false,false,false,false,false,false,false);
             }
 
         }
     }
+
+    /**
+     * Segedfuggveny a gombok lathatosaganak beallitasara
+     * @param growH - growHyphaBt lathatosaga
+     * @param growFbS - growFungusBodyFromSporeBt lathatosaga
+     * @param growFbI - growFungusBodyFromInsectBt lathatosaga
+     * @param produceS - produceSporeBt lathatosaga
+     * @param shootS - shootSporeBt lathatosaga
+     * @param eatI - eatStunnedInsectBt lathatosaga
+     * @param eatS - eatSporeBt lathatosaga
+     * @param moveI - moveInectBt lathatosaga
+     * @param cutH - cutHyphaBt lathatosaga
+     */
+    private void SetButtonsVisible(boolean growH,boolean growFbS, boolean growFbI, boolean produceS, boolean shootS, boolean eatI, boolean eatS, boolean moveI, boolean cutH ){
+        // button komponensek kinyerese
+        JButton growHyphaBt = (JButton) playPanel.getComponent(16);
+        JButton growFungusBodyFromSporeBt = (JButton) playPanel.getComponent(17);
+        JButton growFungusBodyFromInsectBt = (JButton) playPanel.getComponent(18);
+        JButton produceSporeBt = (JButton) playPanel.getComponent(19);
+        JButton shootSporeBt = (JButton) playPanel.getComponent(20);
+        JButton eatStunnedInsectBt = (JButton) playPanel.getComponent(21);
+        JButton eatSporeBt = (JButton) playPanel.getComponent(22);
+        JButton moveInsectBt = (JButton) playPanel.getComponent(23);
+        JButton cutHyphaBt = (JButton) playPanel.getComponent(24);
+        // button visibility beallitasa
+        growHyphaBt.setEnabled(growH);
+        growFungusBodyFromSporeBt.setEnabled(growFbS);
+        growFungusBodyFromInsectBt.setEnabled(growFbI);
+        produceSporeBt.setEnabled(produceS);
+        shootSporeBt.setEnabled(shootS);
+        eatStunnedInsectBt.setEnabled(eatI);
+        eatSporeBt.setEnabled(eatS);
+        moveInsectBt.setEnabled(moveI);
+        cutHyphaBt.setEnabled(cutH);
+    }
+
 
     private class GrowFungusBodyFromSporeListener implements ActionListener {
         @Override
@@ -2516,6 +2506,9 @@ public class GameGUI extends JFrame {
         }
     }
 
+    /**
+     * A körök lefolyását megjelenítő függvény
+     */
     private void RoundDisplay() {
         if (iview.GetGameController().IsGameOver()) {
             JOptionPane.showMessageDialog(null, "Game Over!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
