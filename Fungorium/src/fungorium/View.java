@@ -364,24 +364,29 @@ public class View implements IView {
                     case "NarrowTecton" -> {
                         tectonMap.put(name, new NarrowTecton());
                         tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                        tCtr++;
                     }
                     case "WideTecton" -> {
                         tectonMap.put(name, new WideTecton());
                         tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                        tCtr++;
                     }
                     case "WeakTecton" -> {
                         tectonMap.put(name, new WeakTecton());
                         tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                        tCtr++;
                     }
                     case "BarrenTecton" -> {
                         tectonMap.put(name, new BarrenTecton());
                         tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                        tCtr++;
                     }
                     case "VitalTecton" -> {
                         tectonMap.put(name, new VitalTecton());
                         tectonNeighbors.put(name, parts[5].replace("[", "").replace("]", "").split(","));
+                        tCtr++;
                     }
-                    case "Fungus" -> fungusMap.put(name, new Fungus());
+                    case "Fungus" -> {fungusMap.put(name, new Fungus()); fCtr++;}
                     case "FungusBody" -> {
                         fungusBodyMap.put(name, new FungusBody(
                                 tectonMap.get(parts[7]),
@@ -393,11 +398,13 @@ public class View implements IView {
                                 Integer.parseInt(parts[6])));
                         fungusMap.get(parts[8]).AddBody(fungusBodyMap.get(name));
                         tectonMap.get(parts[7]).SetFungusBody(fungusBodyMap.get(name));
+                        fbCtr++;
                     }
                     case "InsectColony" -> {
                         InsectColony colony = new InsectColony();
                         colony.setNutrition(Integer.parseInt(parts[3]));
                         insectColonyMap.put(name, colony);
+                        icCtr++;
                     }
                     case "Insect" -> {
                         insectMap.put(name, new Insect(
@@ -408,6 +415,7 @@ public class View implements IView {
                                 tectonMap.get(parts[6]),
                                 fungusMap.get(parts[7])));
                         insectColonyMap.get(parts[5]).AddInsect(insectMap.get(name));
+                        iCtr++;
                     }
                     case "Hypha" -> {
                         List<Tecton> tectons = new ArrayList<>();
@@ -419,39 +427,58 @@ public class View implements IView {
                                 new ArrayList<>(),
                                 fungusMap.get(parts[3]),
                                 tectons));
+                        hCtr++;
                         hyphaNeighbors.put(name, parts[2].replace("[", "").replace("]", "").split(","));
                         fungusMap.get(parts[3]).AddHypha(hyphaMap.get(name));
                     }
-                    case "Spore" -> sporeMap.put(name, new Spore(
-                            Integer.parseInt(parts[2]),
-                            Integer.parseInt(parts[3]),
-                            fungusMap.get(parts[4]),
-                            tectonMap.get(parts[5])));
-                    case "SpeedSpore" -> sporeMap.put(name, new SpeedSpore(
-                            Integer.parseInt(parts[2]),
-                            Integer.parseInt(parts[3]),
-                            fungusMap.get(parts[4]),
-                            tectonMap.get(parts[5])));
-                    case "SplitSpore" -> sporeMap.put(name, new SplitSpore(
-                            Integer.parseInt(parts[2]),
-                            Integer.parseInt(parts[3]),
-                            fungusMap.get(parts[4]),
-                            tectonMap.get(parts[5])));
-                    case "SlowSpore" -> sporeMap.put(name, new SlowSpore(
-                            Integer.parseInt(parts[2]),
-                            Integer.parseInt(parts[3]),
-                            fungusMap.get(parts[4]),
-                            tectonMap.get(parts[5])));
-                    case "DisarmSpore" -> sporeMap.put(name, new DisarmSpore(
-                            Integer.parseInt(parts[2]),
-                            Integer.parseInt(parts[3]),
-                            fungusMap.get(parts[4]),
-                            tectonMap.get(parts[5])));
-                    case "StunSpore" -> sporeMap.put(name, new StunSpore(
-                            Integer.parseInt(parts[2]),
-                            Integer.parseInt(parts[3]),
-                            fungusMap.get(parts[4]),
-                            tectonMap.get(parts[5])));
+                    case "Spore" -> {
+                        sporeMap.put(name, new Spore(
+                                Integer.parseInt(parts[2]),
+                                Integer.parseInt(parts[3]),
+                                fungusMap.get(parts[4]),
+                                tectonMap.get(parts[5])));
+                        sCtr++;
+                    }
+                    case "SpeedSpore" -> {
+                        sporeMap.put(name, new SpeedSpore(
+                                Integer.parseInt(parts[2]),
+                                Integer.parseInt(parts[3]),
+                                fungusMap.get(parts[4]),
+                                tectonMap.get(parts[5])));
+                        sCtr++;
+                    }
+                    case "SplitSpore" -> {
+                        sporeMap.put(name, new SplitSpore(
+                                Integer.parseInt(parts[2]),
+                                Integer.parseInt(parts[3]),
+                                fungusMap.get(parts[4]),
+                                tectonMap.get(parts[5])));
+                        sCtr++;
+                    }
+                    case "SlowSpore" -> {
+                        sporeMap.put(name, new SlowSpore(
+                                Integer.parseInt(parts[2]),
+                                Integer.parseInt(parts[3]),
+                                fungusMap.get(parts[4]),
+                                tectonMap.get(parts[5])));
+                        sCtr++;
+                    }
+                    case "DisarmSpore" -> {
+                        sporeMap.put(name, new DisarmSpore(
+                                Integer.parseInt(parts[2]),
+                                Integer.parseInt(parts[3]),
+                                fungusMap.get(parts[4]),
+                                tectonMap.get(parts[5])));
+                        sCtr++;
+                    }
+                    case "StunSpore" -> {
+                        sporeMap.put(name, new StunSpore(
+                                Integer.parseInt(parts[2]),
+                                Integer.parseInt(parts[3]),
+                                fungusMap.get(parts[4]),
+                                tectonMap.get(parts[5])));
+                        sCtr++;
+                    }
                     default -> System.err.println("Ismeretlen tipus: " + type);
                 }
 

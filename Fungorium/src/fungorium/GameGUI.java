@@ -2468,8 +2468,7 @@ public class GameGUI extends JFrame {
             IInsectController insectController;
             Tecton tecton;
             try {
-                insectController = (IInsectController) iview.getPlanet()
-                        .get(allSelectableEntitiesJList.getSelectedValue());
+                insectController = (IInsectController) iview.getPlanet().get(allSelectableEntitiesJList.getSelectedValue());
                 tecton = (Tecton) iview.getPlanet().get(entitiesForOperationsJList.getSelectedValue());
             } catch (NullPointerException ne) {
                 System.err.println("Kulcs nem talalhato");
