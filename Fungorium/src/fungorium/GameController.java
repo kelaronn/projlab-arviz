@@ -14,6 +14,7 @@ public class GameController {
     private int maxRounds = 5;
     private boolean gameOver = false;
     private int currentRound = 1;
+    private String lastError;
 
     public GameController(IView view){
         this.view = view;
@@ -240,14 +241,16 @@ public class GameController {
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             if(!currentPlayer.equals(fungus)){
-                System.err.println("#Nem az o kore van!");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
 
         boolean successful = tecton.GrowFungusBody(fungus);
         if(!successful){
-            System.out.println("#Gombatest novesztes sikertelen!");
+            lastError = "Gombatest novesztes sikertelen!";
+            System.out.println(lastError);
             return false;
         }
 
@@ -287,7 +290,8 @@ public class GameController {
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             if(!currentPlayer.equals(fungus)){
-                System.err.println("#Nem az o kore van!");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
@@ -295,7 +299,8 @@ public class GameController {
         boolean successful = tecton.GrowFungusBodyFromInsect(fungus);
 
         if(!successful){
-            System.out.println("#Gombatest novesztes sikertelen!");
+            lastError = "Gombatest novesztes sikertelen!";
+            System.out.println(lastError);
             return false;
         }
 
@@ -437,14 +442,16 @@ public class GameController {
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
             if( !currentPlayer.equals( fbView.GetHostFungus() ) ){
-                System.err.println("#Nem az o kore van!");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
 
         boolean success = fb.ProduceSpore();
         if(!success){
-            System.err.println("#Nem tudott sporat termelni!");
+            lastError = "Nem tudott sporat termelni!";
+            System.err.println(lastError);
             return false;
         }
         System.out.println("#Sikeres spora termeles.");
@@ -463,14 +470,16 @@ public class GameController {
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
             if( !currentPlayer.equals( fbView.GetHostFungus() ) ){
-                System.err.println("#Nem az o kore van!");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
 
         boolean success = fb.ShootSpores(isRandom, rand);
         if(!success){
-            System.err.println("#Nem tudott sporat loni!");
+            lastError = "Nem tudott sporat loni!";
+            System.err.println(lastError);
             return false;
         }
         AddCreatedSpores(planet);
@@ -545,7 +554,8 @@ public class GameController {
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             if( !currentPlayer.equals( fungus ) ){
-                System.err.println("#Nem az o kore van!");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
@@ -553,7 +563,8 @@ public class GameController {
         //boolean  success = tectonFrom.AddHypha(fungus,tectonTo);
         boolean  success = tectonTo.AddHypha(fungus,tectonFrom);
         if(!success){
-            System.err.println("#Nem tudott a hifa atnoni!");
+            lastError = "Nem tudott a hifa atnoni!";
+            System.err.println(lastError);
             return false;
         }
 
@@ -616,14 +627,16 @@ public class GameController {
         if (turns) {
             IHyphaView hyphaView = (IHyphaView) hypha;
             if( !currentPlayer.equals( hyphaView.GetHostFungus() ) ){
-                System.err.println("Nem az o kore van");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
 
         boolean success = hypha.EatStunnedInsect(insect);
         if(!success){
-            System.err.println("Nem tudta megenni a rovart");
+            lastError = "Nem tudta megenni a rovart!";
+            System.err.println(lastError);
             return false;
         }
         return true;
@@ -642,7 +655,8 @@ public class GameController {
         IInsectView insectView = (IInsectView) insect;
         if (turns) {
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
-                System.err.println("#Nem az o kore van!");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
@@ -650,7 +664,8 @@ public class GameController {
         int insectCountBefore = insectView.GetTecton().insects.size();
         boolean success = insect.EatSpore(spore);
         if(!success){
-            System.err.println("#Nem tudta a rovar megenni a sporat!");
+            lastError = "Nem tudta a rovar megenni a sporat!";
+            System.err.println(lastError);
             return false;
         }
         int insectCountAfter = insectView.GetTecton().insects.size();
@@ -678,19 +693,22 @@ public class GameController {
         if (turns) {
             IInsectView insectView = (IInsectView) insect;
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
-                System.err.println("Nem az o kore van");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
 
         if(!InsectMovesLeft.containsKey(insect) || InsectMovesLeft.get(insect) <= 0){            // nincs ilyen rovar vagy elfogyott a lepese
-            System.err.println("#Nem tudott a rovar atlepni a tektonra!");
+            lastError = "Nem tudott a rovar atlepni a tektonra!";
+            System.err.println(lastError);
             return false;
         }
 
         boolean success = insect.Move(tecton);
         if(!success){
-            System.err.println("#Nem tudott a rovar atlepni a tektonra!");
+            lastError = "Nem tudott a rovar atlepni a tektonra!";
+            System.err.println(lastError);
             return false;
         }
         int moves = InsectMovesLeft.get(insect);
@@ -711,14 +729,16 @@ public class GameController {
         if (turns) {
             IInsectView insectView = (IInsectView) insect;
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
-                System.err.println("#Nem az o kore van!");
+                lastError = "Nem az o kore van!";
+                System.err.println(lastError);
                 return false;
             }
         }
 
         boolean success = insect.Cut(hypha);
         if(!success){
-            System.err.println("#Nem tudta a rovar elvagni a hifat!");
+            lastError = "Nem tudta a rovar elvagni a hifat!";
+            System.err.println(lastError);
             return false;
         }
         CleanUpHyphas(planet);
@@ -750,4 +770,5 @@ public class GameController {
     public Object GetCurrentPlayer(){
         return currentPlayer;
     }
+    public String getLastError() {return lastError;}
 }

@@ -2307,8 +2307,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.GrowFungusBody(tectonController, (Fungus) controller.GetCurrentPlayer());
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.GrowFungusBody(tectonController, (Fungus) controller.GetCurrentPlayer());
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
 
         }
@@ -2329,8 +2337,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.GrowFungusBodyFromInsect(tectonController, (Fungus) controller.GetCurrentPlayer());
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.GrowFungusBodyFromInsect(tectonController, (Fungus) controller.GetCurrentPlayer());
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
 
         }
@@ -2357,8 +2373,16 @@ public class GameGUI extends JFrame {
             if (tectonTo == null)
                 return;
             GameController controller = iview.GetGameController();
-            controller.GrowHypha((Fungus) controller.GetCurrentPlayer(), tectonFrom, tectonTo);
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.GrowHypha((Fungus) controller.GetCurrentPlayer(), tectonFrom, tectonTo);
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
         }
     }
@@ -2378,8 +2402,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.ProduceSpore(fbController);
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.ProduceSpore(fbController);
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
 
         }
@@ -2400,8 +2432,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.ShootSpores(fbController);
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.ShootSpores(fbController);
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
         }
     }
@@ -2423,8 +2463,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.EatStunnedInsect(hyphaController, insect);
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.EatStunnedInsect(hyphaController, insect);
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
         }
     }
@@ -2446,8 +2494,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.EatSpore(insectController, spore);
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.EatSpore(insectController, spore);
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
         }
     }
@@ -2468,9 +2524,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.MoveInsect(insectController, tecton);
-            // ToDo: felugró ablakok error esetén
-            RefreshSelectableEntities();
+            boolean success = controller.MoveInsect(insectController, tecton);
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
         }
 
     }
@@ -2492,8 +2555,16 @@ public class GameGUI extends JFrame {
                 return;
             }
             GameController controller = iview.GetGameController();
-            controller.CutHypha(insectController, hypha);
-            // ToDo: felugró ablakok error esetén
+            boolean success = controller.CutHypha(insectController, hypha);
+            if (!success) {
+                String errorMessage = controller.getLastError();
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
             RefreshSelectableEntities();
         }
     }
@@ -2517,7 +2588,34 @@ public class GameGUI extends JFrame {
         JLabel roundLabel = (JLabel) playPanel.getComponent(5);
         String currentRound = "0";
         roundLabel.setText("Round: " + iview.GetGameController().GetCurrentRound());
+
+        String currentPlayerKey = "";
+        for (Map.Entry<String, Object> entry : iview.getPlanet().entrySet()) {
+            if (entry.getValue().equals(iview.GetGameController().GetCurrentPlayer())) {
+                currentPlayerKey = entry.getKey();
+                break;
+            }
+        }
+
+        JLabel infoLabel = (JLabel) playPanel.getComponent(3); // 3. indexű komponens az infó label
+
+        if (currentPlayerKey.startsWith("F")) {
+            // Fungus esetén: FungusBody-k számának lekérdezése
+            Fungus fungus = (Fungus) iview.getPlanet().get(currentPlayerKey);
+            infoLabel.setText("Number of Fungus Bodies: " + fungus.GetBodies().size());
+
+        } else if (currentPlayerKey.startsWith("IC")) {
+            // InsectColony esetén: nutrient mennyiség
+            InsectColony colony = (InsectColony) iview.getPlanet().get(currentPlayerKey);
+            infoLabel.setText("Amount of nutrients collected: " + colony.getNutrition());
+        }
+
+
+
+
         RefreshSelectableEntities();
+
+
     }
 
     private class NextPlayerButtonListener implements ActionListener {
