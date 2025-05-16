@@ -120,7 +120,8 @@ public class GameGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Váltás a játék kártyára
                 cardLayout.show(GameGUI.this.gamePanel, PLAY_CARD);
-                RefreshSelectableEntities();
+                RoundDisplay();
+                //RefreshSelectableEntities();
             }
         });
 
