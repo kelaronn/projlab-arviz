@@ -2602,12 +2602,12 @@ public class GameGUI extends JFrame {
         if (currentPlayerKey.startsWith("F")) {
             // Fungus esetén: FungusBody-k számának lekérdezése
             Fungus fungus = (Fungus) iview.getPlanet().get(currentPlayerKey);
-            infoLabel.setText("Number of Fungus Bodies: " + fungus.GetBodies().size());
+            infoLabel.setText("Fungus Bodies: " + fungus.GetBodies().size());
 
         } else if (currentPlayerKey.startsWith("IC")) {
             // InsectColony esetén: nutrient mennyiség
             InsectColony colony = (InsectColony) iview.getPlanet().get(currentPlayerKey);
-            infoLabel.setText("Amount of nutrients collected: " + colony.getNutrition());
+            infoLabel.setText("Nutrients collected: " + colony.getNutrition());
         }
 
 
