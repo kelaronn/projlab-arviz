@@ -2318,7 +2318,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
 
         }
     }
@@ -2349,7 +2349,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
 
         }
     }
@@ -2386,7 +2386,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
         }
     }
 
@@ -2416,7 +2416,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
 
         }
     }
@@ -2447,7 +2447,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
         }
     }
 
@@ -2479,7 +2479,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
         }
     }
 
@@ -2511,7 +2511,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
         }
     }
 
@@ -2542,7 +2542,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
         }
 
     }
@@ -2575,7 +2575,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            RefreshSelectableEntities();
+            //RefreshSelectableEntities();
         }
     }
 
