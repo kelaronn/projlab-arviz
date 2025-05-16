@@ -2317,6 +2317,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
 
         }
@@ -2347,6 +2348,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
 
         }
@@ -2383,6 +2385,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
         }
     }
@@ -2412,6 +2415,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
 
         }
@@ -2442,6 +2446,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
         }
     }
@@ -2473,6 +2478,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
         }
     }
@@ -2504,6 +2510,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
         }
     }
@@ -2534,6 +2541,8 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
+            RefreshSelectableEntities();
         }
 
     }
@@ -2565,6 +2574,7 @@ public class GameGUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
+            RoundDisplay();
             RefreshSelectableEntities();
         }
     }
