@@ -764,6 +764,9 @@ public class GameController {
     public int GetCurrentRound(){
         return currentRound;
     }
+    public void SetCurrentRound(int r){
+        currentRound =r;
+    }
     public boolean IsGameOver(){
         return gameOver;
     }

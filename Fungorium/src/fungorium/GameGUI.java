@@ -2593,7 +2593,7 @@ public class GameGUI extends JFrame {
      */
     private void RoundDisplay() {
         if (iview.GetGameController().IsGameOver()) {
-            JOptionPane.showMessageDialog(null, "Game Over!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            handleGameOver();
         }
 
         JLabel roundLabel = (JLabel) playPanel.getComponent(5);
@@ -2708,6 +2708,84 @@ public class GameGUI extends JFrame {
                 label[2].setVisible(true);
                 label[3].setVisible(true);
                 break;
+        }
+    }
+    //Játék vége GUI
+    private void handleGameOver() {
+        GameController controller = iview.GetGameController();
+        StringBuilder message = new StringBuilder();
+        message.append("Játék vége!\n\n");
+        message.append("Körök száma: ").append(controller.GetCurrentRound()).append("\n\n");
+        
+
+        for (Map.Entry<String, Object> entry : iview.getPlanet().entrySet()) {
+            System.out.println("Key: " + entry.getKey() + ", Value type: " + entry.getValue().getClass().getName());
+        }
+        
+        // Rovarkolóniák pontszámai
+        message.append("Rovarkolóniák:\n");
+        boolean foundColonies = false;
+        for (Map.Entry<String, Object> entry : iview.getPlanet().entrySet()) {
+            if (entry.getKey().startsWith("IC")) {
+                foundColonies = true;
+                InsectColony colony = (InsectColony) entry.getValue();
+                message.append("- ").append(entry.getKey())
+                      .append(": ").append(colony.getNutrition())
+                      .append(" tápanyag\n");
+            }
+        }
+        if (!foundColonies) {
+            message.append("Nincsenek rovarkolóniák\n");
+        }
+        
+        // Gombák pontszámai
+        message.append("\nGombák:\n");
+        boolean foundFungi = false;
+        for (Map.Entry<String, Object> entry : iview.getPlanet().entrySet()) {
+            if (entry.getKey().startsWith("F") && !entry.getKey().startsWith("FB")) {  // Kizárjuk a FungusBody-kat
+                foundFungi = true;
+                Fungus fungus = (Fungus) entry.getValue();
+                message.append("- ").append(entry.getKey())
+                      .append(": ").append(fungus.GetBodies().size())
+                      .append(" gombatest\n");
+            }
+        }
+        if (!foundFungi) {
+            message.append("Nincsenek gombák\n");
+        }
+        
+        System.out.println("Message content: " + message.toString());
+        
+        // Egyedi gombok létrehozása
+        Object[] options = {"Pálya újratöltése", "Kilépés"};
+        int choice = JOptionPane.showOptionDialog(
+            playPanel,
+            message.toString(),
+            "Játék vége",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            options,
+            options[0]  // Alapértelmezett kiválasztott gomb
+        );
+        
+        if (choice == 0) {  // Pálya újratöltése
+            // Töröljük az összes objektumot a pályáról
+            Map<String, Object> planet = iview.getPlanet();
+            planet.clear();
+            
+            // Játék állapot visszaállítása
+            controller.SetToDefault();
+            controller.SetMaxRounds(5);  // Alapértelmezett körök száma
+            
+            // Körök visszaállítása
+            controller.SetCurrentRound(1); 
+            
+            // GUI frissítése
+            RoundDisplay();
+            repaint();
+        } else {  // Kilépés
+            System.exit(0);
         }
     }
 }
