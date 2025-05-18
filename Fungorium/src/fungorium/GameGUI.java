@@ -2096,13 +2096,12 @@ public class GameGUI extends JFrame {
                 }
             }
             // hifak kulcsainak megkeresese
-            for (Hypha hypha : hyphas) {
-                for (Map.Entry<String, Object> entry : planet.entrySet()) {
-                    if (entry.getValue().equals(hypha)) {
-                        if (hypha.GetTectons().size() > 1) { // res hifak kellenek, csak azokat tudja elvagni
-                            keys.add(entry.getKey());
-                            break;
-                        }
+            for (Map.Entry<String, Object> entry : planet.entrySet()) {
+                Hypha hypha;
+                if(entry.getKey().startsWith("H")) {    //Hifak keresese
+                    hypha = (Hypha) entry.getValue();
+                    if(hypha.GetTectons().size() > 1 && hypha.GetTectons().contains(tectonview)) { // res hifak kellenek, amik a rovar tektonja mellett vannak
+                        keys.add(entry.getKey());
                     }
                 }
             }
