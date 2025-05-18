@@ -2319,7 +2319,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
 
         }
     }
@@ -2350,7 +2349,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
 
         }
     }
@@ -2367,6 +2365,14 @@ public class GameGUI extends JFrame {
                 tectonTo = (Tecton) iview.getPlanet().get(entitiesForOperationsJList.getSelectedValue());
             } catch (NullPointerException ne) {
                 System.err.println("Kulcs nem talalhato");
+
+                String errorMessage = "nincs megadva valamelyik parameter";
+                JOptionPane.showMessageDialog(
+                        playPanel, // Szülő komponens (pl. a főablak)
+                        errorMessage,
+                        "Hiba",
+                        JOptionPane.ERROR_MESSAGE
+                );
                 return;
             } catch (ClassCastException cce) {
                 System.err.println("Nem megfelelo tipus lett kivalasztva");
@@ -2387,7 +2393,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
         }
     }
 
@@ -2417,7 +2422,7 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
+
 
         }
     }
@@ -2448,7 +2453,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
         }
     }
 
@@ -2480,7 +2484,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
         }
     }
 
@@ -2512,7 +2515,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
         }
     }
 
@@ -2543,7 +2545,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
         }
 
     }
@@ -2576,7 +2577,6 @@ public class GameGUI extends JFrame {
                 );
             }
             RoundDisplay();
-            //RefreshSelectableEntities();
         }
     }
 
@@ -2589,7 +2589,7 @@ public class GameGUI extends JFrame {
     }
 
     /**
-     * A körök lefolyását megjelenítő függvény
+     * A körök lefolyását megjelenítő függvény. Frissíti a selectableEntities listát is.
      */
     private void RoundDisplay() {
         if (iview.GetGameController().IsGameOver()) {
@@ -2621,9 +2621,6 @@ public class GameGUI extends JFrame {
             infoLabel.setText("Nutrients collected: " + colony.getNutrition());
         }
 
-
-
-
         RefreshSelectableEntities();
 
 
@@ -2643,7 +2640,6 @@ public class GameGUI extends JFrame {
 
             playerLabel.setText("Current player: " + currentPlayer);
             RoundDisplay();
-            RefreshSelectableEntities();
         }
     }
 

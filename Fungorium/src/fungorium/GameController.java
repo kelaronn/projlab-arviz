@@ -238,6 +238,11 @@ public class GameController {
      * @return sikeres-e a művelet.
      */
     public boolean GrowFungusBody(ITectonController tecton, Fungus fungus){
+        if(tecton == null || fungus == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             if(!currentPlayer.equals(fungus)){
@@ -287,6 +292,11 @@ public class GameController {
      * @return sikeres-e a művelet.
      */
     public boolean GrowFungusBodyFromInsect(ITectonController tecton, Fungus fungus){
+        if(tecton == null || fungus == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             if(!currentPlayer.equals(fungus)){
@@ -335,6 +345,11 @@ public class GameController {
      * @return sikeres-e a muvelet.
      */
     public boolean AbsorbHypha(ITectonController tecton){
+        if(tecton == null ) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         boolean successful = false;
         if(!turns){
@@ -439,6 +454,11 @@ public class GameController {
      * @return sikeres-e a muvelet.
      */
     public boolean ProduceSpore(IFungusBodyController fb){
+        if(fb == null ) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
             if( !currentPlayer.equals( fbView.GetHostFungus() ) ){
@@ -466,6 +486,11 @@ public class GameController {
      * @return sikeres-e a művelet
      */
     public boolean ShootSpores(IFungusBodyController fb){
+        if(fb == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
@@ -521,6 +546,11 @@ public class GameController {
      * @return
      */
     public boolean DieFungusBody(IFungusBodyController fb){
+        if(fb == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             IFungusBodyView fbView = (IFungusBodyView) fb;
@@ -551,6 +581,11 @@ public class GameController {
      * @return Sikeres-e a muvelet.
      */
     public boolean GrowHypha(Fungus fungus, Tecton tectonFrom, Tecton tectonTo){
+        if(tectonFrom == null || fungus == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             if( !currentPlayer.equals( fungus ) ){
@@ -624,6 +659,11 @@ public class GameController {
      * @return Sikeres-e a muvelet
      */
     public boolean EatStunnedInsect(IHyphaController hypha, Insect insect){
+        if(hypha == null || insect == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         if (turns) {
             IHyphaView hyphaView = (IHyphaView) hypha;
             if( !currentPlayer.equals( hyphaView.GetHostFungus() ) ){
@@ -651,6 +691,11 @@ public class GameController {
      * @return Sikeres-e a muvelet.
      */
     public boolean EatSpore(IInsectController insect, Spore spore){
+        if(insect == null || spore == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         IInsectView insectView = (IInsectView) insect;
         if (turns) {
@@ -690,6 +735,11 @@ public class GameController {
      * @return Sikeres-e a muvelet
      */
     public boolean MoveInsect(IInsectController insect, Tecton tecton){
+        if(tecton == null || insect == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         if (turns) {
             IInsectView insectView = (IInsectView) insect;
             if( !currentPlayer.equals( insectView.GetHostColony() ) ){
@@ -725,6 +775,11 @@ public class GameController {
      * @return
      */
     public boolean CutHypha(IInsectController insect, Hypha hypha){
+        if(insect == null || hypha == null) {
+            lastError  = "nincs megadva valamelyik parameter";
+            System.err.println(lastError);
+            return false;
+        }
         LinkedHashMap<String,Object> planet = (LinkedHashMap<String,Object>) view.getPlanet();
         if (turns) {
             IInsectView insectView = (IInsectView) insect;
