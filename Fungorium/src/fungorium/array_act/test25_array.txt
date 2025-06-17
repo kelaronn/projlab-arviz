@@ -1,0 +1,20 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addt -n T2 -t n
+/addt -n T3 -t n
+/altt -n T1 -nh T2
+/altt -n T2 -nh T3
+/addf -n F1
+/addfb -n FB1 -f F1 -t T1
+/addh -n H1 -f F1 -ts T1
+/addh -n H2 -f F1 -ts T1 -tn T2
+/addh -n H3 -f F1 -ts T2
+/addh -n H4 -f F1 -ts T2 -tn T3
+/addh -n H5 -f F1 -ts T3
+/alth -n H1 -nh H2
+/alth -n H2 -nh H3
+/alth -n H3 -nh H4
+/alth -n H4 -nh H5
+atrophyofhypha -h H1
+/save test25_out.txt

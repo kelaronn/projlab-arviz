@@ -1,0 +1,9 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addf -n F1
+/addic -n IC1
+/adds -n S1 -tn T1 -t st -nv 5 -f F1
+/addi -n I1 -ic IC1 -t T1
+eatspore -i I1 -s S1
+/save test36_out.txt

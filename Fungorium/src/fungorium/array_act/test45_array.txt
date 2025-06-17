@@ -1,0 +1,11 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addt -n T2 -t n
+/altt -n T1 -nh T2
+/addf -n F1
+/addic -n IC1
+/addh -n H1 -f F1 -ts T1 -tn T2
+/addi -n I1 -ic IC1 -t T1
+cuthypha -i I1 -h H1
+/save test45_out.txt

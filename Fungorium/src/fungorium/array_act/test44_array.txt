@@ -1,0 +1,10 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addt -n T2 -t n
+/altt -n T1 -nh T2
+/addf -n F1
+/addic -n IC1
+/addi -n I1 -ic IC1 -t T1 
+moveinsect -i I1 -t T2
+/save test44_out.txt

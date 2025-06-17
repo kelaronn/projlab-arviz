@@ -1,0 +1,5 @@
+NarrowTecton,T1,,,,[T2],FB1
+NarrowTecton,T2,,,[S1],[T1],
+Fungus,F1,[FB1],
+FungusBody,FB1,false,0,false,1,3,T1,F1
+Spore,S1,1,0,F1,T2

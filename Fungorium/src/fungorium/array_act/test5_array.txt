@@ -1,0 +1,9 @@
+/rand d
+/turns d
+/addf -n F1
+/addt -n T1 -t we
+/adds -n S1 -f F1 -tn T1 -f F1
+/adds -n S2 -f F1 -tn T1 -f F1
+/adds -n S3 -f F1 -tn T1 -f F1
+growfungusbody -f F1 -t T1 -m s
+/save test5_out.txt

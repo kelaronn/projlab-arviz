@@ -1,0 +1,7 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addf -n F1
+/addfb -n FB1 -f F1 -t T1 -sc 5
+shootspores -fb FB1
+/save test15_out.txt

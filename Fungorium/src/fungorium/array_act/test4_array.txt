@@ -1,0 +1,8 @@
+/rand d
+/turns d
+/addf -n F1
+/addic -n IC1
+/addt -n T1 -t n
+/addi -n I1 -ic IC1 -t T1
+growfungusbodyfrominsect -f F1 -t T1
+/save test4_out.txt

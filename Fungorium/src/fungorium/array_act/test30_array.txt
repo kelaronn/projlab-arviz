@@ -1,0 +1,10 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addf -n F1
+/addic -n IC1
+/addfb -n FB1 -f F1 -t T1
+/addh -n H1 -f F1 -ts T1
+/addi -n I1 -ic IC1 -t T1
+eatstunnedinsect -h H1 -i I1
+/save test30_out.txt

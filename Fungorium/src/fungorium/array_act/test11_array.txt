@@ -1,0 +1,7 @@
+/rand d
+/turns d
+/addt -n T1 -t n
+/addf -n F1
+/addfb -n FB1 -f F1 -t T1 -d y
+producespore -fb FB1
+/save test11_out.txt

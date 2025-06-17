@@ -1,0 +1,4 @@
+NarrowTecton,T1,,,,[T2],
+NarrowTecton,T2,,,,[T1,T3],
+NarrowTecton,T3,,,,[T2],
+Fungus,F1,,
